@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="432.0" minWidth="768.0" prefHeight="432.0" prefWidth="768.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="432.0" minWidth="768.0" prefHeight="432.0" prefWidth="768.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="alohomora.Controller">
    <top>
       <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #0C1530;" BorderPane.alignment="CENTER">
          <children>
@@ -43,7 +43,6 @@
                               <Insets bottom="10.0" top="10.0" />
                            </StackPane.margin>
                            <image>
-                              <Image url="@../asset/img/alohomora_logo2.png" />
                            </image>
                         </ImageView>
                      </children>

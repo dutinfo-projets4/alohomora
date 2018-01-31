@@ -1,4 +1,4 @@
-package sample;
+package alohomora;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -10,12 +10,11 @@ public class App extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("connection.fxml"));
+        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/connection.fxml"));
         primaryStage.setMinWidth(768);
         primaryStage.setMinHeight(453);
         primaryStage.setTitle("Alohomara");
         Scene scene = new Scene(root);
-        scene.getStylesheets().add("asset/css/connection.css");
         primaryStage.setScene(scene);
         primaryStage.show();
     }

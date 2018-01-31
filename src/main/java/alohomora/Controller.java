@@ -1,4 +1,4 @@
-package sample;
+package alohomora;
 
 public class Controller {
 
