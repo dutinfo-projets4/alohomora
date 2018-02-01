@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
@@ -10,59 +11,95 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="432.0" minWidth="768.0" prefHeight="432.0" prefWidth="768.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="alohomora.Controller">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="432.0" minWidth="768.0" prefHeight="432.0" prefWidth="768.0" styleClass="login_middle_part" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="alohomora.Controller">
    <top>
-      <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #0C1530;" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER_LEFT" prefHeight="40.0" styleClass="login_upper_bar" BorderPane.alignment="CENTER">
          <children>
-            <Label alignment="CENTER" styleClass="text" text="Server">
+            <Label alignment="CENTER" styleClass="labels" text="Server">
                <HBox.margin>
                   <Insets left="20.0" right="20.0" />
                </HBox.margin>
             </Label>
-            <ChoiceBox prefWidth="150.0" />
+            <ChoiceBox prefWidth="200.0" HBox.hgrow="ALWAYS">
+               <styleClass>
+                  <String fx:value="textfield" />
+                  <String fx:value="boxes" />
+               </styleClass></ChoiceBox>
+            <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+            <Button mnemonicParsing="false" styleClass="boxes" text="Register">
+               <HBox.margin>
+                  <Insets right="15.0" />
+               </HBox.margin>
+            </Button>
          </children>
       </HBox>
    </top>
    <bottom>
-      <HBox prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #0C1530;" BorderPane.alignment="CENTER" />
+      <HBox prefHeight="40.0" prefWidth="200.0" styleClass="login_lower_bar" BorderPane.alignment="CENTER" />
    </bottom>
    <center>
-      <HBox BorderPane.alignment="CENTER">
+      <HBox maxWidth="300.0" prefWidth="300.0" BorderPane.alignment="CENTER">
          <children>
-            <VBox alignment="CENTER" style="-fx-background-color: #2C375A;" HBox.hgrow="ALWAYS">
+            <VBox alignment="CENTER" styleClass="login_middle_column" HBox.hgrow="ALWAYS">
                <children>
-                  <StackPane VBox.vgrow="NEVER">
-                     <children>
-                        <Pane style="-fx-background-color: #6C7A89;" />
-                        <ImageView fitHeight="130.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
-                           <StackPane.margin>
-                              <Insets bottom="10.0" top="10.0" />
-                           </StackPane.margin>
-                           <image>
-                           </image>
-                        </ImageView>
-                     </children>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="login_middle_logo">
                      <VBox.margin>
-                        <Insets bottom="30.0" top="30.0" />
+                        <Insets bottom="35.0" top="35.0" />
                      </VBox.margin>
-                  </StackPane>
+                     <children>
+                        <ImageView fitHeight="150.0" fitWidth="125.0" pickOnBounds="true" preserveRatio="true" VBox.vgrow="NEVER">
+                           <image>
+                              <Image url="@../assets/img/alohomora_logo2.png" />
+                           </image>
+                           <HBox.margin>
+                              <Insets bottom="10.0" top="10.0" />
+                           </HBox.margin></ImageView>
+                     </children>
+                  </HBox>
                   <VBox alignment="TOP_CENTER" maxWidth="268.0" VBox.vgrow="NEVER">
                      <children>
-                        <TextField VBox.vgrow="NEVER">
+                        <HBox VBox.vgrow="NEVER">
                            <VBox.margin>
                               <Insets left="20.0" right="20.0" />
                            </VBox.margin>
-                        </TextField>
-                        <PasswordField VBox.vgrow="NEVER">
+                           <children>
+                              <Label alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" maxHeight="30.0" maxWidth="30.0" prefHeight="30.0" prefWidth="30.0" text="" textAlignment="CENTER">
+                                 <styleClass>
+                                    <String fx:value="textfield" />
+                                    <String fx:value="textfield_lab" />
+                                    <String fx:value="boxes" />
+                                 </styleClass>
+                              </Label>
+                              <TextField maxHeight="30.0" prefHeight="30.0" promptText="Username..." HBox.hgrow="ALWAYS">
+                                 <styleClass>
+                                    <String fx:value="textfield" />
+                                    <String fx:value="boxes" />
+                                 </styleClass></TextField>
+                           </children>
+                        </HBox>
+                        <HBox VBox.vgrow="NEVER">
                            <VBox.margin>
                               <Insets left="20.0" right="20.0" top="20.0" />
                            </VBox.margin>
-                        </PasswordField>
-                        <Button mnemonicParsing="false" text="Login">
+                           <children>
+                              <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="30.0" maxWidth="30.0" prefHeight="30.0" prefWidth="30.0" text="" textAlignment="CENTER">
+                                 <styleClass>
+                                    <String fx:value="textfield" />
+                                    <String fx:value="textfield_lab" />
+                                    <String fx:value="boxes" />
+                                 </styleClass>
+                              </Label>
+                              <PasswordField HBox.hgrow="ALWAYS">
+                                 <styleClass>
+                                    <String fx:value="textfield" />
+                                    <String fx:value="boxes" />
+                                 </styleClass></PasswordField>
+                           </children>
+                        </HBox>
+                        <Button mnemonicParsing="false" styleClass="boxes" text="Login">
                            <VBox.margin>
                               <Insets top="20.0" />
                            </VBox.margin>
@@ -74,18 +111,4 @@
          </children>
       </HBox>
    </center>
-   <left>
-      <HBox BorderPane.alignment="CENTER">
-         <children>
-            <Pane prefWidth="250.0" style="-fx-background-color: #1A2546;" HBox.hgrow="ALWAYS" />
-         </children>
-      </HBox>
-   </left>
-   <right>
-      <HBox prefHeight="100.0" prefWidth="250.0" BorderPane.alignment="CENTER">
-         <children>
-            <Pane style="-fx-background-color: #1A2546;" HBox.hgrow="ALWAYS" />
-         </children>
-      </HBox>
-   </right>
 </BorderPane>

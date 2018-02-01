@@ -1,0 +1,24 @@
+.login_upper_bar {
+	-fx-background-color: #0C1530;
+	-fx-border-color: transparent transparent #2C375A Transparent;
+	-fx-border-width: 2;
+}
+
+.login_middle_part{
+	-fx-background-color: #1A2546;
+}
+
+.login_lower_bar {
+	-fx-background-color: #0C1530;
+	-fx-border-color: #2C375A transparent transparent transparent;
+	-fx-border-width: 2;
+}
+
+.login_middle_column {
+	-fx-background-color: #2C375A;
+}
+
+.login_middle_logo {
+	-fx-background-color: #6C7A89;
+}
+
