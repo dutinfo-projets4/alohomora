@@ -1,0 +1,57 @@
+.tab-header-background {
+    -fx-background-color: #0C1530 ;
+    -fx-border-color: transparent transparent #2C375A  transparent;
+    -fx-border-width: 2;
+}
+.tab-header-area{
+
+    -fx-pref-height: 40px;
+}
+.tab:selected .tab-label {
+    -fx-font-family: "Hack NF";
+    -fx-text-alignment: center;
+    -fx-font-size: 20px;
+    -fx-text-fill: #06a75b;
+
+}
+.tab{
+    -fx-background-color: #1A2546;
+    -fx-background-insets: 0 3 2 0;
+    -fx-pref-height: 35;
+}
+.tab .tab-label {
+    -fx-text-alignment: center;
+    -fx-font-family: "Hack NF";
+    -fx-font-size: 20px;
+    -fx-text-fill: #016937;
+}
+.bottomHbox{
+    -fx-background-color: #0C1530;
+    -fx-border-color: #2C375A transparent transparent  transparent ;
+    -fx-border-width: 2;
+}
+.centerHbox{
+    -fx-background-color: #1A2546;
+}
+.vbox{
+    -fx-border-color: transparent #2C375A transparent transparent;
+    -fx-border-width: 2;
+}
+.signOut{
+    -fx-font-family: "Hack NF";
+    -fx-text-alignment: center;
+    -fx-font-size: 20px;
+    -fx-text-fill: #016937;
+}
+.signOut:pressed{
+    -fx-font-family: "Hack NF";
+    -fx-text-alignment: center;
+    -fx-font-size: 20px;
+    -fx-text-fill: #06a75b;
+}
+.pseudo{
+    -fx-font-family: "Hack NF";
+    -fx-text-alignment: center;
+    -fx-font-size: 20px;
+    -fx-text-fill: #016937;
+}
