@@ -4,11 +4,12 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TreeView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="453.0" prefWidth="768.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="alohomora.ControllerInterface">
+<VBox prefHeight="453.0" prefWidth="768.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="alohomora.ControllerInterface">
    <children>
       <TabPane minHeight="-Infinity" minWidth="-Infinity" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
         <tabs>
@@ -16,7 +17,19 @@
                <content>
                   <HBox styleClass="centerHbox">
                      <children>
-                        <VBox prefHeight="200.0" prefWidth="100.0" styleClass="vbox" HBox.hgrow="ALWAYS" />
+                        <VBox prefHeight="200.0" prefWidth="100.0" styleClass="vbox" HBox.hgrow="ALWAYS">
+                           <children>
+                              <HBox fx:id="allElements" alignment="CENTER_LEFT" onMouseClicked="#onClickAllElement" styleClass="allElements">
+                                 <children>
+                                    <Label styleClass="labelAllElements" text=" Everything" HBox.hgrow="SOMETIMES">
+                                       <HBox.margin>
+                                          <Insets bottom="8.0" left="20.0" top="8.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <TreeView prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                           </children></VBox>
                         <VBox prefHeight="200.0" prefWidth="100.0" styleClass="vbox" HBox.hgrow="ALWAYS" />
                         <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS" />
                      </children>

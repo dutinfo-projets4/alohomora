@@ -28,14 +28,15 @@
 .bottomHbox{
     -fx-background-color: #0C1530;
     -fx-border-color: #2C375A transparent transparent  transparent ;
-    -fx-border-width: 2;
+    -fx-border-width: 2 0 0 0;
 }
 .centerHbox{
-    -fx-background-color: #1A2546;
+
+   -fx-background-color: #1A2546;
 }
 .vbox{
     -fx-border-color: transparent #2C375A transparent transparent;
-    -fx-border-width: 2;
+    -fx-border-width: 0 2 0 0;
 }
 .signOut{
     -fx-font-family: "Hack NF";
@@ -55,3 +56,18 @@
     -fx-font-size: 20px;
     -fx-text-fill: #016937;
 }
+.allElements .labelAllElements{
+    -fx-font-family: "Hack NF";
+    -fx-text-alignment: center;
+    -fx-font-size: 19px;
+    -fx-text-fill: #06a75b;
+}
+
+.allElements:pressed{
+    -fx-background-color: #2C375A;
+    -fx-border-color: transparent #06a75b transparent transparent;
+    -fx-border-width: 0 5 0 0;
+
+
+}
+
