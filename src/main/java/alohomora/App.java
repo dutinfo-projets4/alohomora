@@ -11,7 +11,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-       /**Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/connection.fxml"));
+      Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/connection.fxml"));
         primaryStage.setMinWidth(768);
         primaryStage.setMinHeight(453);
         primaryStage.setTitle("Alohomora");
@@ -23,7 +23,7 @@ public class App extends Application {
         scene.getStylesheets().addAll("assets/css/main.css", "assets/css/connection.css");
         primaryStage.setScene(scene);
         primaryStage.show();
-        **/
+        /**
        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/interface.fxml"));
         primaryStage.setMinWidth(768);
         primaryStage.setMinHeight(453);
@@ -36,6 +36,7 @@ public class App extends Application {
         scene.getStylesheets().addAll("assets/css/main.css", "assets/css/interface.css");
         primaryStage.setScene(scene);
         primaryStage.show();
+        **/
     }
 
 

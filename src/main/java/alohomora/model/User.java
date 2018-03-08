@@ -118,7 +118,7 @@ public class User {
         call.enqueue(new Callback<Challenge>() {
             @Override
             public void onResponse(Call<Challenge> call, Response<Challenge> response) {
-                if (response.code()== 200)
+                if (response.code() == 200)
                     callback.onChallengeLoad(response.body());
                 else
                     callback.onChallengeLoad(null);

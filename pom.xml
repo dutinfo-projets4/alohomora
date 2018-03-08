@@ -30,6 +30,11 @@
             <artifactId>converter-gson</artifactId>
             <version>LATEST</version>
         </dependency>
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk16</artifactId>
+            <version>LATEST</version>
+        </dependency>
     </dependencies>
 
 </project>
