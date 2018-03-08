@@ -6,7 +6,7 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TreeView?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
 <VBox prefHeight="453.0" prefWidth="768.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="alohomora.ControllerInterface">
@@ -58,8 +58,8 @@
                   <Insets left="10.0" />
                </padding>
             </Label>
-            <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="SOMETIMES" />
-            <Label styleClass="signOut" text=" Disconnected">
+            <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+            <Label styleClass="signOut" text=" Log out">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
