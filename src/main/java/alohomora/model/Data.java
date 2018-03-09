@@ -3,19 +3,19 @@ package alohomora.model;
 import java.util.ArrayList;
 
 public class Data {
-    private ArrayList<Config> configs;
-    private ArrayList<Element> elements;
-    private ArrayList<Group> groups;
+	private ArrayList<Config> config;
+	private ArrayList<Element> elements;
+	private ArrayList<Group> groups;
 
-    public ArrayList<Config> getConfigs() {
-        return configs;
-    }
+	public ArrayList<Config> getConfig() {
+		return config;
+	}
 
-    public ArrayList<Element> getElements() {
-        return elements;
-    }
+	public ArrayList<Element> getElements() {
+		return elements;
+	}
 
-    public ArrayList<Group> getGroups() {
-        return groups;
-    }
+	public ArrayList<Group> getGroups() {
+		return groups;
+	}
 }

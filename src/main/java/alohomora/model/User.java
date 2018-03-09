@@ -1,8 +1,8 @@
 package alohomora.model;
 
-import alohomora.model.retrofitListner.RetrofitListnerChallenge;
-import alohomora.model.retrofitListner.RetrofitListnerUser;
-import alohomora.model.apiService.Api;
+import alohomora.model.retrofitlistener.RetrofitListenerChallenge;
+import alohomora.model.retrofitlistener.RetrofitListenerUser;
+import alohomora.model.apiservice.Api;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -84,7 +84,7 @@ public class User {
      * @param publickey clef public de l'utilisateur générer lors de la premère connexion sur une nouvelle machine
      * @param machineName nom de la nouvelle machine
      */
-    public static void challengeConnect(final RetrofitListnerUser callback, String passcode, int challenge, String publickey, String machineName){
+    public static void challengeConnect(final RetrofitListenerUser callback, String passcode, int challenge, String publickey, String machineName){
         Api apiService = new Api();
         Call<User> call = apiService.getAlohomoraService().ChallengeConnect(passcode,challenge, publickey, machineName);
         call.enqueue(new Callback<User>() {
@@ -107,12 +107,12 @@ public class User {
     }
 
     /**
-     * Permet de recevoir une instance de challenge aux travers de l'interface RetrofitListnerUser
+     * Permet de recevoir une instance de challenge aux travers de l'interface RetrofitListenerUser
      * Cette méthode permet de faire une requête sur l'api pour obtenir le challenge et son id
      * @param callback Permet de passer une instance de Challenge si succès sinon null
      *
      */
-    public static void getChallenge(final RetrofitListnerChallenge callback){
+    public static void getChallenge(final RetrofitListenerChallenge callback){
         Api apiService = new Api();
         Call<Challenge> call = apiService.getAlohomoraService().getChallenge();
         call.enqueue(new Callback<Challenge>() {
