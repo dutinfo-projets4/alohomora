@@ -5,3 +5,5 @@
 .io
 out/
 target/
+private.key
+public.key
