@@ -12,7 +12,7 @@ public class Config {
 	}
 
 	public int getID() {
-		return id;
+		return this.id;
 	}
 
 	public void setID(int id) {
