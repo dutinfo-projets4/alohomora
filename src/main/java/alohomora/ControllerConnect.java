@@ -4,9 +4,11 @@ import alohomora.model.CryptoUtils;
 import alohomora.model.User;
 import javafx.fxml.FXML;
 import org.bouncycastle.openpgp.PGPException;
+import org.bouncycastle.openpgp.PGPPrivateKey;
+import org.bouncycastle.openpgp.PGPSecretKey;
 
 import java.io.IOException;
-import java.security.NoSuchProviderException;
+import java.security.*;
 
 public class ControllerConnect {
 	private User user;
@@ -14,18 +16,20 @@ public class ControllerConnect {
 	@FXML
 	public void initialize() {
 		char [] pass = {'t','e'};
+		Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
+
+		try {
 			try {
-				try {
-					CryptoUtils.generatePGPKey(pass, "leo");
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			} catch (NoSuchProviderException e) {
-				e.printStackTrace();
+				CryptoUtils.generatePGPKey(pass,"e");
+				CryptoUtils.signedMessage("test", pass);
 			} catch (PGPException e) {
 				e.printStackTrace();
+			} catch (NoSuchProviderException e) {
+				e.printStackTrace();
 			}
-
+			} catch (IOException e) {
+			e.printStackTrace();
+			}
 	}
 
 
