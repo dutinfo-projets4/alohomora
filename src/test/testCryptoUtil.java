@@ -23,7 +23,7 @@ public class testCryptoUtil {
 	public void cipherAES(){
 		this.messageEncrypted = CryptoUtils.encrypt(this.password, messageToEncrypt);
 		System.out.println(this.messageEncrypted);
-		System.out.println(compar = CryptoUtils.decrypt("leo", this.messageEncrypted));
+		System.out.println(compar = CryptoUtils.decrypt(this.password, this.messageEncrypted));
 		assertEquals(compar, messageToEncrypt);
 	}
 

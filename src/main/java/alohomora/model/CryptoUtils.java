@@ -2,15 +2,17 @@ package alohomora.model;
 
 
 import org.bouncycastle.bcpg.ArmoredOutputStream;
-import org.bouncycastle.bcpg.BCPGOutputStream;
 import org.bouncycastle.openpgp.*;
 
 import javax.crypto.*;
+import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
 import java.security.*;
+import java.security.spec.InvalidParameterSpecException;
 import java.util.Base64;
 import java.util.Date;
 import java.util.Iterator;
@@ -220,16 +222,17 @@ public class CryptoUtils {
 		String res = null;
 		try {
 
-			Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding", "BC");
-			SecretKeySpec key  = generatePrivateKey(password);
+			//Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+			// AlgorithmParameters params = cipher.getParameters();
+			//byte [] ivBytes = params.getParameterSpec(IvParameterSpec.class).getIV();
+			Cipher cipher = Cipher.getInstance("AES");
+			SecretKeySpec key  = generateAESKey(password);
+			//cipher.init(Cipher.ENCRYPT_MODE, key, new IvParameterSpec(ivBytes));
 			cipher.init(Cipher.ENCRYPT_MODE, key);
+
 			res = Base64.getEncoder().encodeToString(cipher.doFinal(value.getBytes()));
 
-
-
 		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		} catch (NoSuchProviderException e) {
 			e.printStackTrace();
 		} catch (NoSuchPaddingException e) {
 			e.printStackTrace();
@@ -252,8 +255,8 @@ public class CryptoUtils {
 	public static String decrypt(String password, String value){
 		String res = null;
 		try {
-			Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding", "BC");
-			SecretKeySpec key = generatePrivateKey(password);
+			Cipher cipher = Cipher.getInstance("AES");
+			SecretKeySpec key = generateAESKey(password);
 			cipher.init(Cipher.DECRYPT_MODE, key);
 			res = new String(cipher.doFinal(Base64.getDecoder().decode(value)));
 		} catch (InvalidKeyException e) {
@@ -261,8 +264,6 @@ public class CryptoUtils {
 		} catch (NoSuchPaddingException e) {
 			e.printStackTrace();
 		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		} catch (NoSuchProviderException e) {
 			e.printStackTrace();
 		} catch (BadPaddingException e) {
 			e.printStackTrace();
@@ -278,11 +279,17 @@ public class CryptoUtils {
 	 * @param password mot de passe local de l'utilisateur
 	 * @return
 	 */
-	private static SecretKeySpec generatePrivateKey(String password){
+	private static SecretKeySpec generateAESKey(String password){
 		SecretKeySpec key = null;
-		 byte[] stringkey = new byte[]{'t','t', 't', 't', 't', 't', 't', 't','t','t', 't', 't', 't', 't', 't', 't'};
+		MessageDigest digest = null;
+		try {
+			digest = MessageDigest.getInstance("SHA-256");
+			byte[] passwordHash = digest.digest(password.getBytes(StandardCharsets.UTF_8));
+			key = new SecretKeySpec(passwordHash, "AES");
 
-		key = new SecretKeySpec(stringkey, "AES/CBC/PKCS5Padding");
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
 		return key;
 	}
 
