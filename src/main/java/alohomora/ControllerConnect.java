@@ -7,6 +7,7 @@ import org.bouncycastle.openpgp.PGPException;
 import org.bouncycastle.openpgp.PGPPrivateKey;
 import org.bouncycastle.openpgp.PGPSecretKey;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.*;
 
@@ -20,6 +21,7 @@ public class ControllerConnect {
 
 		try {
 			try {
+
 				CryptoUtils.generatePGPKey(pass,"e");
 				CryptoUtils.signedMessage("test", pass);
 			} catch (PGPException e) {

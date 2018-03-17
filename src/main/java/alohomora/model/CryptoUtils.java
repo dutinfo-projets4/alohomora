@@ -1,20 +1,19 @@
 package alohomora.model;
 
 
+import org.bouncycastle.bcpg.ArmoredOutputStream;
+import org.bouncycastle.bcpg.BCPGOutputStream;
 import org.bouncycastle.openpgp.*;
 
 import javax.crypto.*;
-import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.security.*;
-import java.security.spec.InvalidKeySpecException;
 import java.util.Base64;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.Random;
 
 public class CryptoUtils {
 	/**
@@ -23,12 +22,13 @@ public class CryptoUtils {
 	 * @throws NoSuchProviderException
 	 */
 	public static void  generatePGPKey(char [] passPhrase,String id) throws NoSuchProviderException, PGPException, IOException {
+
 		Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
 		PGPKeyPair rsaKeyPair = null;
 		KeyPair keyPair = null;
 		//génerer un couple clef publique privée
 		try {
-			keyPair = generateDSAKeyPair(4096);
+			keyPair = generateRSAKeyPair(4096);
 		} catch (NoSuchProviderException e) {
 			e.printStackTrace();
 		}
@@ -42,13 +42,54 @@ public class CryptoUtils {
 
 		PGPKeyRingGenerator keyRingGen = null;
 		try {
-			keyRingGen = new PGPKeyRingGenerator(PGPSignature.POSITIVE_CERTIFICATION, rsaKeyPair,id+"<"+id+"@"+getDomain()+">", PGPEncryptedData.AES_256, passPhrase,false, null, null, secureRamdom.getInstanceStrong(), "BC");
+			keyRingGen = new PGPKeyRingGenerator(PGPSignature.POSITIVE_CERTIFICATION, rsaKeyPair," " + id + " <"+id+"@"+getDomain()+">", PGPEncryptedData.AES_256, passPhrase,false, null, null, secureRamdom.getInstanceStrong(), "BC");
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 		}
 
-		write(Base64.getEncoder().encodeToString(keyRingGen.generateSecretKeyRing().getEncoded()).getBytes(),"secret");
-		write(Base64.getEncoder().encodeToString(keyRingGen.generatePublicKeyRing().getEncoded()).getBytes(),"public");
+		String [] armorKeyPair = armorKeyPair(keyRingGen);
+
+		write(armorKeyPair[1].getBytes(), "public.asc");
+		write(armorKeyPair[0].getBytes(), "secret.asc");
+
+
+	}
+
+	/**
+	 * renvoie un tableau de clef pair de String au format openPGP, GPG en armure (armor)
+	 * [0] : clef privée, [1] : clef public
+	 * @param keyRingGenerator le keyring
+	 * @return [] String
+	 */
+	public static String [] armorKeyPair(PGPKeyRingGenerator keyRingGenerator){
+		String secret = null;
+		String publi = null;
+		ByteArrayOutputStream secretOutByteArray = new ByteArrayOutputStream();
+		ByteArrayOutputStream publicOutByteArray = new ByteArrayOutputStream();
+		ArmoredOutputStream publicOutputArmor = new ArmoredOutputStream(publicOutByteArray);
+		ArmoredOutputStream secretOutputArmor = new ArmoredOutputStream(secretOutByteArray);
+
+		try {
+			secretOutputArmor.write(keyRingGenerator.generateSecretKeyRing().getEncoded());
+			secretOutputArmor.flush();
+			secretOutputArmor.close();
+			publicOutputArmor.write(keyRingGenerator.generatePublicKeyRing().getEncoded());
+			publicOutputArmor.flush();
+			publicOutputArmor.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		try {
+
+			secret = new String(secretOutByteArray.toByteArray(), "UTF-8");
+			publi = new String(publicOutByteArray.toByteArray(), "UTF-8");
+
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+
+		return  new String[]{secret, publi};
 	}
 
 	/**
@@ -56,7 +97,7 @@ public class CryptoUtils {
 	 * @return Couple de clef privée clef publique
 	 * @throws NoSuchProviderException
 	 */
-	private static KeyPair generateDSAKeyPair(int sizeKey) throws NoSuchProviderException {
+	private static KeyPair generateRSAKeyPair(int sizeKey) throws NoSuchProviderException {
 		KeyPair keyPair = null;
 		try {
 			KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA","BC");
@@ -70,30 +111,9 @@ public class CryptoUtils {
 		return keyPair;
 	}
 
-	/**
-	 * Sauvegarde la clef privée dans un fichier
-	 * @param pv clef privée
-	 * @param name nom du fichier de sauvegarde
-	 * @throws IOException
-	 */
-	public static void saveSecretKey(PrivateKey pv, String name) throws IOException {
-		byte[] key = pv.getEncoded();
-		write(key, name);
-	}
 
 	/**
-	 * Sauvegarde la clef public dans un fichier
-	 * @param pk clef privée
-	 * @param name nom du fichier de sauvegarde
-	 * @throws IOException
-	 */
-	public static void savePubKey(PublicKey pk, String name) throws IOException {
-		byte[] key = pk.getEncoded();
-		write(key, name);
-	}
-
-	/**
-	 * Permet décrire sur la machine (Dans ces fichiers j'ai pas les mots qui me viennent)
+	 * Permet d'écrire sur la machine (Dans ces fichiers j'ai pas les mots qui me viennent)
 	 * @param key
 	 * @param name
 	 * @throws IOException
@@ -130,14 +150,22 @@ public class CryptoUtils {
 	public static String signedMessage(String message, char [] pass){
 		String signedMessage = null;
 		try{
-			PGPSecretKey secretKey = CryptoUtils.readSecretKey("secret");
+			PGPSecretKey secretKey = CryptoUtils.readSecretKey("secret.asc");
 			PGPPrivateKey pgpPrivKey = secretKey.extractPrivateKey(pass, "BC");
 			Signature messageS = Signature.getInstance("SHA256withRSA", "BC");
 			messageS.initSign(pgpPrivKey.getKey());
 			messageS.update(message.getBytes("UTF-8"));
 			byte [] messagesSigned = messageS.sign();
+
 			System.out.print(verifymessageSignature(message,messagesSigned));
 			System.out.println(Base64.getEncoder().encodeToString(messagesSigned));
+			ByteArrayOutputStream signedOutByteArray = new ByteArrayOutputStream();
+			ArmoredOutputStream signedOutputArmor = new ArmoredOutputStream(signedOutByteArray);
+			signedOutputArmor.write(messagesSigned);
+			signedOutputArmor.flush();
+			signedOutputArmor.close();
+
+			write(signedOutByteArray.toByteArray(),"signed.asc");
 		} catch (InvalidKeyException e) {
 			e.printStackTrace();
 		} catch (PGPException e) {
@@ -164,7 +192,7 @@ public class CryptoUtils {
 		boolean b = false;
 		try {
 			check = Signature.getInstance("SHA256withRSA", "BC");
-			check.initVerify(readPublicKey("public").getKey("BC"));
+			check.initVerify(readPublicKey("public.asc").getKey("BC"));
 			check.update(message.getBytes("UTF-8"));
 			b = check.verify(signature);
 		} catch (InvalidKeyException e) {
@@ -192,8 +220,8 @@ public class CryptoUtils {
 		String res = null;
 		try {
 
-			Cipher cipher = Cipher.getInstance("AES", "BC");
-			 SecretKeySpec key  = generatePrivateKey(password);
+			Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding", "BC");
+			SecretKeySpec key  = generatePrivateKey(password);
 			cipher.init(Cipher.ENCRYPT_MODE, key);
 			res = Base64.getEncoder().encodeToString(cipher.doFinal(value.getBytes()));
 
@@ -224,7 +252,7 @@ public class CryptoUtils {
 	public static String decrypt(String password, String value){
 		String res = null;
 		try {
-			Cipher cipher = Cipher.getInstance("AES", "BC");
+			Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding", "BC");
 			SecretKeySpec key = generatePrivateKey(password);
 			cipher.init(Cipher.DECRYPT_MODE, key);
 			res = new String(cipher.doFinal(Base64.getDecoder().decode(value)));
@@ -252,16 +280,9 @@ public class CryptoUtils {
 	 */
 	private static SecretKeySpec generatePrivateKey(String password){
 		SecretKeySpec key = null;
-		try {
-			PBEKeySpec pbeKeySpec = new PBEKeySpec(password.toCharArray(),password.getBytes(), 50 , 256);
-			 SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("PBEWithSHA256And256BitAES-CBC-BC");
-			 key = new SecretKeySpec(keyFactory.generateSecret(pbeKeySpec).getEncoded(), "AES");
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		} catch (InvalidKeySpecException e) {
-			e.printStackTrace();
-		}
+		 byte[] stringkey = new byte[]{'t','t', 't', 't', 't', 't', 't', 't','t','t', 't', 't', 't', 't', 't', 't'};
 
+		key = new SecretKeySpec(stringkey, "AES/CBC/PKCS5Padding");
 		return key;
 	}
 
