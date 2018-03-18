@@ -92,7 +92,6 @@ public class RSAObject {
 		sign.update(message.getBytes());
 
 		return Base64.getEncoder().encodeToString(sign.sign());
-
 	}
 
 	/**

@@ -9,6 +9,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
+import java.util.Base64;
 
 public class ControllerConnect {
 
@@ -24,12 +25,12 @@ public class ControllerConnect {
 			String msg = "Toto va a la plage";
 			String signature = this.obj.sign(msg);
 
-			FileOutputStream fos = new FileOutputStream("msg.txt");
-			fos.write(msg.getBytes());
+			FileOutputStream fos = new FileOutputStream("msg.sha256");
+			fos.write(signature.getBytes());
 			fos.close();
 
-			fos = new FileOutputStream("msg.sha256");
-			fos.write(signature.getBytes());
+			fos = new FileOutputStream("msg.txt");
+			fos.write(msg.getBytes());
 			fos.close();
 
 			fos = new FileOutputStream("key.pub");
