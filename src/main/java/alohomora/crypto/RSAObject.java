@@ -83,7 +83,7 @@ public class RSAObject {
 	 * Signs the message with the private key
 	 * Let's the server check that we are the one who sent it
 	 */
-	public byte[] sign(String message) throws IllegalArgumentException, NoSuchAlgorithmException, InvalidKeyException, SignatureException {
+	public String sign(String message) throws IllegalArgumentException, NoSuchAlgorithmException, InvalidKeyException, SignatureException {
 		if (message.isEmpty()) throw new IllegalArgumentException();
 
 		Signature sign = Signature.getInstance("SHA512withRSA");
@@ -91,7 +91,7 @@ public class RSAObject {
 
 		sign.update(message.getBytes());
 
-		return sign.sign();
+		return Base64.getEncoder().encodeToString(sign.sign());
 
 	}
 

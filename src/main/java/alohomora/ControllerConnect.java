@@ -22,14 +22,14 @@ public class ControllerConnect {
 
 		try {
 			String msg = "Toto va a la plage";
-			byte[] signature = this.obj.sign(msg);
+			String signature = this.obj.sign(msg);
 
 			FileOutputStream fos = new FileOutputStream("msg.txt");
 			fos.write(msg.getBytes());
 			fos.close();
 
 			fos = new FileOutputStream("msg.sha256");
-			fos.write(signature);
+			fos.write(signature.getBytes());
 			fos.close();
 
 			fos = new FileOutputStream("key.pub");
