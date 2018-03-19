@@ -1,6 +1,4 @@
-package alohomora;
-
-import alohomora.model.Config;
+package fr.alohomora;
 
 import java.io.File;
 

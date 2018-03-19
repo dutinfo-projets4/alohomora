@@ -1,7 +1,4 @@
-package alohomora.model.apiservice;
-
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+package fr.alohomora.model;
 
 /**
  * Alohomora Password Manager
@@ -21,19 +18,15 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  **/
-public class Api {
-	private Retrofit retrofit;
-	private AlohomoraService alohomoraService;
+public class Challenge {
+	private int id;
+	private String challenge;
 
-	public Api() {
-		this.retrofit = new Retrofit.Builder()
-				.baseUrl("https://alohomora.pw/api/")
-				.addConverterFactory(GsonConverterFactory.create())
-				.build();
-		this.alohomoraService = retrofit.create(AlohomoraService.class);
+	public int getID() {
+		return id;
 	}
 
-	public AlohomoraService getAlohomoraService() {
-		return this.alohomoraService;
+	public String getChallenge() {
+		return challenge;
 	}
 }

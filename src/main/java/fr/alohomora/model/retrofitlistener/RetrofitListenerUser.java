@@ -1,4 +1,6 @@
-package alohomora.model;
+package fr.alohomora.model.retrofitlistener;
+
+import fr.alohomora.model.User;
 
 /**
  * Alohomora Password Manager
@@ -18,38 +20,8 @@ package alohomora.model;
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  **/
-public class Config {
-	private int id;
-	private String name;
-	private String value;
+public interface RetrofitListenerUser {
+	void onUserLoad(User user);
 
-	public Config(int id, String name, String value) {
-		this.id = id;
-		this.name = name;
-		this.value = value;
-	}
-
-	public int getID() {
-		return this.id;
-	}
-
-	public void setID(int id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getValue() {
-		return value;
-	}
-
-	public void setValue(String value) {
-		this.value = value;
-	}
+	void error(String msg);
 }

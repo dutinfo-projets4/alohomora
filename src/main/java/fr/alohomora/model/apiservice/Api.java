@@ -1,12 +1,7 @@
-package alohomora.model.apiservice;
+package fr.alohomora.model.apiservice;
 
-import alohomora.model.Challenge;
-import alohomora.model.User;
-import retrofit2.Call;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.GET;
-import retrofit2.http.POST;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Alohomora Password Manager
@@ -26,15 +21,19 @@ import retrofit2.http.POST;
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  **/
-public interface AlohomoraService {
-	@FormUrlEncoded
-	@POST("api/users")
-	Call<User> ChallengeConnect(@Field("passcode") String passcode,
-								@Field("challenge") int challenge,
-								@Field("publickey") String publickey,
-								@Field("machine_name") String machine_name);
+public class Api {
+	private Retrofit retrofit;
+	private AlohomoraService alohomoraService;
 
-	@GET("api/users")
-	Call<Challenge> getChallenge();
+	public Api() {
+		this.retrofit = new Retrofit.Builder()
+				.baseUrl("https://alohomora.pw/api/")
+				.addConverterFactory(GsonConverterFactory.create())
+				.build();
+		this.alohomoraService = retrofit.create(AlohomoraService.class);
+	}
 
+	public AlohomoraService getAlohomoraService() {
+		return this.alohomoraService;
+	}
 }

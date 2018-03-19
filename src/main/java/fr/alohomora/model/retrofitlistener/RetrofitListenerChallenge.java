@@ -1,6 +1,6 @@
-package alohomora.model;
+package fr.alohomora.model.retrofitlistener;
 
-import java.util.ArrayList;
+import fr.alohomora.model.Challenge;
 
 /**
  * Alohomora Password Manager
@@ -20,20 +20,8 @@ import java.util.ArrayList;
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  **/
-public class Data {
-	private ArrayList<Config> config;
-	private ArrayList<Element> elements;
-	private ArrayList<Group> groups;
+public interface RetrofitListenerChallenge {
+	void onChallengeLoad(Challenge challenge);
 
-	public ArrayList<Config> getConfig() {
-		return config;
-	}
-
-	public ArrayList<Element> getElements() {
-		return elements;
-	}
-
-	public ArrayList<Group> getGroups() {
-		return groups;
-	}
+	void error(String msg);
 }

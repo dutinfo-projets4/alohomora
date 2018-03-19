@@ -1,4 +1,4 @@
-package alohomora;
+package fr.alohomora;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

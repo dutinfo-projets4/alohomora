@@ -1,6 +1,12 @@
-package alohomora.model.retrofitlistener;
+package fr.alohomora.model.apiservice;
 
-import alohomora.model.Challenge;
+import fr.alohomora.model.Challenge;
+import fr.alohomora.model.User;
+import retrofit2.Call;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
+import retrofit2.http.POST;
 
 /**
  * Alohomora Password Manager
@@ -20,8 +26,15 @@ import alohomora.model.Challenge;
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  **/
-public interface RetrofitListenerChallenge {
-	void onChallengeLoad(Challenge challenge);
+public interface AlohomoraService {
+	@FormUrlEncoded
+	@POST("api/users")
+	Call<User> ChallengeConnect(@Field("passcode") String passcode,
+								@Field("challenge") int challenge,
+								@Field("publickey") String publickey,
+								@Field("machine_name") String machine_name);
 
-	void error(String msg);
+	@GET("api/users")
+	Call<Challenge> getChallenge();
+
 }

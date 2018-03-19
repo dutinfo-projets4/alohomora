@@ -1,7 +1,7 @@
-package alohomora;
-import alohomora.crypto.RSAObject;
-import alohomora.model.Data;
-import alohomora.model.User;
+package fr.alohomora.controller;
+import fr.alohomora.crypto.RSAObject;
+import fr.alohomora.model.Data;
+import fr.alohomora.model.User;
 import javafx.fxml.FXML;
 
 import java.io.FileNotFoundException;
@@ -28,7 +28,7 @@ import java.security.spec.InvalidKeySpecException;
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  **/
-public class ControllerConnect {
+public class ConnectController {
 
 	private RSAObject obj;
 	private User user;

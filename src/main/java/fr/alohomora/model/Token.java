@@ -1,4 +1,4 @@
-package alohomora.model;
+package fr.alohomora.model;
 
 /**
  * Alohomora Password Manager
@@ -18,15 +18,59 @@ package alohomora.model;
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  **/
-public class Challenge {
+public class Token {
 	private int id;
-	private String challenge;
+	private String name;
+	private String ip;
+	private int loginTS;
+	private int lastUpdateTS;
+
+	public Token(int id, String name, String ip, int loginTS, int lastUpdateTS) {
+
+		this.id = id;
+		this.name = name;
+		this.ip = ip;
+		this.loginTS = loginTS;
+		this.lastUpdateTS = lastUpdateTS;
+	}
 
 	public int getID() {
 		return id;
 	}
 
-	public String getChallenge() {
-		return challenge;
+	public void setID(int id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getIp() {
+		return ip;
+	}
+
+	public void setIp(String ip) {
+		this.ip = ip;
+	}
+
+	public int getLoginTS() {
+		return loginTS;
+	}
+
+	public void setLoginTS(int loginTS) {
+		this.loginTS = loginTS;
+	}
+
+	public int getLastUpdateTS() {
+		return lastUpdateTS;
+	}
+
+	public void setLastUpdateTS(int lastUpdateTS) {
+		this.lastUpdateTS = lastUpdateTS;
 	}
 }

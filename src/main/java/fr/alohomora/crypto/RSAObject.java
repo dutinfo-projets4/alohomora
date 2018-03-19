@@ -1,4 +1,4 @@
-package alohomora.crypto;
+package fr.alohomora.crypto;
 
 import alohomora.Configuration;
 
