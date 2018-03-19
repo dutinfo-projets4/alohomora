@@ -2,8 +2,12 @@ package fr.alohomora.controller;
 
 import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeView;
 import javafx.scene.layout.HBox;
 import javafx.scene.input.MouseEvent;
+
+import java.util.ArrayList;
 
 /**
  * Alohomora Password Manager
@@ -31,8 +35,26 @@ public class InterfaceController {
 	private HBox allElements;
 
 	@FXML
-	public void initialize() {
+	private TreeView groups;
 
+	@FXML
+	public void initialize() {
+		TreeItem<String> root = new TreeItem<>("Root");
+		root.setExpanded(true);
+
+		TreeItem<String> item = new TreeItem<>("Item");
+		root.getChildren().add(item);
+
+		TreeItem<String> item2 = new TreeItem<>("Item");
+		root.getChildren().add(item2);
+
+		TreeItem<String> grp= new TreeItem<>("Groupe");
+		grp.setExpanded(true);
+		TreeItem<String> subgrp = new TreeItem<>("Item");
+		grp.getChildren().add(subgrp);
+		root.getChildren().add(grp);
+
+		groups.setRoot(root);
 	}
 
 	@FXML

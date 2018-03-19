@@ -15,10 +15,18 @@
 
 }
 .tab{
-    -fx-background-color: #1A2546;
+    -fx-background-color: #101B3F;
     -fx-background-insets: 0 3 2 0;
     -fx-pref-height: 35;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
 }
+
+.tab:selected {
+    -fx-background-color: #1A2546;
+
+}
+
 .tab .tab-label {
     -fx-text-alignment: center;
     -fx-font-family: "Hack NF";
@@ -31,13 +39,9 @@
     -fx-border-width: 2 0 0 0;
 }
 .centerHbox{
-
    -fx-background-color: #1A2546;
 }
-.vbox{
-    -fx-border-color: transparent #2C375A transparent transparent;
-    -fx-border-width: 0 2 0 0;
-}
+
 .signOut{
     -fx-font-family: "Hack NF";
     -fx-text-alignment: center;
@@ -63,11 +67,42 @@
     -fx-text-fill: #06a75b;
 }
 
-.allElements:pressed{
-    -fx-background-color: #2C375A;
-    -fx-border-color: transparent #06a75b transparent transparent;
-    -fx-border-width: 0 5 0 0;
-
-
+.allElements {
+    -fx-border-color: transparent transparent #2C375A transparent;
+    -fx-border-width: 0 0 2 0;
 }
 
+.allElements:pressed{
+    -fx-background-color: #2C375A;
+    -fx-border-color: transparent #06a75b #2C375A transparent;
+    -fx-border-width: 0 5 2 0;
+}
+
+.split-pane:horizontal > .split-pane-divider {
+    -fx-background-color: #2C375A;
+    -fx-padding: 0 2px 0 2px;
+}
+
+.split-pane:vertical > .split-pane-divider {
+    -fx-background-color: #2C375A;
+    -fx-padding: 0 2px 0 2px;
+}
+
+/* Focus color killer */
+.groups {
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+    -fx-background-color: transparent;
+}
+
+.groups .tree-cell {
+    -fx-background-color: #1A2546;
+    -fx-text-fill: #06A75b;
+    -fx-font-weight: bold;
+}
+
+.groups .tree-cell:selected {
+    -fx-background-color: #2C375A;
+    -fx-border-color: transparent #06a75b;
+    -fx-border-width: 0 5 0 0;
+}
