@@ -1,6 +1,6 @@
 package fr.alohomora.crypto;
 
-import alohomora.Configuration;
+import fr.alohomora.Configuration;
 
 import java.io.File;
 import java.io.FileNotFoundException;
