@@ -1,8 +1,8 @@
-package alohomora.model;
+package fr.alohomora.model;
 
-import alohomora.model.retrofitlistener.RetrofitListenerChallenge;
-import alohomora.model.retrofitlistener.RetrofitListenerUser;
-import alohomora.model.apiservice.Api;
+import fr.alohomora.model.retrofitlistener.RetrofitListenerChallenge;
+import fr.alohomora.model.retrofitlistener.RetrofitListenerUser;
+import fr.alohomora.model.apiservice.Api;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

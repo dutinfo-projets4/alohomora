@@ -1,6 +1,4 @@
-package alohomora.model;
-
-import java.util.ArrayList;
+package fr.alohomora.model;
 
 /**
  * Alohomora Password Manager
@@ -20,20 +18,15 @@ import java.util.ArrayList;
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  **/
-public class Data {
-	private ArrayList<Config> config;
-	private ArrayList<Element> elements;
-	private ArrayList<Group> groups;
+public class Challenge {
+	private int id;
+	private String challenge;
 
-	public ArrayList<Config> getConfig() {
-		return config;
+	public int getID() {
+		return id;
 	}
 
-	public ArrayList<Element> getElements() {
-		return elements;
-	}
-
-	public ArrayList<Group> getGroups() {
-		return groups;
+	public String getChallenge() {
+		return challenge;
 	}
 }

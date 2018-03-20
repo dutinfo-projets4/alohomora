@@ -1,36 +1,39 @@
-.boxes{
-	/*-fx-font-family: "Hack Bold Nerd Font Complete Mono Windows Compatible";*/
-	-fx-font-family: "Hack NF";
-	-fx-background-color: #101B3F;
-	-fx-border-color: #016937;
-	-fx-border-width: 2;
-	-fx-text-fill: #014F29;
+.boxes {
+    /*-fx-font-family: "Hack Bold Nerd Font Complete Mono Windows Compatible";*/
+    -fx-font-family: "Hack NF";
+    -fx-background-color: #101B3F;
+    -fx-border-color: #016937;
+    -fx-border-width: 2;
+    -fx-text-fill: #014F29;
 }
 
 .textfield {
-	-fx-prompt-text-fill: #014F29;
+    -fx-prompt-text-fill: #014F29;
 }
 
-.textfield_lab{
-	-fx-border-color: #016937 transparent #016937 #016937;
-	-fx-font-size: 20px;
+.textfield_lab {
+    -fx-border-color: #016937 transparent #016937 #016937;
+    -fx-font-size: 20px;
 }
 
 .labels {
-	-fx-font-family: "Hack NF";
-	-fx-text-fill: #016937;
-	-fx-font-size: 15px;
+    -fx-font-family: "Hack NF";
+    -fx-text-fill: #016937;
+    -fx-font-size: 15px;
 }
 
 .button {
-	-fx-font-size: 14px;
-	-fx-font-weight: bold;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #014F29;
+    -fx-background-color: #0C1530;
 }
 
 .button:hover {
-	-fx-background-color: #1A2546;
+    -fx-background-color: #0C1537;
+    -fx-text-fill: #016937;
 }
 
 .button:pressed {
-	-fx-background-color: #0C1530;
+    -fx-background-color: #0C1530;
 }

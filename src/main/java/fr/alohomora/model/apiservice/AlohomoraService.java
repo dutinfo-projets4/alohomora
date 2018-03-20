@@ -1,4 +1,12 @@
-package alohomora.model;
+package fr.alohomora.model.apiservice;
+
+import fr.alohomora.model.Challenge;
+import fr.alohomora.model.User;
+import retrofit2.Call;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
+import retrofit2.http.POST;
 
 /**
  * Alohomora Password Manager
@@ -18,38 +26,15 @@ package alohomora.model;
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  **/
-public class Config {
-	private int id;
-	private String name;
-	private String value;
+public interface AlohomoraService {
+	@FormUrlEncoded
+	@POST("/users")
+	Call<User> ChallengeConnect(@Field("passcode") String passcode,
+	                            @Field("challenge") int challenge,
+	                            @Field("publickey") String publickey,
+	                            @Field("machine_name") String machine_name);
 
-	public Config(int id, String name, String value) {
-		this.id = id;
-		this.name = name;
-		this.value = value;
-	}
+	@GET("/users")
+	Call<Challenge> getChallenge();
 
-	public int getID() {
-		return this.id;
-	}
-
-	public void setID(int id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getValue() {
-		return value;
-	}
-
-	public void setValue(String value) {
-		this.value = value;
-	}
 }

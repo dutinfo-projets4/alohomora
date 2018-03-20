@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="432.0" minWidth="768.0" prefHeight="432.0" prefWidth="768.0" styleClass="login_middle_part" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="alohomora.ControllerConnect">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="432.0" minWidth="768.0" prefHeight="432.0" prefWidth="768.0" styleClass="login_middle_part" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.alohomora.controller.ConnectController">
    <top>
       <HBox alignment="CENTER_LEFT" prefHeight="40.0" styleClass="login_upper_bar" BorderPane.alignment="CENTER">
          <children>

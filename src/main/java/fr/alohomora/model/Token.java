@@ -1,4 +1,4 @@
-package alohomora.model;
+package fr.alohomora.model;
 
 /**
  * Alohomora Password Manager

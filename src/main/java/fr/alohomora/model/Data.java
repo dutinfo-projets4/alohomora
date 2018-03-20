@@ -1,8 +1,6 @@
-package alohomora.model.apiservice;
+package fr.alohomora.model;
 
-import okhttp3.OkHttpClient;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+import java.util.ArrayList;
 
 /**
  * Alohomora Password Manager
@@ -22,27 +20,20 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  **/
-public class Api {
-	private Retrofit retrofit;
-	private AlohomoraService alohomoraService;
-	private OkHttpClient client;
+public class Data {
+	private ArrayList<Config> config;
+	private ArrayList<Element> elements;
+	private ArrayList<Group> groups;
 
-	public Api() {
-
-		this.client = new OkHttpClient.Builder()
-				.addInterceptor(new InterceptorHeader())
-				.build();
-
-		this.retrofit = new Retrofit.Builder()
-				.baseUrl("http://127.0.0.1:8000")
-				.addConverterFactory(GsonConverterFactory.create())
-				.client(client)
-				.build();
-
-		this.alohomoraService = retrofit.create(AlohomoraService.class);
+	public ArrayList<Config> getConfig() {
+		return config;
 	}
 
-	public AlohomoraService getAlohomoraService() {
-		return this.alohomoraService;
+	public ArrayList<Element> getElements() {
+		return elements;
+	}
+
+	public ArrayList<Group> getGroups() {
+		return groups;
 	}
 }

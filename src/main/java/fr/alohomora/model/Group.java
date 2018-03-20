@@ -1,4 +1,4 @@
-package alohomora.model;
+package fr.alohomora.model;
 
 import java.util.ArrayList;
 

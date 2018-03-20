@@ -1,9 +1,6 @@
-package alohomora;
+package fr.alohomora.model;
 
-import javafx.css.PseudoClass;
-import javafx.fxml.FXML;
-import javafx.scene.layout.HBox;
-import javafx.scene.input.MouseEvent;
+import java.util.ArrayList;
 
 /**
  * Alohomora Password Manager
@@ -23,28 +20,32 @@ import javafx.scene.input.MouseEvent;
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  **/
-public class ControllerInterface {
-	private boolean allElementIsActive = true;
-	@FXML
-	private HBox allElements;
+public class Element {
+	private int id;
+	private int parent;
+	private String content;
+	private ArrayList<Field> fields;
 
-	@FXML
-	public void initialize() {
-
+	public int getID() {
+		return this.id;
 	}
 
-	@FXML
-	public void onClickAllElement(MouseEvent e) {
-
-
-		if (this.allElementIsActive) {
-			this.allElements.pseudoClassStateChanged(PseudoClass.getPseudoClass("pressed"), true);
-			this.allElementIsActive = false;
-		} else {
-			this.allElements.pseudoClassStateChanged(PseudoClass.getPseudoClass("pressed"), false);
-			this.allElementIsActive = true;
-		}
-
+	public int getParent() {
+		return this.parent;
 	}
 
+	public String getContent() {
+		return this.content;
+	}
+
+	public Field getField(int index) {
+		return this.fields.get(index);
+	}
+
+	public Element(int id, int parent, String content, ArrayList<Field> fields) {
+		this.id = id;
+		this.parent = parent;
+		this.content = content;
+		this.fields = fields;
+	}
 }

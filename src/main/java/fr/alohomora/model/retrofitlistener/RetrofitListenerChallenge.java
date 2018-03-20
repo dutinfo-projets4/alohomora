@@ -1,6 +1,6 @@
-package alohomora.model.retrofitlistener;
+package fr.alohomora.model.retrofitlistener;
 
-import alohomora.model.User;
+import fr.alohomora.model.Challenge;
 
 /**
  * Alohomora Password Manager
@@ -20,8 +20,8 @@ import alohomora.model.User;
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  **/
-public interface RetrofitListenerUser {
-	void onUserLoad(User user);
+public interface RetrofitListenerChallenge {
+	void onChallengeLoad(Challenge challenge);
 
 	void error(String msg);
 }
