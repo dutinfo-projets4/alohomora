@@ -1,5 +1,6 @@
 package alohomora.model.apiservice;
 
+import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -24,12 +25,20 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class Api {
 	private Retrofit retrofit;
 	private AlohomoraService alohomoraService;
+	private OkHttpClient client;
 
 	public Api() {
-		this.retrofit = new Retrofit.Builder()
-				.baseUrl("https://alohomora.pw/api/")
-				.addConverterFactory(GsonConverterFactory.create())
+
+		this.client = new OkHttpClient.Builder()
+				.addInterceptor(new InterceptorHeader())
 				.build();
+
+		this.retrofit = new Retrofit.Builder()
+				.baseUrl("http://127.0.0.1:8000")
+				.addConverterFactory(GsonConverterFactory.create())
+				.client(client)
+				.build();
+
 		this.alohomoraService = retrofit.create(AlohomoraService.class);
 	}
 

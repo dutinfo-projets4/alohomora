@@ -1,12 +1,17 @@
-package alohomora.model.apiservice;
-
 import alohomora.model.Challenge;
-import alohomora.model.User;
+import alohomora.model.apiservice.Api;
+
+import org.junit.Test;
 import retrofit2.Call;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.GET;
-import retrofit2.http.POST;
+import retrofit2.Response;
+
+import java.io.IOException;
+
+
+import static junit.framework.TestCase.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
+
 
 /**
  * Alohomora Password Manager
@@ -26,15 +31,22 @@ import retrofit2.http.POST;
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  **/
-public interface AlohomoraService {
-	@FormUrlEncoded
-	@POST("/users")
-	Call<User> ChallengeConnect(@Field("passcode") String passcode,
-	                            @Field("challenge") int challenge,
-	                            @Field("publickey") String publickey,
-	                            @Field("machine_name") String machine_name);
+public class UserTest {
 
-	@GET("/users")
-	Call<Challenge> getChallenge();
+	@Test
+	public void getChallenge() {
+
+		Api apiService = new Api();
+		Call<Challenge> call = apiService.getAlohomoraService().getChallenge();
+		try {
+			Response<Challenge> response = call.execute();
+			assertEquals(response.code(),200);
+		} catch (IOException e) {
+			fail(e.getMessage());
+		}
+
+
+	}
 
 }
+
