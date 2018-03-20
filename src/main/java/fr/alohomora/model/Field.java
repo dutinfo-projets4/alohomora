@@ -1,7 +1,5 @@
 package fr.alohomora.model;
 
-import java.util.ArrayList;
-
 /**
  * Alohomora Password Manager
  * Copyright (C) 2018 Team Alohomora
@@ -20,32 +18,29 @@ import java.util.ArrayList;
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  **/
-public class Element {
-	private int id;
-	private int parent;
-	private String content;
-	private ArrayList<Field> fields;
+public class Field {
 
-	public int getID() {
-		return this.id;
+	private String name;
+	private String value;
+	private boolean hidden;
+
+	public String getName(){
+		return name;
 	}
 
-	public int getParent() {
-		return this.parent;
+	public String getValue(){
+		return value;
 	}
 
-	public String getContent() {
-		return this.content;
+	public boolean getHidden(){
+		return hidden;
 	}
 
-	public Field getField(int index) {
-		return this.fields.get(index);
+	public Field(String name, String value, boolean hidden){
+		this.name = name;
+		this.value = value;
+		this.hidden = hidden;
+
 	}
 
-	public Element(int id, int parent, String content, ArrayList<Field> fields) {
-		this.id = id;
-		this.parent = parent;
-		this.content = content;
-		this.fields = fields;
-	}
 }

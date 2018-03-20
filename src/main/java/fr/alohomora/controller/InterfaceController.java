@@ -1,12 +1,22 @@
 package fr.alohomora.controller;
 
+import com.sun.javafx.collections.ElementObservableListDecorator;
+import fr.alohomora.model.Field;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.HBox;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.control.ListView;
+import fr.alohomora.model.Element;
+import javafx.util.Callback;
+
+import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
  * Alohomora Password Manager
@@ -58,8 +68,38 @@ public class InterfaceController {
 
 
 		sites.setEditable(true);
-		OservableList<String> items = FXCollections.observableArrayList("Website 1", "Website 2");
+		// for testing the content of the field which has to be a username under the website
+		ArrayList<Field> fields = new ArrayList<Field>();
+		Field f = new Field("username","ValueUsername",true);
+		fields.add(f);
+		ObservableList<Element> items = FXCollections.observableArrayList(new Element(0,0,"Site1", fields), new Element(1,0,"Site2", fields));
 		sites.setItems(items);
+
+		for (int index = 0 ; index < items.size() ; index++)
+		{
+		sites.setCellFactory(new Callback<ListView<Element>, ListCell<Element>>(){
+			@Override
+			public ListCell<Element> call(ListView<Element> list){
+				ListCell<Element> e = new ListCell<Element>(){
+					@Override
+					protected void updateItem(Element item, boolean empty) {
+						super.updateItem(item, empty);
+						if (item != null) {
+							setText(item.getContent());// get the name of the website
+							if (item.getField(0).getValue() != null ) {
+								item.getField(0).getValue();
+							}
+							else{
+								item.getField(0).getName();
+							}
+						} else {
+						}
+					}
+				};
+				return e;
+			}
+		});
+	}
 
 		groups.setRoot(root);
 	}
@@ -74,19 +114,19 @@ public class InterfaceController {
 			this.allElementIsActive = true;
 		}
 	}
-
-	@FXML
-	public void onClickAddItem(MouseEvent e){
-		Scanner scan = new Scanner(System.in);
-		string NewItem = scan.next();
-		sites.getItems().add(NewItem);
-	}
+// Fait planter l'application , doit ajouter un site
+// @FXML
+//	public void onClickAddItem(MouseEvent e){
+//		Scanner scan = new Scanner(System.in);
+//		String NewItem = scan.next();
+//		sites.getItems().add(NewItem);
+//	}
 
 	@FXML
 	public void onClickAddUsername(MouseEvent e){
-		Scanner scan = new Scanner(System.in);
-		string NewUsername = scan.next();
-		sites.getSelectedItem().setItems(NewUsername);
+//		Scanner scan = new Scanner(System.in);
+//		String NewUsername = scan.next();
+		//sites.getSelectionModel().setItems(NewUsername);
 
 	}
 }
