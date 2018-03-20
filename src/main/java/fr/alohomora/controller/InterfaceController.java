@@ -6,8 +6,7 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.HBox;
 import javafx.scene.input.MouseEvent;
-
-import java.util.ArrayList;
+import javafx.scene.control.ListView;
 
 /**
  * Alohomora Password Manager
@@ -38,6 +37,9 @@ public class InterfaceController {
 	private TreeView groups;
 
 	@FXML
+	private ListView sites;
+
+	@FXML
 	public void initialize() {
 		TreeItem<String> root = new TreeItem<>("Root");
 		root.setExpanded(true);
@@ -54,6 +56,11 @@ public class InterfaceController {
 		grp.getChildren().add(subgrp);
 		root.getChildren().add(grp);
 
+
+		sites.setEditable(true);
+		OservableList<String> items = FXCollections.observableArrayList("Website 1", "Website 2");
+		sites.setItems(items);
+
 		groups.setRoot(root);
 	}
 
@@ -68,4 +75,18 @@ public class InterfaceController {
 		}
 	}
 
+	@FXML
+	public void onClickAddItem(MouseEvent e){
+		Scanner scan = new Scanner(System.in);
+		string NewItem = scan.next();
+		sites.getItems().add(NewItem);
+	}
+
+	@FXML
+	public void onClickAddUsername(MouseEvent e){
+		Scanner scan = new Scanner(System.in);
+		string NewUsername = scan.next();
+		sites.getSelectedItem().setItems(NewUsername);
+
+	}
 }
