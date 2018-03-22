@@ -1,4 +1,4 @@
-package fr.alohomora.model;
+package fr.alohomora.crypto;
 
 /**
  * Alohomora Password Manager
@@ -18,27 +18,10 @@ package fr.alohomora.model;
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  **/
-public class Element {
+public class AESObject {
 
-	private int id;
-	private int parent;
-	private String content;
+	public AESObject(){
 
-	public int getID() {
-		return id;
 	}
 
-	public int getParent() {
-		return parent;
-	}
-
-	public String getContent() {
-		return content;
-	}
-
-	public Element(int id, int parent, String content) {
-		this.id = id;
-		this.parent = parent;
-		this.content = content;
-	}
 }
