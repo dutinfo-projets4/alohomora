@@ -103,12 +103,44 @@
 
 .groups .tree-cell:selected {
     -fx-background-color: #2C375A;
-    -fx-border-color: transparent #06a75b;
+    -fx-border-color: transparent #06A75B;
     -fx-border-width: 0 5 0 0;
 }
 
+.titlebox {
+    -fx-padding: 20;
+}
+
 .groupLabel {
-    -fx-text-fill: #06A75b;
+    -fx-text-fill: #06A75B;
     -fx-font-weight: bold;
     -fx-font-size: 20px;
+}
+
+.elementIcon {
+    -fx-padding: 0 10 0 0;
+}
+
+.elementLabel {
+    -fx-text-fill: #06A75B;
+    -fx-font-weight: bold;
+    -fx-font-size: 30px;
+}
+
+.elementFieldnames {
+    -fx-text-fill: #06A75B;
+    -fx-font-size: 13px;
+    -fx-padding: 0 0 0 20;
+}
+
+.elementField {
+    -fx-background-color: rgba(0, 0, 0, 0);
+    -fx-border-width: 0 0 2 0;
+    -fx-border-color: #016937;
+    -fx-text-fill: #016937;
+
+    /** Ugly hack */
+    -fx-padding: 20px;
+    -fx-border-insets: 20px;
+    -fx-background-insets: 20px;
 }

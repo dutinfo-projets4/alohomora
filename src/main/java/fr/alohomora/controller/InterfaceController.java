@@ -3,8 +3,10 @@ package fr.alohomora.controller;
 import com.sun.javafx.collections.ElementObservableListDecorator;
 import fr.alohomora.model.Field;
 import fr.alohomora.model.Group;
+import fr.alohomora.view.PanePassword;
 import fr.alohomora.view.TreeViewRenderer;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
@@ -46,15 +48,20 @@ public class InterfaceController {
 	private TreeView groups;
 
 	@FXML
-	private ListView sites;
+	private ListView<Element> sites;
 
 	@FXML
 	private SplitPane centerPanel;
+
+	private PanePassword passwordPanel;
 
 	@FXML
 	public void initialize() {
 		// Sets the cell renderer to the group tree view
 		//this.groups.setCellFactory(new TreeViewRenderer());
+
+
+		// -------------------------- TEMPORARY STUFF --------------------------
 
 		Group g = new Group(1, "Key file", "\uf108");
 		g.addGroup(new Group(1, "Réseaux sociaux", "\uf0ac"));
@@ -72,37 +79,40 @@ public class InterfaceController {
 
 		sites.setEditable(true);
 		// for testing the content of the field which has to be a username under the website
-		ArrayList<Field> fields = new ArrayList<Field>();
-		Field f = new Field("username","ValueUsername",true);
-		fields.add(f);
-		ObservableList<Element> items = FXCollections.observableArrayList(new Element(0,0,"Site1", fields), new Element(1,0,"Site2", fields));
+		ObservableList<Element> items = FXCollections.observableArrayList(new Element(0, groupWithSub,"Site1", "\uf270", "Toto", "Ansdfnz"), new Element(1, groupWithSub,"Site2", "\uf179", "Toto2", "tutututu2"));
 		sites.setItems(items);
 
-		for (int index = 0 ; index < items.size() ; index++)
-		{
-		sites.setCellFactory(new Callback<ListView<Element>, ListCell<Element>>(){
-			@Override
-			public ListCell<Element> call(ListView<Element> list){
-				ListCell<Element> e = new ListCell<Element>(){
-					@Override
-					protected void updateItem(Element item, boolean empty) {
-						super.updateItem(item, empty);
-						if (item != null) {
-							setText(item.getContent());// get the name of the website
-							if (item.getField(0).getValue() != null ) {
-								item.getField(0).getValue();
+		for (int index = 0; index < items.size(); index++) {
+			sites.setCellFactory(new Callback<ListView<Element>, ListCell<Element>>() {
+				@Override
+				public ListCell<Element> call(ListView<Element> list) {
+					ListCell<Element> e = new ListCell<Element>() {
+						@Override
+						protected void updateItem(Element item, boolean empty) {
+							super.updateItem(item, empty);
+							if (item != null) {
+								setText(item.getLabel());  // get the name of the website
+								/*if (item.getField(0).getValue() != null) {
+									item.getField(0).getValue();
+								} else {
+									item.getField(0).getName();
+								}*/
+							} else {
 							}
-							else{
-								item.getField(0).getName();
-							}
-						} else {
 						}
-					}
-				};
-				return e;
-			}
-		});
-	}
+					};
+					return e;
+				}
+			});
+		}
+
+		this.sites.getSelectionModel().select(0);
+
+		// -------------------------- DEFINITIVE STUFF --------------------------
+
+		this.passwordPanel = new PanePassword();
+		this.centerPanel.getItems().add(this.passwordPanel);
+		this.centerPanel.getDividers().get(0).setPosition(.2);
 	}
 
 	@FXML
@@ -116,21 +126,9 @@ public class InterfaceController {
 		}
 	}
 
-
-
-// Fait planter l'application , doit ajouter un site
-// @FXML
-//	public void onClickAddItem(MouseEvent e){
-//		Scanner scan = new Scanner(System.in);
-//		String NewItem = scan.next();
-//		sites.getItems().add(NewItem);
-//	}
-
 	@FXML
-	public void onClickAddUsername(MouseEvent e){
-//		Scanner scan = new Scanner(System.in);
-//		String NewUsername = scan.next();
-		//sites.getSelectionModel().setItems(NewUsername);
-
+	public void onSitesClick(MouseEvent e){
+		this.passwordPanel.update(this.sites.getSelectionModel().getSelectedItem());
 	}
+
 }

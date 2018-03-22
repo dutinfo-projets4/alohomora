@@ -24,5 +24,6 @@ public class ShowPassField extends PasswordField {
 
 	public ShowPassField(){
 		super();
+		this.getStyleClass().add("elementField");
 	}
 }

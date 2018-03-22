@@ -3,6 +3,7 @@ package fr.alohomora.view;
 import fr.alohomora.model.Element;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 /**
@@ -25,20 +26,50 @@ import javafx.scene.layout.VBox;
  **/
 public class PanePassword extends VBox {
 
+	private HBox titleBox;
 	private Label title;
 	private TextField username;
 	private ShowPassField password;
 
 	public PanePassword() {
-		this.title = new Label ();
+		this.titleBox = new HBox();
+		this.titleBox.getStyleClass().add("titlebox");
+
+		this.title = new Label();
+		this.title.getStyleClass().add("elementLabel");
+
 		this.username = new TextField();
+		this.username.getStyleClass().add("elementField");
+
 		this.password = new ShowPassField();
 
-		this.getChildren().addAll(this.title, this.username, this.password);
+		this.titleBox.getChildren().addAll(this.title);
+
+		this.getChildren().addAll(this.titleBox, genLabel("Username: "), this.username, genLabel("Password: "), this.password);
 
 	}
 
 	public void update(Element e){
+		if (e != null) {
+			if (this.titleBox.getChildren().size() == 2)
+				this.titleBox.getChildren().set(0, e.getIcon());
+			else
+				this.titleBox.getChildren().add(0, e.getIcon());
 
+			this.title.setText(e.getLabel());
+			this.username.setText(e.getUsername());
+			this.password.setText(e.getPassword());
+		} else {
+			this.title.setText("");
+			this.username.setText("");
+			this.password.setText("");
+		}
 	}
+
+	private Label genLabel(String text) {
+		Label lab = new Label(text);
+		lab.getStyleClass().add("elementFieldnames");
+		return lab;
+	}
+
 }

@@ -27,7 +27,7 @@ import java.io.IOException;
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  **/
 public class InterceptorHeader implements okhttp3.Interceptor {
-	private String[][] rootExcluded;
+	private String[][] routeExcluded;
 	private Request newRequest;
 	private Request request;
 
@@ -36,9 +36,9 @@ public class InterceptorHeader implements okhttp3.Interceptor {
 	 */
 	public InterceptorHeader() {
 		super();
-		this.rootExcluded = new String[][]{
-				{"users"},
-				{"GET", "POST", "PUT"}
+		this.routeExcluded = new String[][]{
+				{"users", "GET", "POST", "PUT"},
+				{"challenge", "GET"}
 		};
 	}
 
@@ -60,10 +60,13 @@ public class InterceptorHeader implements okhttp3.Interceptor {
 				.addHeader("User-Agent", "ALOHOMORA-DESKTOP")
 				.build();
 
-		//check root
-		for (int i = 0; i < this.rootExcluded.length; i++) {
-			if (url[3].equals(this.rootExcluded[0][0]) && method.equals(this.rootExcluded[i][0])) {
-				return chain.proceed(newRequest);
+		for (String[] route : this.routeExcluded) {
+			if (route[0].equalsIgnoreCase(url[3].toLowerCase())) {
+				for (int i = 1; i < route.length; ++i) {
+					if (route[i].equalsIgnoreCase(method)){
+						return chain.proceed(this.newRequest);
+					}
+				}
 			}
 		}
 

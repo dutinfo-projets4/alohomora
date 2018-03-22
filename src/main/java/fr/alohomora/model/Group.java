@@ -107,6 +107,7 @@ public class Group extends TreeItem {
 
 	public Node getIcon() {
 		if (this.icon.startsWith("data:image") && this.icon.split(";")[1].startsWith("base64")) {
+			// @TODO get this working
 			String ico = this.icon.split(",")[1];
 			return new ImageView(new Image(new ByteArrayInputStream(Base64.getDecoder().decode(ico))));
 		} else {
