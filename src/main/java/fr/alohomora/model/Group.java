@@ -1,5 +1,7 @@
 package fr.alohomora.model;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
@@ -72,10 +74,6 @@ public class Group extends TreeItem {
 		return content;
 	}
 
-	public ArrayList<Element> getElements() {
-		return this.elements;
-	}
-
 	// Wont work because group is already modified so it wont be in the array
 	public boolean updateGroup(Group group) {
 		// @TODO
@@ -103,6 +101,16 @@ public class Group extends TreeItem {
 
 	public boolean removeElement(Element elt) {
 		return this.elements.remove(elt);
+	}
+
+	public ObservableList<Element> getElements() {
+		ObservableList<Element> elts = FXCollections.observableArrayList();
+		elts.addAll(this.elements);
+		for (Object g : this.getChildren()) {
+			Group gpe = (Group)g;
+			elts.addAll(gpe.getElements());
+		}
+		return elts;
 	}
 
 	public Node getIcon() {

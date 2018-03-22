@@ -33,7 +33,7 @@
                                           </Label>
                                        </children>
                                     </HBox>
-                                    <TreeView fx:id="groups" prefHeight="200.0" prefWidth="200.0" styleClass="groups" VBox.vgrow="ALWAYS" />
+                                    <TreeView fx:id="groups" onMouseClicked="#onGroupClick" prefHeight="200.0" prefWidth="200.0" styleClass="groups" VBox.vgrow="ALWAYS" />
                                  </children>
                               </VBox>
                               <Label styleClass="button" text="">

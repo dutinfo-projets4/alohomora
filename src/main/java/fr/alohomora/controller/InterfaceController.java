@@ -48,7 +48,7 @@ public class InterfaceController {
 	private HBox allElements;
 
 	@FXML
-	private TreeView groups;
+	private TreeView<Group> groups;
 
 	@FXML
 	private ListView<Element> sites;
@@ -67,7 +67,11 @@ public class InterfaceController {
 		// -------------------------- TEMPORARY STUFF --------------------------
 
 		Group g = new Group(1, "Key file", "\uf108");
-		g.addGroup(new Group(1, "Réseaux sociaux", "\uf0ac"));
+		Group rs = new Group(1, "Réseaux sociaux", "\uf0ac");
+		g.addGroup(rs);
+		rs.addElement(new Element(0, rs, "Facebook", "\uf082", "toto", "toto"));
+		rs.addElement(new Element(1, rs, "Twitter", "\uf099", "toto", "toto"));
+		rs.addElement(new Element(2, rs, "Instagram", "\uf16d", "toto", "toto"));
 		g.addGroup(new Group(2, "Mails", "\uf0e0"));
 		g.addGroup(new Group(3, "Sites achat", "\uf155"));
 
@@ -80,16 +84,10 @@ public class InterfaceController {
 
 		this.groups.setRoot(g);
 
-		sites.setEditable(true);
-		// for testing the content of the field which has to be a username under the website
-		ObservableList<Element> items = FXCollections.observableArrayList(new Element(0, groupWithSub,"Site1", "\uf270", "Toto", "Ansdfnz"), new Element(1, groupWithSub,"Site2", "\uf179", "Toto2", "tutututu2"));
-		sites.setItems(items);
-
-		for (int index = 0; index < items.size(); index++) {
-			sites.setCellFactory(new Callback<ListView<Element>, ListCell<Element>>() {
-				@Override
-				public ListCell<Element> call(ListView<Element> list) {
-					ListCell<Element> newCell = new ListCell<Element>() {
+		sites.setCellFactory(new Callback<ListView<Element>, ListCell<Element>>() {
+			@Override
+			public ListCell<Element> call(ListView<Element> list) {
+				ListCell<Element> newCell = new ListCell<Element>() {
 						@Override
 						protected void updateItem(Element item, boolean empty) {
 							super.updateItem(item, empty);
@@ -109,14 +107,12 @@ public class InterfaceController {
 								Label username = new Label(item.getUsername());
 								grid.add(username, 1, 1);
 								username.getStyleClass().add("username");
-							} else {
 							}
 						}
 					};
-					return newCell;
-				}
-			});
-		}
+				return newCell;
+			}
+		});
 
 		//this.sites.getSelectionModel().select(0); // useless ?
 
@@ -136,6 +132,12 @@ public class InterfaceController {
 			this.allElements.pseudoClassStateChanged(PseudoClass.getPseudoClass("pressed"), false);
 			this.allElementIsActive = true;
 		}
+	}
+
+	@FXML
+	public void onGroupClick(MouseEvent e){
+		this.sites.getItems().clear();
+		this.sites.getItems().setAll(((Group) this.groups.getSelectionModel().getSelectedItem()).getElements());
 	}
 
 	@FXML
