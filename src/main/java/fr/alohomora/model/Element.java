@@ -1,5 +1,7 @@
 package fr.alohomora.model;
 
+import java.util.ArrayList;
+
 /**
  * Alohomora Password Manager
  * Copyright (C) 2018 Team Alohomora
@@ -23,22 +25,28 @@ public class Element {
 	private int id;
 	private int parent;
 	private String content;
+	private ArrayList<Field> fields;
 
 	public int getID() {
-		return id;
+		return this.id;
 	}
 
 	public int getParent() {
-		return parent;
+		return this.parent;
 	}
 
 	public String getContent() {
-		return content;
+		return this.content;
 	}
 
-	public Element(int id, int parent, String content) {
+	public Field getField(int index) {
+		return this.fields.get(index);
+	}
+
+	public Element(int id, int parent, String content, ArrayList<Field> fields) {
 		this.id = id;
 		this.parent = parent;
 		this.content = content;
+		this.fields = fields;
 	}
 }
