@@ -27,7 +27,7 @@ import javafx.scene.layout.VBox;
 public class PanePassword extends VBox {
 
 	private HBox titleBox;
-	private Label title;
+	private TextField title;
 	private TextField username;
 	private ShowPassField password;
 
@@ -35,8 +35,8 @@ public class PanePassword extends VBox {
 		this.titleBox = new HBox();
 		this.titleBox.getStyleClass().add("titlebox");
 
-		this.title = new Label();
-		this.title.getStyleClass().add("elementLabel");
+		this.title = new TextField();
+		this.title.getStyleClass().addAll("elementHiddenField");
 
 		this.username = new TextField();
 		this.username.getStyleClass().add("elementField");

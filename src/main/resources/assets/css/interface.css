@@ -49,9 +49,6 @@
     -fx-text-fill: #016937;
 }
 .signOut:pressed{
-    -fx-font-family: "Hack NF";
-    -fx-text-alignment: center;
-    -fx-font-size: 20px;
     -fx-text-fill: #06a75b;
 }
 .pseudo{
@@ -89,7 +86,7 @@
 }
 
 /* Focus color killer */
-.groups {
+.groups, .elementHiddenField {
     -fx-focus-color: transparent;
     -fx-faint-focus-color: transparent;
     -fx-background-color: transparent;
@@ -119,9 +116,6 @@
 
 .elementIcon {
     -fx-padding: 0 10 0 0;
-}
-
-.elementLabel {
     -fx-text-fill: #06A75B;
     -fx-font-weight: bold;
     -fx-font-size: 30px;
@@ -133,6 +127,22 @@
     -fx-padding: 0 0 0 20;
 }
 
+.elementHiddenField {
+    -fx-border-color: rgba(0, 0, 0, 0);
+    -fx-border-width: 0 0 4 0;
+    -fx-font-size: 30px;
+    -fx-text-fill: #06A75B;
+    -fx-padding: 0;
+}
+
+.elementHiddenField:hover {
+    -fx-border-color: #013F21;
+}
+
+.elementHiddenField:focused{
+    -fx-border-color: #016937;
+}
+
 .elementField {
     -fx-background-color: rgba(0, 0, 0, 0);
     -fx-border-width: 0 0 2 0;
@@ -140,7 +150,7 @@
     -fx-text-fill: #016937;
 
     /** Ugly hack */
-    -fx-padding: 20px;
-    -fx-border-insets: 20px;
-    -fx-background-insets: 20px;
+    -fx-padding: 10 20 10 20;
+    -fx-border-insets: 10 20 10 20;
+    -fx-background-insets: 10 20 10 20;
 }
