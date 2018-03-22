@@ -1,6 +1,7 @@
-import alohomora.model.Challenge;
-import alohomora.model.apiservice.Api;
 
+
+import fr.alohomora.model.Challenge;
+import fr.alohomora.model.apiservice.Api;
 import org.junit.Test;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -9,7 +10,6 @@ import java.io.IOException;
 
 
 import static junit.framework.TestCase.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 

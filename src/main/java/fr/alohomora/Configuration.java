@@ -69,7 +69,7 @@ public class Configuration {
 			System.out.println("Application local machin");
 		} else {
 			String home = System.getProperty( "user.home" );
-			f = new File(home, ".alohomora");
+			f = new File(home, ".config/alohomora");
 		}
 
 		if (!f.exists())

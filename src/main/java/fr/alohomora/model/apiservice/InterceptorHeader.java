@@ -1,4 +1,4 @@
-package alohomora.model.apiservice;
+package fr.alohomora.model.apiservice;
 
 
 import okhttp3.HttpUrl;
@@ -57,7 +57,7 @@ public class InterceptorHeader implements okhttp3.Interceptor {
 
 		//add userAgent
 		this.newRequest = request.newBuilder()
-				.addHeader("User-Agent", "X-ALOHOMORA")
+				.addHeader("User-Agent", "ALOHOMORA-DESKTOP")
 				.build();
 
 		//check root

@@ -34,7 +34,7 @@ public interface AlohomoraService {
 	                            @Field("publickey") String publickey,
 	                            @Field("machine_name") String machine_name);
 
-	@GET("/users")
+	@GET("/challenge")
 	Call<Challenge> getChallenge();
 
 }

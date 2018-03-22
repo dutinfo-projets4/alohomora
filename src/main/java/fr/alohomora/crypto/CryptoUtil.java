@@ -1,4 +1,4 @@
-package alohomora.model.retrofitlistener;
+package fr.alohomora.crypto;
 
 /**
  * Alohomora Password Manager
@@ -23,14 +23,12 @@ import org.bouncycastle.bcpg.ArmoredOutputStream;
 import org.bouncycastle.openpgp.*;
 
 import javax.crypto.*;
-import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.security.*;
-import java.security.spec.InvalidParameterSpecException;
 import java.util.Base64;
 import java.util.Date;
 import java.util.Iterator;
