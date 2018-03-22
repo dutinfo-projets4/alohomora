@@ -2,16 +2,15 @@ package fr.alohomora.controller;
 
 import com.sun.javafx.collections.ElementObservableListDecorator;
 import fr.alohomora.model.Field;
+import fr.alohomora.model.Group;
+import fr.alohomora.view.TreeViewRenderer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.control.ListView;
 import fr.alohomora.model.Element;
 import javafx.util.Callback;
 
@@ -50,22 +49,26 @@ public class InterfaceController {
 	private ListView sites;
 
 	@FXML
+	private SplitPane centerPanel;
+
+	@FXML
 	public void initialize() {
-		TreeItem<String> root = new TreeItem<>("Root");
-		root.setExpanded(true);
+		// Sets the cell renderer to the group tree view
+		//this.groups.setCellFactory(new TreeViewRenderer());
 
-		TreeItem<String> item = new TreeItem<>("Item");
-		root.getChildren().add(item);
+		Group g = new Group(1, "Key file", "\uf108");
+		g.addGroup(new Group(1, "Réseaux sociaux", "\uf0ac"));
+		g.addGroup(new Group(2, "Mails", "\uf0e0"));
+		g.addGroup(new Group(3, "Sites achat", "\uf155"));
 
-		TreeItem<String> item2 = new TreeItem<>("Item");
-		root.getChildren().add(item2);
+		Group groupWithSub = new Group(4, "Group4", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAnCAYAAABuf0pMAAAIh3pUWHRSYXcgcHJvZmlsZSB0eXBlIGV4aWYAAHja1ZhZkhw5DkT/eYo5AglwPQ5Xs7nBHH8eInKpLlW1qq37pzOkZIoRQQJwhwOU2//773H");
+		groupWithSub.addGroup(new Group(5, "SubGroup1", ""));
+		groupWithSub.addGroup(new Group(6, "SubGroup2", ""));
+		groupWithSub.addGroup(new Group(7, "SubGroup3", ""));
 
-		TreeItem<String> grp= new TreeItem<>("Groupe");
-		grp.setExpanded(true);
-		TreeItem<String> subgrp = new TreeItem<>("Item");
-		grp.getChildren().add(subgrp);
-		root.getChildren().add(grp);
+		g.addGroup(groupWithSub);
 
+		this.groups.setRoot(g);
 
 		sites.setEditable(true);
 		// for testing the content of the field which has to be a username under the website
@@ -100,8 +103,6 @@ public class InterfaceController {
 			}
 		});
 	}
-
-		groups.setRoot(root);
 	}
 
 	@FXML
@@ -114,6 +115,9 @@ public class InterfaceController {
 			this.allElementIsActive = true;
 		}
 	}
+
+
+
 // Fait planter l'application , doit ajouter un site
 // @FXML
 //	public void onClickAddItem(MouseEvent e){

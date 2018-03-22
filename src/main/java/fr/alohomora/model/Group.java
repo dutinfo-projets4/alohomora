@@ -1,6 +1,14 @@
 package fr.alohomora.model;
 
+import javafx.scene.Node;
+import javafx.scene.control.Label;
+import javafx.scene.control.TreeItem;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
+import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
+import java.util.Base64;
 
 /**
  * Alohomora Password Manager
@@ -20,30 +28,43 @@ import java.util.ArrayList;
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  **/
-public class Group {
+public class Group extends TreeItem {
+
 	private int id;
 	private int parent;
+
+	private String name;
+	private	String icon;
+
 	private String content;
-	private ArrayList<Group> groups;
 	private ArrayList<Element> elements;
 
+	private Group() {
+		this.elements = new ArrayList<>();
+		this.setExpanded(true);
+	}
+
 	public Group(int id, int parent, String content) {
+		this();
 		this.id = id;
 		this.parent = parent;
 		this.content = content;
 	}
 
-	public Group(int id, int parent, Group group) {
-		this.id = id;
-		this.parent = parent;
-		this.groups.add(group);
+	public Group(int id, String name, String icon) {
+		this();
+		this.id   = id;
+		this.name = name;
+		this.icon = icon;
+		this.setValue(this.name);
+		this.setGraphic(this.getIcon());
 	}
 
 	public int getID() {
 		return id;
 	}
 
-	public int getParent() {
+	public int getParentGroup() {
 		return parent;
 	}
 
@@ -55,29 +76,28 @@ public class Group {
 		return this.elements;
 	}
 
-	public ArrayList<Group> getSubGroups() {
-		return groups;
-	}
-
+	// Wont work because group is already modified so it wont be in the array
 	public boolean updateGroup(Group group) {
-		Group oldGroup = this.groups.set(this.groups.indexOf(group), group);
-		return oldGroup != null;
+		// @TODO
+		return false;
 	}
 
-	public boolean addSubGroup(Group group) {
-		return this.groups.add(group);
+	public boolean addGroup(Group group) {
+		return this.getChildren().add(group);
 	}
 
-	public boolean remmoveSubGroup(Group group) {
-		return this.groups.remove(group);
+	public boolean removeGroup(Group group) {
+		return this.getChildren().remove(group);
 	}
 
 	public boolean addElement(Element elt) {
 		return this.elements.add(elt);
 	}
 
+	// Same as updateGroup
 	public boolean updateElement(Element elt) {
 		Element oldElement = this.elements.set(this.elements.indexOf(elt), elt);
+		this.setValue(this.name);
 		return oldElement != null;
 	}
 
@@ -85,5 +105,14 @@ public class Group {
 		return this.elements.remove(elt);
 	}
 
-
+	public Node getIcon() {
+		if (this.icon.startsWith("data:image") && this.icon.split(";")[1].startsWith("base64")) {
+			String ico = this.icon.split(",")[1];
+			return new ImageView(new Image(new ByteArrayInputStream(Base64.getDecoder().decode(ico))));
+		} else {
+			Label lab = new Label(this.icon);
+			lab.getStyleClass().add("groupLabel");
+			return lab;
+		}
+	}
 }

@@ -106,3 +106,9 @@
     -fx-border-color: transparent #06a75b;
     -fx-border-width: 0 5 0 0;
 }
+
+.groupLabel {
+    -fx-text-fill: #06A75b;
+    -fx-font-weight: bold;
+    -fx-font-size: 20px;
+}

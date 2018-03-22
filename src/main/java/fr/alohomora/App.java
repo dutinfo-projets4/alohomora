@@ -35,8 +35,10 @@ public class App extends Application {
 		primaryStage.setMinHeight(453);
 		primaryStage.setTitle("Alohomora");
 
-		Font.loadFont(getClass().getClassLoader().getResource("assets/hack.ttf").toExternalForm(), 15);
-		Font.loadFont(getClass().getClassLoader().getResource("assets/hack_bold.ttf").toExternalForm(), 15);
+		Font.loadFont(getClass().getClassLoader().getResource("assets/hf.ttf").toExternalForm(), 15);
+		Font.loadFont(getClass().getClassLoader().getResource("assets/hf_b.ttf").toExternalForm(), 15);
+		Font.loadFont(getClass().getClassLoader().getResource("assets/hf_i.ttf").toExternalForm(), 15);
+		Font.loadFont(getClass().getClassLoader().getResource("assets/hf_bi.ttf").toExternalForm(), 15);
 
 		Scene scene = new Scene(root);
 		//scene.getStylesheets().addAll("assets/css/main.css", "assets/css/connection.css");
