@@ -11,11 +11,14 @@ import javafx.collections.ObservableList;
 import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.input.MouseEvent;
 import fr.alohomora.model.Element;
 import javafx.util.Callback;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -86,27 +89,36 @@ public class InterfaceController {
 			sites.setCellFactory(new Callback<ListView<Element>, ListCell<Element>>() {
 				@Override
 				public ListCell<Element> call(ListView<Element> list) {
-					ListCell<Element> e = new ListCell<Element>() {
+					ListCell<Element> newCell = new ListCell<Element>() {
 						@Override
 						protected void updateItem(Element item, boolean empty) {
 							super.updateItem(item, empty);
+							this.getStyleClass().add("cellListView");
 							if (item != null) {
-								setText(item.getLabel());  // get the name of the website
-								/*if (item.getField(0).getValue() != null) {
-									item.getField(0).getValue();
-								} else {
-									item.getField(0).getName();
-								}*/
+								GridPane grid = new GridPane();
+								//grid.getStyleClass().add("cellListView");
+								Label icon = new Label(item.getStringIcon());
+								icon.getStyleClass().add("iconCenter");
+								grid.add(icon, 0, 0, 1, 2);
+								setGraphic(grid);
+
+								Label website = new Label(item.getLabel());
+								website.getStyleClass().add("website");
+								grid.add(website, 1, 0);
+
+								Label username = new Label(item.getUsername());
+								grid.add(username, 1, 1);
+								username.getStyleClass().add("username");
 							} else {
 							}
 						}
 					};
-					return e;
+					return newCell;
 				}
 			});
 		}
 
-		this.sites.getSelectionModel().select(0);
+		//this.sites.getSelectionModel().select(0); // useless ?
 
 		// -------------------------- DEFINITIVE STUFF --------------------------
 
