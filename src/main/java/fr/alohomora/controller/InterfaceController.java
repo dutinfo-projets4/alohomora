@@ -1,26 +1,16 @@
 package fr.alohomora.controller;
 
-import com.sun.javafx.collections.ElementObservableListDecorator;
-import fr.alohomora.model.Field;
+import fr.alohomora.model.Element;
 import fr.alohomora.model.Group;
 import fr.alohomora.view.PanePassword;
-import fr.alohomora.view.TreeViewRenderer;
-import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
+import fr.alohomora.view.PasswordCellFactory;
 import javafx.collections.ObservableList;
-import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
-import javafx.scene.control.Label;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.control.ListView;
+import javafx.scene.control.SplitPane;
+import javafx.scene.control.TreeView;
 import javafx.scene.input.MouseEvent;
-import fr.alohomora.model.Element;
-import javafx.util.Callback;
-
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Scanner;
+import javafx.scene.layout.HBox;
 
 /**
  * Alohomora Password Manager
@@ -42,7 +32,7 @@ import java.util.Scanner;
  **/
 public class InterfaceController {
 
-	private boolean allElementIsActive = true;
+	private static InterfaceController _INSTANCE;
 
 	@FXML
 	private HBox allElements;
@@ -60,10 +50,6 @@ public class InterfaceController {
 
 	@FXML
 	public void initialize() {
-		// Sets the cell renderer to the group tree view
-		//this.groups.setCellFactory(new TreeViewRenderer());
-
-
 		// -------------------------- TEMPORARY STUFF --------------------------
 
 		Group g = new Group(1, "Key file", "\uf108");
@@ -84,65 +70,61 @@ public class InterfaceController {
 
 		this.groups.setRoot(g);
 
-		sites.setCellFactory(new Callback<ListView<Element>, ListCell<Element>>() {
-			@Override
-			public ListCell<Element> call(ListView<Element> list) {
-				ListCell<Element> newCell = new ListCell<Element>() {
-						@Override
-						protected void updateItem(Element item, boolean empty) {
-							super.updateItem(item, empty);
-							this.getStyleClass().add("cellListView");
-							if (item != null) {
-								GridPane grid = new GridPane();
-								//grid.getStyleClass().add("cellListView");
-								Label icon = new Label(item.getStringIcon());
-								icon.getStyleClass().add("iconCenter");
-								grid.add(icon, 0, 0, 1, 2);
-								setGraphic(grid);
-
-								Label website = new Label(item.getLabel());
-								website.getStyleClass().add("website");
-								grid.add(website, 1, 0);
-
-								Label username = new Label(item.getUsername());
-								grid.add(username, 1, 1);
-								username.getStyleClass().add("username");
-							}
-						}
-					};
-				return newCell;
-			}
-		});
-
-		//this.sites.getSelectionModel().select(0); // useless ?
-
 		// -------------------------- DEFINITIVE STUFF --------------------------
+		InterfaceController._INSTANCE = this;
+
 
 		this.passwordPanel = new PanePassword();
 		this.centerPanel.getItems().add(this.passwordPanel);
 		this.centerPanel.getDividers().get(0).setPosition(.2);
+
+		this.sites.setCellFactory(new PasswordCellFactory());
+		this.onClickAllElement(null);
+		this.groups.getSelectionModel().getSelectedItem();
 	}
 
 	@FXML
 	public void onClickAllElement(MouseEvent e) {
-		if (this.allElementIsActive) {
-			this.allElements.pseudoClassStateChanged(PseudoClass.getPseudoClass("pressed"), true);
-			this.allElementIsActive = false;
-		} else {
-			this.allElements.pseudoClassStateChanged(PseudoClass.getPseudoClass("pressed"), false);
-			this.allElementIsActive = true;
-		}
+		// When you click on "All Elements", the class is added and the selection clicks on root
+		this.groups.getSelectionModel().select(0);
+		this.onGroupClick(e);
 	}
 
 	@FXML
 	public void onGroupClick(MouseEvent e){
+		// When you click on a group, we clear the element list
 		this.sites.getItems().clear();
-		this.sites.getItems().setAll(((Group) this.groups.getSelectionModel().getSelectedItem()).getElements());
+
+		// Then we fill it with group's elements
+		this.sites.setItems(((Group)this.groups.getSelectionModel().getSelectedItem()).getElements());
+
+		// If we are on the root group, we toggle the "All elements" button
+		if (this.groups.getSelectionModel().getSelectedIndex() == 0){
+			if (!this.allElements.getStyleClass().contains("allPressed")){
+				this.allElements.getStyleClass().add("allPressed");
+			}
+		} else {
+			this.allElements.getStyleClass().remove("allPressed");
+		}
+
+		// Lastly, we select the first element of the group if it exists, and we update the render
+		ObservableList<Element> elements = ((Group) this.groups.getSelectionModel().getSelectedItem()).getElements();
+		if (elements.size() > 0){
+			this.sites.getSelectionModel().select(elements.get(0));
+		}
+		this.onSitesClick(null);
 	}
 
 	@FXML
 	public void onSitesClick(MouseEvent e){
 		this.passwordPanel.update(this.sites.getSelectionModel().getSelectedItem());
+	}
+
+	/**
+	 * Ugly singleton
+	 */
+	public static InterfaceController getInstance(){
+		return InterfaceController._INSTANCE;
 	}
 
 }

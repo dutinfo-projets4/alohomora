@@ -69,7 +69,7 @@
     -fx-border-width: 0 0 2 0;
 }
 
-.allElements:pressed{
+.allPressed{
     -fx-background-color: #2C375A;
     -fx-border-color: transparent #06a75b #2C375A transparent;
     -fx-border-width: 0 5 2 0;
@@ -184,4 +184,12 @@
     -fx-font-weight: bold;
     -fx-font-size: 30px;
     -fx-padding: 0 0 20 0;
+}
+
+.boxSave {
+    -fx-padding: 0 10 10 10;
+}
+
+.rmbt {
+    -fx-padding: 0 10 0 0;
 }

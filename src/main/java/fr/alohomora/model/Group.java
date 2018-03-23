@@ -39,10 +39,10 @@ public class Group extends TreeItem {
 	private	String icon;
 
 	private String content;
-	private ArrayList<Element> elements;
+	private ObservableList<Element> elements;
 
 	private Group() {
-		this.elements = new ArrayList<>();
+		this.elements = FXCollections.observableArrayList();
 		this.setExpanded(true);
 	}
 
