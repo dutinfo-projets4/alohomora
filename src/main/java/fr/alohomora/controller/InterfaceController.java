@@ -11,6 +11,7 @@ import javafx.scene.control.SplitPane;
 import javafx.scene.control.TreeView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Font;
 
 /**
  * Alohomora Password Manager

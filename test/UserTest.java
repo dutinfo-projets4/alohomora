@@ -8,9 +8,11 @@ import org.junit.Test;
 import retrofit2.Call;
 import retrofit2.Response;
 
+import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 
 
 import static junit.framework.TestCase.assertEquals;
@@ -72,9 +74,9 @@ public class UserTest {
 
 	@Test
 	public void checkUserConnexion() {
-		String passcode = null;
 		String challenge = null;
 		int challengeID = 0;
+		String passCodeHash = null;
 		Api apiService = new Api();
 		try {
 			Call<Challenge> call = apiService.getAlohomoraService().getChallenge();
@@ -82,18 +84,24 @@ public class UserTest {
 			challenge = response.body().getChallenge();
 			challengeID = response.body().getID();
 			MessageDigest messageDigest = MessageDigest.getInstance("SHA-512");
-			String usernameHash = messageDigest.digest("toto".getBytes()).toString();
-			String challengeHash = messageDigest.digest(challenge.getBytes()).toString();
-			passcode = usernameHash + "toto" + challengeHash;
-			String passCodeHash = messageDigest.digest(passcode.getBytes()).toString();
+			// hash(username)
+			String usernameHash = DatatypeConverter.printHexBinary(messageDigest.digest("toto".getBytes()));
+			// hash(password)
+			String passwordHash = DatatypeConverter.printHexBinary(messageDigest.digest("toto".getBytes()));
+			// hash(passwordHash)
+			passwordHash = DatatypeConverter.printHexBinary(messageDigest.digest(passwordHash.toLowerCase().getBytes()));
+
+			String passcode = usernameHash.toLowerCase() + challenge + passwordHash.toLowerCase();
+
+			//hash(passcode)
+			passCodeHash = DatatypeConverter.printHexBinary(messageDigest.digest(passcode.getBytes()));
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		if (passcode != null){
-
-		Call<User> call = apiService.getAlohomoraService().connect(passcode,challengeID,"1","1");
+		if (passCodeHash != null){
+			Call<User> call = apiService.getAlohomoraService().connect(passCodeHash.toLowerCase(),challengeID,"1","1");
 			try {
 				Response<User> response = call.execute();
 				System.out.print(response.code());

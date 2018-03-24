@@ -9,7 +9,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.io.ByteArrayInputStream;
-import java.util.ArrayList;
 import java.util.Base64;
 
 /**
@@ -33,7 +32,7 @@ import java.util.Base64;
 public class Group extends TreeItem {
 
 	private int id;
-	private int parent;
+	private int parentGrp;
 
 	private String name;
 	private	String icon;
@@ -46,10 +45,10 @@ public class Group extends TreeItem {
 		this.setExpanded(true);
 	}
 
-	public Group(int id, int parent, String content) {
+	public Group(int id, int parents, String content) {
 		this();
 		this.id = id;
-		this.parent = parent;
+		this.parentGrp = parents;
 		this.content = content;
 	}
 
@@ -67,7 +66,7 @@ public class Group extends TreeItem {
 	}
 
 	public int getParentGroup() {
-		return parent;
+		return parentGrp;
 	}
 
 	public String getContent() {

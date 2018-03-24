@@ -33,8 +33,8 @@ public class User {
 	private String email;
 	private boolean isAdmin;
 	private String token;
-	private ArrayList<Token> tokens;
 	private Data data;
+	private ArrayList<Token> tokens;
 
 
 	public User(int id, String username, String email, boolean isAdmin, String token, Data data) {
@@ -89,6 +89,14 @@ public class User {
 
 	public ArrayList<Token> getTokens() {
 		return tokens;
+	}
+
+	public ArrayList<Group> getGroups(){
+		return this.data.getGroups();
+	}
+
+	public ArrayList<Element> getElement(){
+		return this.data.getElements();
 	}
 
 	/**

@@ -70,6 +70,8 @@ public class Configuration {
 			System.out.println("APPDATA");
 		} else if (os.indexOf("mac") >= 0) {
 			System.out.println("Application local machin");
+			String home = System.getProperty("user.home");
+			f = new File(home, ".config/alohomora");
 		} else {
 			String home = System.getProperty( "user.home" );
 			f = new File(home, ".config/alohomora");

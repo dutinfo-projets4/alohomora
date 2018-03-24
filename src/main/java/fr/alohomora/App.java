@@ -1,6 +1,7 @@
 package fr.alohomora;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -26,11 +27,12 @@ import javafx.stage.Stage;
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  **/
 public class App extends Application {
+	private static Stage primaryStage;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		//Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/connection.fxml"));
-		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/interface.fxml"));
+
+		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/connection.fxml"));
 		primaryStage.setMinWidth(768);
 		primaryStage.setMinHeight(453);
 		primaryStage.setTitle("Alohomora");
@@ -41,15 +43,33 @@ public class App extends Application {
 		Font.loadFont(getClass().getClassLoader().getResource("assets/hf_bi.ttf").toExternalForm(), 15);
 
 		Scene scene = new Scene(root);
-		//scene.getStylesheets().addAll("assets/css/main.css", "assets/css/connection.css");
-		scene.getStylesheets().addAll("assets/css/main.css", "assets/css/interface.css");
+		scene.getStylesheets().addAll("assets/css/main.css", "assets/css/connection.css");
 		primaryStage.setScene(scene);
 		primaryStage.show();
+
+		//event close
+		primaryStage.setOnCloseRequest(e -> {
+			Platform.exit();
+			System.exit(0);
+		});
+		App.primaryStage = primaryStage;
 	}
 
 
 	public static void main(String[] args) {
 		Configuration.load(args);
 		launch(args);
+	}
+
+	/**
+	 * modify the scene
+	 * @param root fxml
+	 * @param css
+	 */
+	public static void setScene(Parent root, String[] css) {
+		Scene oldScene = App.primaryStage.getScene();
+		Scene newScene = new Scene(root, oldScene.getWidth(), oldScene.getHeight());
+		newScene.getStylesheets().addAll(css);
+		App.primaryStage.setScene(newScene);
 	}
 }

@@ -22,3 +22,6 @@
 	-fx-background-color: #6C7A89;
 }
 
+.empty{
+    -fx-border-color: red;
+}
