@@ -1,5 +1,7 @@
 package fr.alohomora;
 
+import fr.alohomora.model.Config;
+
 import java.io.File;
 
 /**
@@ -24,7 +26,7 @@ public class Configuration {
 
 	public static String SOFTWARE_NAME = "Alohomora";
 	public static boolean PORTABLE = false;
-	public static File KEYS_FOLDER;
+	public static File KEYS_FOLDER, DB_FILE;
 
 	/**
 	 * Fired up when the software starts up
@@ -38,6 +40,7 @@ public class Configuration {
 		}
 
 		Configuration.KEYS_FOLDER = Configuration.createFolder("keys");
+		Configuration.DB_FILE	  = new File(Configuration.getWorkingDirectory(), "alohomora.db");
 
 	}
 

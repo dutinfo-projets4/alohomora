@@ -81,6 +81,7 @@ public class Element {
 	public String getLabel() { return this.label; }
 	public Group getParentGroup() { return this.parentGroup; }
 	public int getParent() { return this.parent; }
+	public String getStringIcon(){return this.icon;}
 
 	public Node getIcon() {
 		if (this.icon.startsWith("data:image") && this.icon.split(";")[1].startsWith("base64")) {
