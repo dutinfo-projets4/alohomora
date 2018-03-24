@@ -105,7 +105,7 @@ public class User {
 	 */
 	public static void challengeConnect(final RetrofitListenerUser callback, String passcode, int challenge, String publickey, String machineName) {
 		Api apiService = new Api();
-		Call<User> call = apiService.getAlohomoraService().ChallengeConnect(passcode, challenge, publickey, machineName);
+		Call<User> call = apiService.getAlohomoraService().connect(passcode, challenge, publickey, machineName);
 		call.enqueue(new Callback<User>() {
 			@Override
 			public void onResponse(Call<User> call, Response<User> response) {

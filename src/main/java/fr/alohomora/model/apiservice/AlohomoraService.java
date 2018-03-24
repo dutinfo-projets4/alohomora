@@ -29,7 +29,7 @@ import retrofit2.http.POST;
 public interface AlohomoraService {
 	@FormUrlEncoded
 	@POST("/users")
-	Call<User> ChallengeConnect(@Field("passcode") String passcode,
+	Call<User> connect(@Field("passcode") String passcode,
 	                            @Field("challenge") int challenge,
 	                            @Field("publickey") String publickey,
 	                            @Field("machine_name") String machine_name);
