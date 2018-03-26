@@ -168,7 +168,7 @@ public class ConnectController {
 						public void onUserLoad(User user) {
 							if (user != null) {
 								//add token in local DB
-								Database.getInstance();
+								Database.getInstance().insertToken(user.getUsername(),user.getToken());
 
 								//change view
 								Platform.runLater(new Runnable() {

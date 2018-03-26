@@ -25,11 +25,12 @@ import org.junit.Test;
 public class DatabaseTest {
 	@Before
 	public void init(){
+		Configuration.load(new String[]{});
 
 	}
+
 	@Test
-	public void executeScript(){
-		Configuration.load(new String[]{});
-		Database.getInstance();
+	public void insertToken(){
+		Database.getInstance().insertToken("test","test");
 	}
 }

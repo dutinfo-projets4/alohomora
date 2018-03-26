@@ -109,4 +109,17 @@ public class Database {
 		return nbTable == 0 ? true : false;
 	}
 
+	public boolean insertToken(String username, String token){
+		boolean res = false;
+		try{
+			Statement st = this.con.createStatement();
+			PreparedStatement prepStmt = this.con.prepareStatement("INSERT INTO token (username, value) VALUES ( ?, ?)");
+			prepStmt.setString(1, username);
+			prepStmt.setString(2, token);
+			res = prepStmt.execute();
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+		return res;
+	}
 }
