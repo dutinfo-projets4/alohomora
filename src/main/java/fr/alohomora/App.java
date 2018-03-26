@@ -1,5 +1,6 @@
 package fr.alohomora;
 
+import fr.alohomora.database.Database;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -7,6 +8,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+
+import java.sql.Statement;
 
 /**
  * Alohomora Password Manager
@@ -53,6 +56,9 @@ public class App extends Application {
 			System.exit(0);
 		});
 		App.primaryStage = primaryStage;
+
+
+
 	}
 
 

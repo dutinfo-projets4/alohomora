@@ -1,12 +1,8 @@
-package fr.alohomora.model.apiservice;
-
-import fr.alohomora.model.Challenge;
-import fr.alohomora.model.User;
-import retrofit2.Call;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.GET;
-import retrofit2.http.POST;
+import fr.alohomora.Configuration;
+import fr.alohomora.database.Database;
+import fr.alohomora.model.Config;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Alohomora Password Manager
@@ -26,15 +22,14 @@ import retrofit2.http.POST;
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  **/
-public interface AlohomoraService {
-	@FormUrlEncoded
-	@POST("/users")
-	Call<User> connect(@Field("passcode") String passcode,
-	                            @Field("challenge") int challenge,
-	                            @Field("public_key") String publickey,
-	                            @Field("machine_name") String machine_name);
+public class DatabaseTest {
+	@Before
+	public void init(){
 
-	@GET("/challenge")
-	Call<Challenge> getChallenge();
-
+	}
+	@Test
+	public void executeScript(){
+		Configuration.load(new String[]{});
+		Database.getInstance();
+	}
 }

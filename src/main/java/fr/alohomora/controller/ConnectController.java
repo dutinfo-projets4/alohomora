@@ -2,6 +2,7 @@ package fr.alohomora.controller;
 
 import fr.alohomora.App;
 import fr.alohomora.crypto.RSAObject;
+import fr.alohomora.database.Database;
 import fr.alohomora.model.Challenge;
 import fr.alohomora.model.User;
 import fr.alohomora.model.retrofitlistener.RetrofitListenerChallenge;
@@ -166,6 +167,10 @@ public class ConnectController {
 						@Override
 						public void onUserLoad(User user) {
 							if (user != null) {
+								//add token in local DB
+								Database.getInstance();
+
+								//change view
 								Platform.runLater(new Runnable() {
 									@Override
 									public void run() {

@@ -3,6 +3,7 @@ package fr.alohomora;
 import fr.alohomora.model.Config;
 
 import java.io.File;
+import java.io.IOException;
 
 /**
  * Alohomora Password Manager
@@ -40,7 +41,9 @@ public class Configuration {
 		}
 
 		Configuration.KEYS_FOLDER = Configuration.createFolder("keys");
-		Configuration.DB_FILE	  = new File(Configuration.getWorkingDirectory(), "alohomora.db");
+		Configuration.DB_FILE	  = Configuration.createFile("alohomora.db");
+
+
 
 	}
 
@@ -52,6 +55,18 @@ public class Configuration {
 		File f = new File(Configuration.getWorkingDirectory(), name);
 		if (!f.exists())
 			f.mkdirs();
+		return f;
+	}
+
+	private static File createFile(String name){
+		File f  = new File(Configuration.getWorkingDirectory(), name);
+		if(!f.exists()){
+			try {
+				 f.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 		return f;
 	}
 
@@ -70,8 +85,8 @@ public class Configuration {
 			System.out.println("APPDATA");
 		} else if (os.indexOf("mac") >= 0) {
 			System.out.println("Application local machin");
-			String home = System.getProperty("user.home");
-			f = new File(home, ".config/alohomora");
+			String home = System.getProperty("user.home") + "/Library/Application Support";
+			f = new File(home, "alohomora");
 		} else {
 			String home = System.getProperty( "user.home" );
 			f = new File(home, ".config/alohomora");

@@ -1,13 +1,10 @@
 package fr.alohomora.database;
 
 import fr.alohomora.Configuration;
-import fr.alohomora.model.Config;
-import fr.alohomora.model.Data;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.io.*;
+import java.sql.*;
+import java.util.Scanner;
 
 /**
  * Alohomora Password Manager
@@ -36,6 +33,8 @@ public class Database {
 	private Database() {
 		try {
 			this.con = DriverManager.getConnection("jdbc:sqlite:" + Configuration.DB_FILE.getAbsolutePath());
+			if (this.checkTable())
+				this.loadSqlScript();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -46,7 +45,7 @@ public class Database {
 	}
 
 	public void close() {
-		if (this.con != null){
+		if (this.con != null) {
 			try {
 				this.con.close();
 			} catch (SQLException e) {
@@ -56,10 +55,58 @@ public class Database {
 	}
 
 
-	public static Database getInstance(){
+	public static Database getInstance() {
 		if (Database._INSTANCE == null)
 			Database._INSTANCE = new Database();
 		return Database._INSTANCE;
+	}
+
+	/**
+	 * load the the script's table of the database from the ressources folders
+	 */
+	public void loadSqlScript() {
+		StringBuilder sqlScript = new StringBuilder();
+		Statement st = null;
+		try {
+			st = this.con.createStatement();
+			ClassLoader classLoader = getClass().getClassLoader();
+			File filesql = new File(classLoader.getResource("assets/sql/db_generation.sql").getFile());
+			Scanner scanner = new Scanner(filesql);
+			while (scanner.hasNextLine()) {
+				String line = scanner.nextLine();
+				sqlScript.append(line).append("\n");
+			}
+			scanner.close();
+			for (String e : sqlScript.toString().split(";")) {
+				st.execute(e);
+			}
+
+			st.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * check if the table exist true if the table not exist
+	 *
+	 * @return boolean
+	 */
+	public boolean checkTable() {
+		int nbTable = 0;
+		try {
+			Statement st = this.con.createStatement();
+			ResultSet rs = st.executeQuery("SELECT COUNT(name) FROM sqlite_master;");
+			while (rs.next()) {
+				nbTable = rs.getInt("COUNT(name)");
+			}
+			st.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return nbTable == 0 ? true : false;
 	}
 
 }
