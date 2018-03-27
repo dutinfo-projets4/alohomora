@@ -57,9 +57,10 @@ public class PanePassword extends VBox {
 		this.removebt = new Button("\uf2ed");
 		this.removebt.setOnMouseClicked(mouseEvent -> this.handleRemove());
 
+
 		this.cancelbt.setDisable(true);
 		this.savebt   = new Button("\uf0c7");
-
+		this.savebt.setOnMouseClicked(mouseEvent -> this.handleSave());
 		Region spacer = new Region();
 		HBox.setHgrow(spacer, Priority.ALWAYS);
 
@@ -125,6 +126,17 @@ public class PanePassword extends VBox {
 				// @TODO remove from database
 				InterfaceController.getInstance().onGroupClick(null);
 			}
+		}
+	}
+
+	private void handleSave(){
+		if(this.currElement != null){
+
+			this.currElement.setLabel(this.title.getText());
+			this.currElement.setPassword(this.password.getText());
+			this.currElement.setUsername(this.username.getText());
+			// @TODO updata database
+			InterfaceController.getInstance().onGroupClick(null);
 		}
 	}
 

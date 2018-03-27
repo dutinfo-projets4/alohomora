@@ -68,7 +68,7 @@ public class ConnectController {
 	@FXML
 	public void initialize() {
 
-		Configuration.LOGIN_TOKEN =  Database.getInstance().getToken();
+		Configuration.LOGIN_TOKEN = Database.getInstance().getToken();
 		this.connected = Configuration.LOGIN_TOKEN != null;
 		if (this.connected) {
 			this.parentField.getChildren().remove(this.usernameFieldLabel);
@@ -116,7 +116,8 @@ public class ConnectController {
 		 this.obj.kill();
 		 **/
 	}
-	public void onOpenDataBaseClick(){
+
+	public void onOpenDataBaseClick() {
 		this.login.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -128,7 +129,7 @@ public class ConnectController {
 		});
 	}
 
-	public void onKeyPressedDataBase(){
+	public void onKeyPressedDataBase() {
 		this.password.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent event) {
@@ -143,10 +144,10 @@ public class ConnectController {
 	/**
 	 * decrypt dataBase and load interface
 	 */
-	public void openDataBase(){
-		if(checkEmpty(this.password)) {
+	public void openDataBase() {
+		if (checkEmpty(this.password)) {
 			/**
-			 * @TODO decrypt database and getUpdate
+			 * @TODO getUpdate if 403 delete database
 			 */
 			try {
 				App.setScene(FXMLLoader.load(getClass().getClassLoader().getResource("fxml/interface.fxml")), new String[]{"assets/css/main.css", "assets/css/interface.css"});
@@ -226,8 +227,8 @@ public class ConnectController {
 						@Override
 						public void callback(User user) {
 							if (user != null) {
-								//add token in local DB
-								Database.getInstance().insertConfig(user.getUsername(), user.getToken(), true);
+								//add config in local DB
+								Database.getInstance().insertConfig(user.getUsername(), user.getToken(), Configuration.PORTABLE);
 
 								//change view
 								Platform.runLater(new Runnable() {

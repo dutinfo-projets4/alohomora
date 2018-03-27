@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="453.0" prefWidth="768.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.alohomora.controller.InterfaceController">
+<VBox prefHeight="453.0" prefWidth="768.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.alohomora.controller.InterfaceController">
    <children>
       <TabPane minHeight="-Infinity" minWidth="-Infinity" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
         <tabs>
@@ -49,7 +49,7 @@
                               <StackPane alignment="BOTTOM_RIGHT" minWidth="200.0" prefHeight="200.0" prefWidth="200.0" SplitPane.resizableWithParent="false">
                                  <children>
                                     <ListView fx:id="sites" onMouseClicked="#onSitesClick" prefHeight="200.0" prefWidth="200.0" styleClass="centerHbox" />
-                                    <Label styleClass="button" text="">
+                                    <Label fx:id="addElement" styleClass="button" text="">
                                        <StackPane.margin>
                                           <Insets bottom="10.0" right="10.0" />
                                        </StackPane.margin>
@@ -121,7 +121,7 @@
                </padding>
             </Label>
             <Region HBox.hgrow="ALWAYS" />
-            <TextField fx:id="research"  prefHeight="26.0" prefWidth="222.0" />
+            <TextField fx:id="research" prefHeight="26.0" prefWidth="222.0" />
             <Region HBox.hgrow="ALWAYS" />
             <Label styleClass="signOut" text=" Log out">
                <opaqueInsets>
