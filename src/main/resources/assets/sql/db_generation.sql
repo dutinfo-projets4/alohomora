@@ -10,15 +10,12 @@ CREATE TABLE element(
   FOREIGN KEY (idGroupe) REFERENCES directory(idGroupe)
   ON DELETE CASCADE ON UPDATE NO ACTION
 );
-CREATE TABLE token(
-  idToken INTEGER NOT NULL CONSTRAINT AUTO_INCREMENT PRIMARY KEY,
-  username varchar(255),
-  value varchar(255),
-  ip VARCHAR(36)
-);
 CREATE TABLE config(
   idConfig INTEGER NOT NULL CONSTRAINT AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR (255),
   name VARCHAR(255),
-  portable BOOLEAN
+  portable BOOLEAN,
+  token VARCHAR (255),
+  RequestID INTEGER
 )
 --pas mettre de point virgule à la fin

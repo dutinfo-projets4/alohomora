@@ -1,9 +1,14 @@
 package fr.alohomora.model;
 
+import fr.alohomora.model.apiservice.Api;
+import fr.alohomora.model.retrofitlistener.RetrofitListnerElement;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
@@ -104,5 +109,30 @@ public class Element {
 	public Element setLabel(String lab) { this.label = lab; return this; }
 	public Element setParentGroup(Group gpe) { this.parentGroup = gpe; return this; }
 	public Element setIcon(String ico) { this.icon = ico; return this; }
+
+	/**
+	 * Request api to addElement with parent_grp and content pass througout parameters
+	 * @param  parent_grp
+	 * @param  content
+	 */
+	public void addElement(final RetrofitListnerElement callback, int parent_grp, String content){
+		Api apiService = new Api();
+		Call<Integer> call = apiService.getAlohomoraService().addElement(parent_grp, content);
+		call.enqueue(new Callback<Integer>() {
+			@Override
+			public void onResponse(Call<Integer> call, Response<Integer> response) {
+				if(response.code() == 201)
+					callback.onIdLoad(response.body());
+				else
+					callback.onIdLoad(null);
+			}
+			@Override
+			public void onFailure(Call<Integer> call, Throwable throwable) {
+				callback.error(throwable.toString());
+			}
+		});
+
+
+	}
 
 }

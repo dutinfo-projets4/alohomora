@@ -113,7 +113,7 @@ public class Database {
 		boolean res = false;
 		try{
 			Statement st = this.con.createStatement();
-			PreparedStatement prepStmt = this.con.prepareStatement("INSERT INTO token (username, value) VALUES ( ?, ?)");
+			PreparedStatement prepStmt = this.con.prepareStatement("INSERT INTO config (username, token) VALUES ( ?, ?)");
 			prepStmt.setString(1, username);
 			prepStmt.setString(2, token);
 			res = prepStmt.execute();

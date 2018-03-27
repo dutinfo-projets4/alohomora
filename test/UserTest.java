@@ -1,10 +1,7 @@
 
 
-import com.sun.prism.PixelFormat;
 import fr.alohomora.Configuration;
-import fr.alohomora.database.Database;
 import fr.alohomora.model.Challenge;
-import fr.alohomora.model.Data;
 import fr.alohomora.model.User;
 import fr.alohomora.model.apiservice.Api;
 import org.junit.Before;
@@ -16,8 +13,6 @@ import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.sql.SQLException;
-import java.sql.Statement;
 
 
 import static junit.framework.TestCase.assertEquals;
@@ -118,6 +113,19 @@ public class UserTest {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	@Test
+	public void addElement(){
+		Api apiService = new Api();
+		Call<Integer> call = apiService.getAlohomoraService().addElement(123, "test");
+		Response <Integer> response = null;
+		try {
+			 response = call.execute();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		System.out.print(response.code());
 	}
 
 
