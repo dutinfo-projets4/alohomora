@@ -19,10 +19,10 @@ package fr.alohomora.model;
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  **/
 public class Challenge {
-	private int id;
+	private String id;
 	private String challenge;
 
-	public int getID() {
+	public String getID() {
 		return id;
 	}
 

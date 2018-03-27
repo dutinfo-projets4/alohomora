@@ -20,8 +20,9 @@ import fr.alohomora.model.User;
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  **/
-public interface RetrofitListenerUser {
-	void onUserLoad(User user);
+public interface RetrofitListener {
+
+	void callback(User user);
 
 	void error(String msg);
 }

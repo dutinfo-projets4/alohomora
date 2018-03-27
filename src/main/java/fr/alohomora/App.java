@@ -1,5 +1,6 @@
 package fr.alohomora;
 
+import fr.alohomora.model.apiservice.Api;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -27,10 +28,16 @@ import javafx.stage.Stage;
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  **/
 public class App extends Application {
+
+	private static App _INSTANCE;
+	private Api api;
 	private static Stage primaryStage;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+
+		App._INSTANCE = this;
+		this.api = new Api();
 
 		//Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/connection.fxml"));
 		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/interface.fxml"));
@@ -56,6 +63,13 @@ public class App extends Application {
 		App.primaryStage = primaryStage;
 	}
 
+	public static App getInstance() {
+		return App._INSTANCE;
+	}
+
+	public static Api getAPI() {
+		return App._INSTANCE.api;
+	}
 
 	public static void main(String[] args) {
 		Configuration.load(args);

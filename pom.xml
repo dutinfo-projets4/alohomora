@@ -65,6 +65,11 @@
             <artifactId>sqlite-jdbc</artifactId>
             <version>LATEST</version>
         </dependency>
+        <dependency>
+            <groupId>com.googlecode.json-simple</groupId>
+            <artifactId>json-simple</artifactId>
+            <version>LATEST</version>
+        </dependency>
     </dependencies>
 
 </project>

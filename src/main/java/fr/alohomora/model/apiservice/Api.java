@@ -1,8 +1,15 @@
 package fr.alohomora.model.apiservice;
 
+import fr.alohomora.Configuration;
+import fr.alohomora.model.Challenge;
+import fr.alohomora.model.User;
+import javafx.util.Pair;
 import okhttp3.OkHttpClient;
+import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+import java.util.HashMap;
 
 /**
  * Alohomora Password Manager
@@ -23,26 +30,43 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  **/
 public class Api {
+
+	private Pair<String, String> params[];
 	private Retrofit retrofit;
-	private AlohomoraService alohomoraService;
+	private AlohomoraService service;
 	private OkHttpClient client;
 
 	public Api() {
 
 		this.client = new OkHttpClient.Builder()
-				.addInterceptor(new InterceptorHeader())
 				.build();
 
+		this.setParams(new Pair[]{});
+	}
+
+	public void setParams(Pair<String, String>[] params){
+		this.params = params;
+
+		this.client = new OkHttpClient.Builder().addInterceptor(new InterceptorHeader(params)).build();
+
 		this.retrofit = new Retrofit.Builder()
-				.baseUrl("http://127.0.0.1:8000")
+				.baseUrl(Configuration.BASE_PATH)
 				.addConverterFactory(GsonConverterFactory.create())
 				.client(client)
 				.build();
 
-		this.alohomoraService = retrofit.create(AlohomoraService.class);
+		this.service = retrofit.create(AlohomoraService.class);
 	}
 
-	public AlohomoraService getAlohomoraService() {
-		return this.alohomoraService;
+	public Call<Challenge> getChallenge() {
+		this.setParams(new Pair[]{});
+		return this.service.getChallenge();
 	}
+
+	public Call<User> connect(Pair<String, String>[] params) {
+		this.setParams(params);
+		return this.service.connect(params[0].getValue(), params[1].getValue(), params[2].getValue(), params[3].getValue());
+	}
+
+
 }

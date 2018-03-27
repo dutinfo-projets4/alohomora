@@ -27,11 +27,12 @@ import retrofit2.http.POST;
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  **/
 public interface AlohomoraService {
+
 	@FormUrlEncoded
 	@POST("/users")
 	Call<User> connect(@Field("passcode") String passcode,
-	                            @Field("challenge") int challenge,
-	                            @Field("publickey") String publickey,
+	                            @Field("challenge") String challenge,
+	                            @Field("public_key") String public_key,
 	                            @Field("machine_name") String machine_name);
 
 	@GET("/challenge")

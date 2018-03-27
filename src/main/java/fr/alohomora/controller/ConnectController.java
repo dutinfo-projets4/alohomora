@@ -4,8 +4,8 @@ import fr.alohomora.App;
 import fr.alohomora.crypto.RSAObject;
 import fr.alohomora.model.Challenge;
 import fr.alohomora.model.User;
+import fr.alohomora.model.retrofitlistener.RetrofitListener;
 import fr.alohomora.model.retrofitlistener.RetrofitListenerChallenge;
-import fr.alohomora.model.retrofitlistener.RetrofitListenerUser;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -17,12 +17,10 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
-
 import javax.xml.bind.DatatypeConverter;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.security.*;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
 /**
@@ -162,9 +160,10 @@ public class ConnectController {
 				@Override
 				public void onChallengeLoad(Challenge challenge) {
 					String passCodeHash = ConnectController.this.hashPasscode(challenge.getChallenge());
-					User.challengeConnect(new RetrofitListenerUser() {
+
+					RetrofitListener callback = new RetrofitListener() {
 						@Override
-						public void onUserLoad(User user) {
+						public void callback(User user) {
 							if (user != null) {
 								Platform.runLater(new Runnable() {
 									@Override
@@ -177,40 +176,33 @@ public class ConnectController {
 									}
 								});
 							} else {
-								Platform.runLater(new Runnable() {
-									@Override
-									public void run() {
-										Alert alert = new Alert(Alert.AlertType.WARNING);
-										alert.setContentText("password or user false");
-										alert.showAndWait();
-									}
+								Platform.runLater(() -> {
+									Alert alert = new Alert(Alert.AlertType.WARNING);
+									alert.setContentText("password or user false");
+									alert.showAndWait();
 								});
 							}
 						}
 
 						@Override
 						public void error(String msg) {
-							Platform.runLater(new Runnable() {
-								@Override
-								public void run() {
-									Alert alert = new Alert(Alert.AlertType.WARNING);
-									alert.setContentText("Network error");
-									alert.showAndWait();
-								}
+							Platform.runLater(() -> {
+								Alert alert = new Alert(Alert.AlertType.WARNING);
+								alert.setContentText("Network error");
+								alert.showAndWait();
 							});
 						}
-					}, passCodeHash, challenge.getID(), ConnectController.this.obj.formatServer(), "test");
+					};
+
+					User.challengeConnect(callback, passCodeHash, challenge.getID(), ConnectController.this.obj.formatServer(), "test");
 				}
 
 				@Override
 				public void error(String msg) {
-					Platform.runLater(new Runnable() {
-						@Override
-						public void run() {
-							Alert alert = new Alert(Alert.AlertType.WARNING);
-							alert.setContentText("Network error");
-							alert.showAndWait();
-						}
+					Platform.runLater(() -> {
+						Alert alert = new Alert(Alert.AlertType.WARNING);
+						alert.setContentText("Network error");
+						alert.showAndWait();
 					});
 				}
 			});
