@@ -30,7 +30,7 @@ public class DatabaseTest {
 	}
 
 	@Test
-	public void insertToken(){
-		Database.getInstance().insertToken("test","test");
+	public void insertConfig(){
+		Database.getInstance().insertConfig("test","test", true);
 	}
 }

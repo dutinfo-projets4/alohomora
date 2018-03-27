@@ -21,7 +21,8 @@ import fr.alohomora.model.User;
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  **/
 public interface RetrofitListenerUser {
-	void onUserLoad(User user);
+
+	void callback(User user);
 
 	void error(String msg);
 }

@@ -109,17 +109,65 @@ public class Database {
 		return nbTable == 0 ? true : false;
 	}
 
-	public boolean insertToken(String username, String token){
+	/**
+	 * Insert token in DB
+	 * @param username
+	 * @param token
+	 * @return
+	 */
+	public boolean insertConfig(String username, String token, boolean portable){
 		boolean res = false;
 		try{
-			Statement st = this.con.createStatement();
-			PreparedStatement prepStmt = this.con.prepareStatement("INSERT INTO config (username, token) VALUES ( ?, ?)");
+			PreparedStatement prepStmt = this.con.prepareStatement("INSERT INTO config (username, token, portable) VALUES ( ?, ?, ?)");
 			prepStmt.setString(1, username);
 			prepStmt.setString(2, token);
+			prepStmt.setBoolean(3, portable);
 			res = prepStmt.execute();
 		}catch (Exception e){
 			e.printStackTrace();
 		}
+		return res;
+	}
+
+	/**
+	 * get Token in DB
+	 * @return token
+	 */
+	public String getToken(){
+		String res = null;
+		try {
+			Statement st = this.con.createStatement();
+			ResultSet rs = st.executeQuery("SELECT token FROM config WHERE idConfig = 1");
+			while (rs.next()) {
+				res = rs.getString("token");
+			}
+			st.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		System.out.print(res);
+		return res;
+	}
+
+	/**
+	 * get username in DB
+	 * @return username
+	 */
+	public String getUsername(){
+		String res = null;
+		try {
+			Statement st = this.con.createStatement();
+			ResultSet rs = st.executeQuery("SELECT username FROM config WHERE idConfig = 1");
+			while (rs.next()) {
+				res = rs.getString("username");
+			}
+			st.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		System.out.print(res);
 		return res;
 	}
 }

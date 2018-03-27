@@ -1,12 +1,22 @@
 package fr.alohomora.model.apiservice;
 
 
+import com.google.gson.Gson;
+import fr.alohomora.Configuration;
+import fr.alohomora.crypto.RSAObject;
+import fr.alohomora.database.Database;
+import javafx.util.Pair;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
+import org.json.simple.JSONObject;
 
 import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SignatureException;
+import java.security.spec.InvalidKeySpecException;
 
 
 /**
@@ -28,19 +38,20 @@ import java.io.IOException;
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  **/
 public class InterceptorHeader implements okhttp3.Interceptor {
-	private String[][] routeExcluded;
-	private Request newRequest;
-	private Request request;
+
+	private static String[][] routeExcluded = new String[][]{
+				{"users", "GET", "POST", "PUT"},
+				{"challenge", "GET"}
+		};
+
+	private Pair<String,String>[] map;
 
 	/**
 	 * constructor interceptor (cf okhttp3.Interceptor) and create the differents excluded root
 	 */
-	public InterceptorHeader() {
+	public InterceptorHeader(Pair<String, String>[] map) {
 		super();
-		this.routeExcluded = new String[][]{
-				{"users", "GET", "POST", "PUT"},
-				{"challenge", "GET"}
-		};
+		this.map = map;
 	}
 
 	/**
@@ -51,34 +62,49 @@ public class InterceptorHeader implements okhttp3.Interceptor {
 	 */
 	@Override
 	public Response intercept(Chain chain) throws IOException {
-		this.request = chain.request();
+		Request request = chain.request();
 		HttpUrl urlHttp = request.url();
 		String method = request.method();
 		String[] url = urlHttp.toString().split("/");
 
 
 		//add userAgent
-		this.newRequest = request.newBuilder()
-				.addHeader("User-Agent", "ALOHOMORA-DESKTOP")
-				.build();
+		Request.Builder builder = request.newBuilder().addHeader("User-Agent", "ALOHOMORA-DESKTOP");
 
-		for (String[] route : this.routeExcluded) {
+		for (String[] route : InterceptorHeader.routeExcluded) {
 			if (route[0].equalsIgnoreCase(url[3].toLowerCase())) {
 				for (int i = 1; i < route.length; ++i) {
 					if (route[i].equalsIgnoreCase(method)){
-						return chain.proceed(this.newRequest);
+						return chain.proceed(builder.build());
 					}
 				}
 			}
 		}
-
 		//add signature & token
-		this.newRequest = request.newBuilder()
-				.addHeader("User-Agent", "X-ALOHOMORA")
-				//.addHeader("X-ALOHOMORA-TOKEN", X)
-				//.addHeader("X-ALOHOMORA-SIGNATURE", X)
-				.build();
-		return chain.proceed(this.newRequest);
+		builder.addHeader("X-ALOHOMORA-TOKEN", Database.getInstance().getToken());
+
+		JSONObject obj = new JSONObject();
+
+		for (Pair<String, String> val : this.map){
+			obj.put(val.getKey(), val.getValue());
+		}
+
+		RSAObject rsa = null;
+		try {
+			rsa = new RSAObject(Database.getInstance().getUsername());
+			builder.addHeader("X-ALOHOMORA-SIGNATURE", rsa.sign(obj.toJSONString()));
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		} catch (InvalidKeyException e) {
+			e.printStackTrace();
+		} catch (SignatureException e) {
+			e.printStackTrace();
+		} catch (InvalidKeySpecException e) {
+			e.printStackTrace();
+		}
+
+		return chain.proceed(builder.build());
 	}
+
 
 }

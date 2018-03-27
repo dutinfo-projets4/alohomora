@@ -1,12 +1,14 @@
 package fr.alohomora.controller;
 
 import fr.alohomora.App;
+import fr.alohomora.Configuration;
 import fr.alohomora.crypto.RSAObject;
 import fr.alohomora.database.Database;
 import fr.alohomora.model.Challenge;
+import fr.alohomora.model.Config;
 import fr.alohomora.model.User;
-import fr.alohomora.model.retrofitlistener.RetrofitListenerChallenge;
 import fr.alohomora.model.retrofitlistener.RetrofitListenerUser;
+import fr.alohomora.model.retrofitlistener.RetrofitListenerChallenge;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -17,13 +19,13 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 import javax.xml.bind.DatatypeConverter;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.security.*;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
 /**
@@ -48,6 +50,7 @@ public class ConnectController {
 
 	private RSAObject obj;
 	private User user;
+	private boolean connected;
 	@FXML
 	private TextField username;
 	@FXML
@@ -56,13 +59,27 @@ public class ConnectController {
 	private Button login;
 	@FXML
 	private ChoiceBox server;
+	@FXML
+	private HBox usernameFieldLabel;
+	@FXML
+	private VBox parentField;
 
 
 	@FXML
 	public void initialize() {
-		this.onLoginClick();
-		this.onKeyPressedLogin(username);
-		this.onKeyPressedLogin(this.password);
+
+		Configuration.LOGIN_TOKEN =  Database.getInstance().getToken();
+		this.connected = Configuration.LOGIN_TOKEN != null;
+		if (this.connected) {
+			this.parentField.getChildren().remove(this.usernameFieldLabel);
+			this.login.setText("Open database");
+			this.onOpenDataBaseClick();
+			this.onKeyPressedDataBase();
+		} else {
+			this.onLoginClick();
+			this.onKeyPressedLogin(username);
+			this.onKeyPressedLogin(this.password);
+		}
 
 
 		/**
@@ -99,6 +116,47 @@ public class ConnectController {
 		 this.obj.kill();
 		 **/
 	}
+	public void onOpenDataBaseClick(){
+		this.login.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				if (event.getButton() == MouseButton.PRIMARY) {
+					System.out.println("onDatabaseClick");
+					ConnectController.this.openDataBase();
+				}
+			}
+		});
+	}
+
+	public void onKeyPressedDataBase(){
+		this.password.setOnKeyPressed(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent event) {
+				if (event.getCode() == KeyCode.ENTER) {
+					System.out.println("onKeyPressedDatabase");
+					ConnectController.this.openDataBase();
+				}
+			}
+		});
+	}
+
+	/**
+	 * decrypt dataBase and load interface
+	 */
+	public void openDataBase(){
+		if(checkEmpty(this.password)) {
+			/**
+			 * @TODO decrypt database and getUpdate
+			 */
+			try {
+				App.setScene(FXMLLoader.load(getClass().getClassLoader().getResource("fxml/interface.fxml")), new String[]{"assets/css/main.css", "assets/css/interface.css"});
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+	}
+
 
 	/**
 	 * Check TextInput is empty or not and add css class "empty" and return true or false
@@ -163,12 +221,13 @@ public class ConnectController {
 				@Override
 				public void onChallengeLoad(Challenge challenge) {
 					String passCodeHash = ConnectController.this.hashPasscode(challenge.getChallenge());
-					User.challengeConnect(new RetrofitListenerUser() {
+
+					RetrofitListenerUser callback = new RetrofitListenerUser() {
 						@Override
-						public void onUserLoad(User user) {
+						public void callback(User user) {
 							if (user != null) {
 								//add token in local DB
-								Database.getInstance().insertToken(user.getUsername(),user.getToken());
+								Database.getInstance().insertConfig(user.getUsername(), user.getToken(), true);
 
 								//change view
 								Platform.runLater(new Runnable() {
@@ -182,40 +241,33 @@ public class ConnectController {
 									}
 								});
 							} else {
-								Platform.runLater(new Runnable() {
-									@Override
-									public void run() {
-										Alert alert = new Alert(Alert.AlertType.WARNING);
-										alert.setContentText("password or user false");
-										alert.showAndWait();
-									}
+								Platform.runLater(() -> {
+									Alert alert = new Alert(Alert.AlertType.WARNING);
+									alert.setContentText("password or user false");
+									alert.showAndWait();
 								});
 							}
 						}
 
 						@Override
 						public void error(String msg) {
-							Platform.runLater(new Runnable() {
-								@Override
-								public void run() {
-									Alert alert = new Alert(Alert.AlertType.WARNING);
-									alert.setContentText("Network error");
-									alert.showAndWait();
-								}
+							Platform.runLater(() -> {
+								Alert alert = new Alert(Alert.AlertType.WARNING);
+								alert.setContentText("Network error");
+								alert.showAndWait();
 							});
 						}
-					}, passCodeHash, challenge.getID(), ConnectController.this.obj.formatServer(), "test");
+					};
+
+					User.challengeConnect(callback, passCodeHash, challenge.getID(), ConnectController.this.obj.formatServer(), "test");
 				}
 
 				@Override
 				public void error(String msg) {
-					Platform.runLater(new Runnable() {
-						@Override
-						public void run() {
-							Alert alert = new Alert(Alert.AlertType.WARNING);
-							alert.setContentText("Network error");
-							alert.showAndWait();
-						}
+					Platform.runLater(() -> {
+						Alert alert = new Alert(Alert.AlertType.WARNING);
+						alert.setContentText("Network error");
+						alert.showAndWait();
 					});
 				}
 			});

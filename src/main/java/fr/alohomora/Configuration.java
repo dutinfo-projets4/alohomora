@@ -1,7 +1,9 @@
 package fr.alohomora;
 
+import fr.alohomora.database.Database;
 import fr.alohomora.model.Config;
 
+import javax.print.DocFlavor;
 import java.io.File;
 import java.io.IOException;
 
@@ -26,6 +28,8 @@ import java.io.IOException;
 public class Configuration {
 
 	public static String SOFTWARE_NAME = "Alohomora";
+	public static String LOGIN_TOKEN;
+	public static String BASE_PATH;
 	public static boolean PORTABLE = false;
 	public static File KEYS_FOLDER, DB_FILE;
 
@@ -42,9 +46,7 @@ public class Configuration {
 
 		Configuration.KEYS_FOLDER = Configuration.createFolder("keys");
 		Configuration.DB_FILE	  = Configuration.createFile("alohomora.db");
-
-
-
+		Configuration.BASE_PATH = "http://localhost:8000/";
 	}
 
 	/**
@@ -97,5 +99,6 @@ public class Configuration {
 
 		return f;
 	}
+
 
 }

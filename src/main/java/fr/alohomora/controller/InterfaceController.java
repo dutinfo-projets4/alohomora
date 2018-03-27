@@ -1,5 +1,7 @@
 package fr.alohomora.controller;
 
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import fr.alohomora.model.Element;
 import fr.alohomora.model.Group;
 import fr.alohomora.view.PanePassword;
@@ -9,9 +11,20 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TreeView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.control.TextField;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.FXCollections;
+import javafx.collections.transformation.SortedList;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.text.Font;
+import org.controlsfx.control.textfield.CustomTextField;
+
+import java.util.Iterator;
+
 
 /**
  * Alohomora Password Manager
@@ -50,6 +63,17 @@ public class InterfaceController {
 	private PanePassword passwordPanel;
 
 	@FXML
+	private TextField research;
+
+	@FXML
+	private TableView<Element> results;
+
+	@FXML
+	private TableColumn<Element, String> ColumnResult;
+
+	private ObservableList<Element> obsElement = FXCollections.observableArrayList();
+
+	@FXML
 	public void initialize() {
 		// -------------------------- TEMPORARY STUFF --------------------------
 
@@ -70,6 +94,28 @@ public class InterfaceController {
 		g.addGroup(groupWithSub);
 
 		this.groups.setRoot(g);
+
+		// Filtered list here
+		FilteredList<Element> filteredElements = new FilteredList<Element>(this.obsElement);
+		research.textProperty().addListener((observable, oldvalue, newvalue)-> {
+			onClickAllElement(null);
+			Iterator ite = this.sites.getItems().iterator();
+			// if the user wants to delete a character, results of the research are reinitialized
+			if(oldvalue.length() <= newvalue.length()){
+			while(ite.hasNext()) {
+			Element e = (Element) ite.next();
+				if (!e.getLabel().toLowerCase().contains(newvalue.toLowerCase()) && !(e.getUsername().toLowerCase().contains(newvalue.toLowerCase()))) {
+					ite.remove();
+				}
+			  }
+			}
+		});
+
+		//FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.CLOSE);
+		//this.research.setRight(icon);
+		this.research.setPromptText("\uf002 Search");
+		this.research.getStyleClass().add("researchBar");
+
 
 		// -------------------------- DEFINITIVE STUFF --------------------------
 		InterfaceController._INSTANCE = this;
@@ -128,4 +174,8 @@ public class InterfaceController {
 		return InterfaceController._INSTANCE;
 	}
 
+
+	@FXML
+	public void onTap(KeyEvent e){
+	}
 }

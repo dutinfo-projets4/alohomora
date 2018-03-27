@@ -1,8 +1,9 @@
 package fr.alohomora.model;
 
-import fr.alohomora.model.retrofitlistener.RetrofitListenerChallenge;
+import fr.alohomora.App;
 import fr.alohomora.model.retrofitlistener.RetrofitListenerUser;
-import fr.alohomora.model.apiservice.Api;
+import fr.alohomora.model.retrofitlistener.RetrofitListenerChallenge;
+import javafx.util.Pair;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -91,11 +92,11 @@ public class User {
 		return tokens;
 	}
 
-	public ArrayList<Group> getGroups(){
+	public ArrayList<Group> getGroups() {
 		return this.data.getGroups();
 	}
 
-	public ArrayList<Element> getElement(){
+	public ArrayList<Element> getElement() {
 		return this.data.getElements();
 	}
 
@@ -105,22 +106,28 @@ public class User {
 	 * Permet de recevoir une instance complète de user contenant l'ensemble de toute ces informations
 	 * Attention les groupes et les éléments ce trouve dans une array il faut les retrier
 	 *
-	 * @param callback    Permet de passer une instance de l'utilisateur si l'identtification se fait avec succès
-	 * @param passcode    SHA512(SHA512(username) + idChallenge + SHA512(password))
-	 * @param challenge   id du challenge
-	 * @param publickey   clef public de l'utilisateur générer lors de la premère connexion sur une nouvelle machine
-	 * @param machineName nom de la nouvelle machine
+	 * @param callback     Permet de passer une instance de l'utilisateur si l'identtification se fait avec succès
+	 * @param passcode     SHA512(SHA512(username) + idChallenge + SHA512(password))
+	 * @param challenge    id du challenge
+	 * @param public_key   clef public de l'utilisateur générer lors de la premère connexion sur une nouvelle machine
+	 * @param machine_name nom de la nouvelle machine
 	 */
-	public static void challengeConnect(final RetrofitListenerUser callback, String passcode, int challenge, String publickey, String machineName) {
-		Api apiService = new Api();
-		Call<User> call = apiService.getAlohomoraService().connect(passcode, challenge, publickey, machineName);
+	public static void challengeConnect(final RetrofitListenerUser callback, String passcode, String challenge, String public_key, String machine_name) {
+		Pair<String, String> params[] = new Pair[]{
+				new Pair("passcode", passcode),
+				new Pair("challenge", challenge),
+				new Pair("public_key", public_key),
+				new Pair("machine_name", machine_name)
+		};
+
+		Call<User> call = App.getAPI().connect(params);
 		call.enqueue(new Callback<User>() {
 			@Override
 			public void onResponse(Call<User> call, Response<User> response) {
 				if (response.code() == 200)
-					callback.onUserLoad(response.body());
+					callback.callback(response.body());
 				else
-					callback.onUserLoad(null);
+					callback.callback(null);
 
 			}
 
@@ -140,8 +147,7 @@ public class User {
 	 * @param callback Permet de passer une instance de Challenge si succès sinon null
 	 */
 	public static void getChallenge(final RetrofitListenerChallenge callback) {
-		Api apiService = new Api();
-		Call<Challenge> call = apiService.getAlohomoraService().getChallenge();
+		Call<Challenge> call = App.getAPI().getChallenge();
 		call.enqueue(new Callback<Challenge>() {
 			@Override
 			public void onResponse(Call<Challenge> call, Response<Challenge> response) {

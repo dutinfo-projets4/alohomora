@@ -1,11 +1,14 @@
 package fr.alohomora.model;
 
+import fr.alohomora.App;
 import fr.alohomora.model.apiservice.Api;
+import fr.alohomora.model.retrofitlistener.RetrofitListenerUser;
 import fr.alohomora.model.retrofitlistener.RetrofitListnerElement;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.util.Pair;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -116,8 +119,12 @@ public class Element {
 	 * @param  content
 	 */
 	public void addElement(final RetrofitListnerElement callback, int parent_grp, String content){
+		Pair<String, String>[] params = new Pair []{
+				new Pair("parent_grp", parent_grp),
+				new Pair("content", content)
+		};
 		Api apiService = new Api();
-		Call<Integer> call = apiService.getAlohomoraService().addElement(parent_grp, content);
+		Call<Integer> call = App.getAPI().addElement(params);
 		call.enqueue(new Callback<Integer>() {
 			@Override
 			public void onResponse(Call<Integer> call, Response<Integer> response) {

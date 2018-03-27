@@ -1,9 +1,13 @@
 
 
+import fr.alohomora.App;
 import fr.alohomora.Configuration;
+import fr.alohomora.database.Database;
 import fr.alohomora.model.Challenge;
+import fr.alohomora.model.Config;
 import fr.alohomora.model.User;
 import fr.alohomora.model.apiservice.Api;
+import javafx.util.Pair;
 import org.junit.Before;
 import org.junit.Test;
 import retrofit2.Call;
@@ -40,17 +44,17 @@ import static org.junit.Assert.fail;
  **/
 public class UserTest {
 
+	private Api API;
+
 	@Before
 	public void init(){
 		Configuration.load(new String[]{});
-
+		this.API = new Api();
 	}
 
 	@Test
 	public void getChallengeCheckCode() {
-
-		Api apiService = new Api();
-		Call<Challenge> call = apiService.getAlohomoraService().getChallenge();
+		Call<Challenge> call = this.API.getChallenge();
 		try {
 			Response<Challenge> response = call.execute();
 			assertEquals(response.code(), 200);
@@ -61,9 +65,7 @@ public class UserTest {
 
 	@Test
 	public void getChallengeCheckChallenge() {
-
-		Api apiService = new Api();
-		Call<Challenge> call = apiService.getAlohomoraService().getChallenge();
+		Call<Challenge> call = this.API.getChallenge();
 		try {
 			Response<Challenge> response = call.execute();
 			assertNotNull(response.body().getChallenge());
@@ -75,12 +77,10 @@ public class UserTest {
 
 	@Test
 	public void checkUserConnexion() {
-		String challenge = null;
-		int challengeID = 0;
+		String challenge, challengeID = "0";
 		String passCodeHash = null;
-		Api apiService = new Api();
 		try {
-			Call<Challenge> call = apiService.getAlohomoraService().getChallenge();
+			Call<Challenge> call = this.API.getChallenge();
 			Response<Challenge> response = call.execute();
 			challenge = response.body().getChallenge();
 			challengeID = response.body().getID();
@@ -105,7 +105,14 @@ public class UserTest {
 			e.printStackTrace();
 		}
 		if (passCodeHash != null){
-			Call<User> call = apiService.getAlohomoraService().connect(passCodeHash.toLowerCase(),challengeID,"1","test");
+			Pair<String, String> a[] = new Pair[]{
+					new Pair("passcode", passCodeHash.toLowerCase()),
+					new Pair("challenge", challengeID),
+					new Pair("public_key", "1"),
+					new Pair("machine_name", "1")
+			};
+
+			Call<User> call = this.API.connect(a);
 			try {
 				Response<User> response = call.execute();
 				System.out.println(response.code());
@@ -117,8 +124,13 @@ public class UserTest {
 
 	@Test
 	public void addElement(){
-		Api apiService = new Api();
-		Call<Integer> call = apiService.getAlohomoraService().addElement(123, "test");
+		Pair<String, String> [] param = new Pair[]{
+				new Pair("parent_grp", "123"),
+				new Pair("content", "test")
+		};
+		Configuration.LOGIN_TOKEN = Database.getInstance().getToken();
+
+		Call<Integer> call = this.API.addElement(param);
 		Response <Integer> response = null;
 		try {
 			 response = call.execute();

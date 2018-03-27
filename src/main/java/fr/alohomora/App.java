@@ -1,6 +1,6 @@
 package fr.alohomora;
 
-import fr.alohomora.database.Database;
+import fr.alohomora.model.apiservice.Api;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -8,8 +8,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-
-import java.sql.Statement;
 
 /**
  * Alohomora Password Manager
@@ -30,12 +28,19 @@ import java.sql.Statement;
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  **/
 public class App extends Application {
+
+	private static App _INSTANCE;
+	private Api api;
 	private static Stage primaryStage;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 
+		App._INSTANCE = this;
+		this.api = new Api();
+
 		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/connection.fxml"));
+		//Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/interface.fxml"));
 		primaryStage.setMinWidth(768);
 		primaryStage.setMinHeight(453);
 		primaryStage.setTitle("Alohomora");
@@ -56,11 +61,15 @@ public class App extends Application {
 			System.exit(0);
 		});
 		App.primaryStage = primaryStage;
-
-
-
 	}
 
+	public static App getInstance() {
+		return App._INSTANCE;
+	}
+
+	public static Api getAPI() {
+		return App._INSTANCE.api;
+	}
 
 	public static void main(String[] args) {
 		Configuration.load(args);
@@ -77,5 +86,7 @@ public class App extends Application {
 		Scene newScene = new Scene(root, oldScene.getWidth(), oldScene.getHeight());
 		newScene.getStylesheets().addAll(css);
 		App.primaryStage.setScene(newScene);
+
+
 	}
 }
