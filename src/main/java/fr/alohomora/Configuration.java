@@ -25,6 +25,7 @@ import java.io.File;
 public class Configuration {
 
 	public static String SOFTWARE_NAME = "Alohomora";
+	public static String LOGIN_TOKEN;
 	public static boolean PORTABLE = false;
 	public static File KEYS_FOLDER, DB_FILE;
 
@@ -41,7 +42,7 @@ public class Configuration {
 
 		Configuration.KEYS_FOLDER = Configuration.createFolder("keys");
 		Configuration.DB_FILE	  = new File(Configuration.getWorkingDirectory(), "alohomora.db");
-
+		Configuration.LOGIN_TOKEN = ""; // @TODO: charger le token
 	}
 
 	/**
