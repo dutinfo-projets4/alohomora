@@ -2,6 +2,7 @@ package fr.alohomora.model.apiservice;
 
 
 import okhttp3.HttpUrl;
+import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
 
@@ -54,6 +55,7 @@ public class InterceptorHeader implements okhttp3.Interceptor {
 		HttpUrl urlHttp = request.url();
 		String method = request.method();
 		String[] url = urlHttp.toString().split("/");
+
 
 		//add userAgent
 		this.newRequest = request.newBuilder()
