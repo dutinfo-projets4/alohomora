@@ -136,7 +136,6 @@ public class PanePassword extends VBox {
 
 	private void handleSave(){
 		if(this.currElement != null){
-
 			this.currElement.setLabel(this.title.getText());
 			this.currElement.setPassword(this.password.getText());
 			this.currElement.setUsername(this.username.getText());

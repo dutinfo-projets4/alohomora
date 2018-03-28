@@ -2,6 +2,7 @@ package fr.alohomora.controller;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import fr.alohomora.crypto.RSAObject;
 import fr.alohomora.model.Element;
 import fr.alohomora.model.Group;
 import fr.alohomora.view.PanePassword;
@@ -12,15 +13,19 @@ import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.control.TextField;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.FXCollections;
 import javafx.collections.transformation.SortedList;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.text.Font;
 import org.controlsfx.control.textfield.CustomTextField;
-
 import java.util.Iterator;
+import java.util.Optional;
 
 
 /**
@@ -63,19 +68,12 @@ public class InterfaceController {
 	private TextField research;
 
 	@FXML
-	private TableView<Element> results;
-
-	@FXML
-	private TableColumn<Element, String> ColumnResult;
-
-	@FXML
 	private Label addElement;
 
-
+	@FXML
+	private Label addGroup;
 
 	private ObservableList<Element> obsElement = FXCollections.observableArrayList();
-
-
 
 	@FXML
 	public void initialize() {
@@ -118,11 +116,11 @@ public class InterfaceController {
 			}
 		});
 
-		//FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.CLOSE);
-		//this.research.setRight(icon);
 		this.research.setPromptText("\uf002 Search");
 		this.research.getStyleClass().add("researchBar");
 
+		this.addElement.setText("\uf067");
+		this.addGroup.setText("\uf067");
 
 		// -------------------------- DEFINITIVE STUFF --------------------------
 		InterfaceController._INSTANCE = this;
@@ -136,6 +134,7 @@ public class InterfaceController {
 		this.onClickAllElement(null);
 		this.groups.getSelectionModel().getSelectedItem();
 	    this.addElementInSelectedGroup();
+	    this.addGroupInSelectedGroup();
 	}
 
 	public void addElementInSelectedGroup(){
@@ -146,6 +145,25 @@ public class InterfaceController {
 				// @TODO get id of element from bd
 				groupSelected.addElement(new Element(1, groupSelected, "empty", "", "empty", "empty"));
 				//update view
+				InterfaceController.this.onGroupClick(null);
+			}
+		});
+	}
+
+	public void addGroupInSelectedGroup(){
+		this.addGroup.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent mouseEvent) {
+				Group groupSelected = (Group) InterfaceController.this.groups.getSelectionModel().getSelectedItem();
+				TextInputDialog dialog = new TextInputDialog("name");
+				dialog.setTitle("Enter the group name");
+				dialog.setHeaderText("Enter the group name");
+				dialog.setContentText("Enter a group name");
+				Optional<String> result = dialog.showAndWait();
+					if (result.isPresent()){
+						groupSelected.addGroup(new Group(9, result.get() ,""));
+					}
+				// update view
 				InterfaceController.this.onGroupClick(null);
 			}
 		});
@@ -181,6 +199,26 @@ public class InterfaceController {
 			this.sites.getSelectionModel().select(elements.get(0));
 		}
 		this.onSitesClick(null);
+
+		groups.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent click) {
+				if (click.getClickCount() == 2) {
+					TextInputDialog dialog = new TextInputDialog("name");
+					dialog.setTitle("Change the group name");
+					dialog.setHeaderText("Change the group name");
+					dialog.setContentText("Enter a group name");
+					Group selectedItem = (Group) InterfaceController.this.groups.getSelectionModel().getSelectedItem();
+					Optional<String> result = dialog.showAndWait();
+						if (result.isPresent()){
+							String name = "" + result;
+							selectedItem.setName((String) name);
+							// cannot update the name of the group in the interface
+						}
+
+				}
+			}
+		});
 	}
 
 	@FXML
@@ -193,10 +231,5 @@ public class InterfaceController {
 	 */
 	public static InterfaceController getInstance(){
 		return InterfaceController._INSTANCE;
-	}
-
-
-	@FXML
-	public void onTap(KeyEvent e){
 	}
 }
