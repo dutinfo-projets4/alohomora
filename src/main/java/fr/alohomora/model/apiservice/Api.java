@@ -68,5 +68,10 @@ public class Api {
 		return this.service.connect(params[0].getValue(), params[1].getValue(), params[2].getValue(), params[3].getValue());
 	}
 
+	public Call<Integer> addElement(Pair<String, String>[] params){
+		this.setParams(params);
+		return this.service.addElement(params[0].getValue(), params[1].getValue());
+	}
+
 
 }

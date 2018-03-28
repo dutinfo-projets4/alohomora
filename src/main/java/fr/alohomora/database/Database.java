@@ -1,13 +1,10 @@
 package fr.alohomora.database;
 
 import fr.alohomora.Configuration;
-import fr.alohomora.model.Config;
-import fr.alohomora.model.Data;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.io.*;
+import java.sql.*;
+import java.util.Scanner;
 
 /**
  * Alohomora Password Manager
@@ -36,6 +33,8 @@ public class Database {
 	private Database() {
 		try {
 			this.con = DriverManager.getConnection("jdbc:sqlite:" + Configuration.DB_FILE.getAbsolutePath());
+			if (this.checkTable())
+				this.loadSqlScript();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -46,7 +45,7 @@ public class Database {
 	}
 
 	public void close() {
-		if (this.con != null){
+		if (this.con != null) {
 			try {
 				this.con.close();
 			} catch (SQLException e) {
@@ -56,10 +55,119 @@ public class Database {
 	}
 
 
-	public static Database getInstance(){
+	public static Database getInstance() {
 		if (Database._INSTANCE == null)
 			Database._INSTANCE = new Database();
 		return Database._INSTANCE;
 	}
 
+	/**
+	 * load the the script's table of the database from the ressources folders
+	 */
+	public void loadSqlScript() {
+		StringBuilder sqlScript = new StringBuilder();
+		Statement st = null;
+		try {
+			st = this.con.createStatement();
+			ClassLoader classLoader = getClass().getClassLoader();
+			File filesql = new File(classLoader.getResource("assets/sql/db_generation.sql").getFile());
+			Scanner scanner = new Scanner(filesql);
+			while (scanner.hasNextLine()) {
+				String line = scanner.nextLine();
+				sqlScript.append(line).append("\n");
+			}
+			scanner.close();
+			for (String e : sqlScript.toString().split(";")) {
+				st.execute(e);
+			}
+
+			st.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * check if the table exist true if the table not exist
+	 *
+	 * @return boolean
+	 */
+	public boolean checkTable() {
+		int nbTable = 0;
+		try {
+			Statement st = this.con.createStatement();
+			ResultSet rs = st.executeQuery("SELECT COUNT(name) FROM sqlite_master;");
+			while (rs.next()) {
+				nbTable = rs.getInt("COUNT(name)");
+			}
+			st.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return nbTable == 0 ? true : false;
+	}
+
+	/**
+	 * Insert token in DB
+	 * @param username
+	 * @param token
+	 * @return
+	 */
+	public boolean insertConfig(String username, String token, boolean portable){
+		boolean res = false;
+		try{
+			PreparedStatement prepStmt = this.con.prepareStatement("INSERT INTO config (username, token, portable) VALUES ( ?, ?, ?)");
+			prepStmt.setString(1, username);
+			prepStmt.setString(2, token);
+			prepStmt.setBoolean(3, portable);
+			res = prepStmt.execute();
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+		return res;
+	}
+
+	/**
+	 * get Token in DB
+	 * @return token
+	 */
+	public String getToken(){
+		String res = null;
+		try {
+			Statement st = this.con.createStatement();
+			ResultSet rs = st.executeQuery("SELECT token FROM config WHERE idConfig = 1");
+			while (rs.next()) {
+				res = rs.getString("token");
+			}
+			st.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		System.out.print(res);
+		return res;
+	}
+
+	/**
+	 * get username in DB
+	 * @return username
+	 */
+	public String getUsername(){
+		String res = null;
+		try {
+			Statement st = this.con.createStatement();
+			ResultSet rs = st.executeQuery("SELECT username FROM config WHERE idConfig = 1");
+			while (rs.next()) {
+				res = rs.getString("username");
+			}
+			st.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		System.out.print(res);
+		return res;
+	}
 }

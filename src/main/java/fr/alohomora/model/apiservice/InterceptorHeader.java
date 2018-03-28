@@ -4,8 +4,10 @@ package fr.alohomora.model.apiservice;
 import com.google.gson.Gson;
 import fr.alohomora.Configuration;
 import fr.alohomora.crypto.RSAObject;
+import fr.alohomora.database.Database;
 import javafx.util.Pair;
 import okhttp3.HttpUrl;
+import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.json.simple.JSONObject;
@@ -41,6 +43,7 @@ public class InterceptorHeader implements okhttp3.Interceptor {
 				{"users", "GET", "POST", "PUT"},
 				{"challenge", "GET"}
 		};
+
 	private Pair<String,String>[] map;
 
 	/**
@@ -64,6 +67,7 @@ public class InterceptorHeader implements okhttp3.Interceptor {
 		String method = request.method();
 		String[] url = urlHttp.toString().split("/");
 
+
 		//add userAgent
 		Request.Builder builder = request.newBuilder().addHeader("User-Agent", "ALOHOMORA-DESKTOP");
 
@@ -76,9 +80,8 @@ public class InterceptorHeader implements okhttp3.Interceptor {
 				}
 			}
 		}
-
 		//add signature & token
-		builder.addHeader("X-ALOHOMORA-TOKEN", Configuration.LOGIN_TOKEN);
+		builder.addHeader("X-ALOHOMORA-TOKEN", Database.getInstance().getToken());
 
 		JSONObject obj = new JSONObject();
 
@@ -88,7 +91,7 @@ public class InterceptorHeader implements okhttp3.Interceptor {
 
 		RSAObject rsa = null;
 		try {
-			rsa = new RSAObject("key");
+			rsa = new RSAObject(Database.getInstance().getUsername());
 			builder.addHeader("X-ALOHOMORA-SIGNATURE", rsa.sign(obj.toJSONString()));
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();

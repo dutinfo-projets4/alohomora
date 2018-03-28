@@ -1,6 +1,8 @@
 
 
+import fr.alohomora.App;
 import fr.alohomora.Configuration;
+import fr.alohomora.database.Database;
 import fr.alohomora.model.Challenge;
 import fr.alohomora.model.Config;
 import fr.alohomora.model.User;
@@ -15,7 +17,6 @@ import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
 
 
 import static junit.framework.TestCase.assertEquals;
@@ -85,16 +86,19 @@ public class UserTest {
 			challengeID = response.body().getID();
 			MessageDigest messageDigest = MessageDigest.getInstance("SHA-512");
 			// hash(username)
-			String usernameHash = DatatypeConverter.printHexBinary(messageDigest.digest("toto".getBytes()));
+			String usernameHash = DatatypeConverter.printHexBinary(messageDigest.digest("toto".getBytes())).toLowerCase();
 			// hash(password)
-			String passwordHash = DatatypeConverter.printHexBinary(messageDigest.digest("toto".getBytes()));
+			String passwordHash = DatatypeConverter.printHexBinary(messageDigest.digest("toto".getBytes())).toLowerCase();
 			// hash(passwordHash)
-			passwordHash = DatatypeConverter.printHexBinary(messageDigest.digest(passwordHash.toLowerCase().getBytes()));
-
+			System.out.println(passwordHash);
+			passwordHash = DatatypeConverter.printHexBinary(messageDigest.digest(passwordHash.getBytes())).toLowerCase();
+			System.out.println(passwordHash);
 			String passcode = usernameHash.toLowerCase() + challenge + passwordHash.toLowerCase();
 
 			//hash(passcode)
-			passCodeHash = DatatypeConverter.printHexBinary(messageDigest.digest(passcode.getBytes()));
+			passCodeHash = DatatypeConverter.printHexBinary(messageDigest.digest(passcode.getBytes())).toLowerCase();
+			System.out.println(passCodeHash);
+
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -111,12 +115,32 @@ public class UserTest {
 			Call<User> call = this.API.connect(a);
 			try {
 				Response<User> response = call.execute();
-				System.out.print(response.code());
+				System.out.println(response.code());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
 	}
+
+	@Test
+	public void addElement(){
+		Pair<String, String> [] param = new Pair[]{
+				new Pair("parent_grp", "123"),
+				new Pair("content", "test")
+		};
+		Configuration.LOGIN_TOKEN = Database.getInstance().getToken();
+
+		Call<Integer> call = this.API.addElement(param);
+		Response <Integer> response = null;
+		try {
+			 response = call.execute();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		System.out.print(response.code());
+	}
+
+
 
 }
 

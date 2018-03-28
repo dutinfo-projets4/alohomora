@@ -7,19 +7,15 @@ import fr.alohomora.model.Group;
 import fr.alohomora.view.PanePassword;
 import fr.alohomora.view.PasswordCellFactory;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-import javafx.scene.control.TextField;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.FXCollections;
 import javafx.collections.transformation.SortedList;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.text.Font;
 import org.controlsfx.control.textfield.CustomTextField;
 
@@ -65,17 +61,6 @@ public class InterfaceController {
 	@FXML
 	private TextField research;
 
-	@FXML
-	private TableView<Element> results;
-
-	@FXML
-	private TableColumn<Element, String> ColumnResult;
-
-	@FXML
-	private Label addElement;
-
-
-
 	private ObservableList<Element> obsElement = FXCollections.observableArrayList();
 
 	@FXML
@@ -83,9 +68,6 @@ public class InterfaceController {
 
 	@FXML
 	public void initialize() {
-		/**
-		 * @TODO decrypt with password database and load group and element from database
-		 */
 		// -------------------------- TEMPORARY STUFF --------------------------
 
 		Group g = new Group(1, "Key file", "\uf108");
@@ -122,8 +104,6 @@ public class InterfaceController {
 			}
 		});
 
-		//FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.CLOSE);
-		//this.research.setRight(icon);
 		this.research.setPromptText("\uf002 Search");
 		this.research.getStyleClass().add("researchBar");
 
@@ -141,20 +121,6 @@ public class InterfaceController {
 		this.sites.setCellFactory(new PasswordCellFactory());
 		this.onClickAllElement(null);
 		this.groups.getSelectionModel().getSelectedItem();
-	    this.addElementInSelectedGroup();
-	}
-
-	public void addElementInSelectedGroup(){
-		this.addElement.setOnMouseClicked(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				Group groupSelected = (Group)InterfaceController.this.groups.getSelectionModel().getSelectedItem();
-				// @TODO get id of element from bd
-				groupSelected.addElement(new Element(1, groupSelected, "empty", "", "empty", "empty"));
-				//update view
-				InterfaceController.this.onGroupClick(null);
-			}
-		});
 	}
 
 	@FXML
@@ -202,7 +168,4 @@ public class InterfaceController {
 	}
 
 
-	@FXML
-	public void onTap(KeyEvent e){
-	}
 }

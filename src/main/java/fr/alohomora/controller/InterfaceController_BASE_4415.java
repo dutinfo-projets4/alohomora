@@ -7,10 +7,10 @@ import fr.alohomora.model.Group;
 import fr.alohomora.view.PanePassword;
 import fr.alohomora.view.PasswordCellFactory;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.ListView;
+import javafx.scene.control.SplitPane;
+import javafx.scene.control.TreeView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
@@ -71,21 +71,10 @@ public class InterfaceController {
 	@FXML
 	private TableColumn<Element, String> ColumnResult;
 
-	@FXML
-	private Label addElement;
-
-
-
 	private ObservableList<Element> obsElement = FXCollections.observableArrayList();
 
 	@FXML
-	private Label addButton1,addButton2;
-
-	@FXML
 	public void initialize() {
-		/**
-		 * @TODO decrypt with password database and load group and element from database
-		 */
 		// -------------------------- TEMPORARY STUFF --------------------------
 
 		Group g = new Group(1, "Key file", "\uf108");
@@ -127,8 +116,6 @@ public class InterfaceController {
 		this.research.setPromptText("\uf002 Search");
 		this.research.getStyleClass().add("researchBar");
 
-		this.addButton1.setText("\uf067");
-		this.addButton2.setText("\uf067");
 
 		// -------------------------- DEFINITIVE STUFF --------------------------
 		InterfaceController._INSTANCE = this;
@@ -141,20 +128,6 @@ public class InterfaceController {
 		this.sites.setCellFactory(new PasswordCellFactory());
 		this.onClickAllElement(null);
 		this.groups.getSelectionModel().getSelectedItem();
-	    this.addElementInSelectedGroup();
-	}
-
-	public void addElementInSelectedGroup(){
-		this.addElement.setOnMouseClicked(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				Group groupSelected = (Group)InterfaceController.this.groups.getSelectionModel().getSelectedItem();
-				// @TODO get id of element from bd
-				groupSelected.addElement(new Element(1, groupSelected, "empty", "", "empty", "empty"));
-				//update view
-				InterfaceController.this.onGroupClick(null);
-			}
-		});
 	}
 
 	@FXML

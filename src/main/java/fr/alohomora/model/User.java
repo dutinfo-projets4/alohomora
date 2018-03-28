@@ -1,7 +1,7 @@
 package fr.alohomora.model;
 
 import fr.alohomora.App;
-import fr.alohomora.model.retrofitlistener.RetrofitListener;
+import fr.alohomora.model.retrofitlistener.RetrofitListenerUser;
 import fr.alohomora.model.retrofitlistener.RetrofitListenerChallenge;
 import javafx.util.Pair;
 import retrofit2.Call;
@@ -112,7 +112,7 @@ public class User {
 	 * @param public_key   clef public de l'utilisateur générer lors de la premère connexion sur une nouvelle machine
 	 * @param machine_name nom de la nouvelle machine
 	 */
-	public static void challengeConnect(final RetrofitListener callback, String passcode, String challenge, String public_key, String machine_name) {
+	public static void challengeConnect(final RetrofitListenerUser callback, String passcode, String challenge, String public_key, String machine_name) {
 		Pair<String, String> params[] = new Pair[]{
 				new Pair("passcode", passcode),
 				new Pair("challenge", challenge),

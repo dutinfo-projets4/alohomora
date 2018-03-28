@@ -39,8 +39,8 @@ public class App extends Application {
 		App._INSTANCE = this;
 		this.api = new Api();
 
-		//Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/connection.fxml"));
-		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/interface.fxml"));
+		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/connection.fxml"));
+		//Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/interface.fxml"));
 		primaryStage.setMinWidth(768);
 		primaryStage.setMinHeight(453);
 		primaryStage.setTitle("Alohomora");
@@ -51,7 +51,7 @@ public class App extends Application {
 		Font.loadFont(getClass().getClassLoader().getResource("assets/hf_bi.ttf").toExternalForm(), 15);
 
 		Scene scene = new Scene(root);
-		scene.getStylesheets().addAll("assets/css/main.css", "assets/css/connection.css", "assets/css/interface.css");
+		scene.getStylesheets().addAll("assets/css/main.css", "assets/css/connection.css");
 		primaryStage.setScene(scene);
 		primaryStage.show();
 
@@ -84,6 +84,9 @@ public class App extends Application {
 	public static void setScene(Parent root, String[] css) {
 		Scene oldScene = App.primaryStage.getScene();
 		Scene newScene = new Scene(root, oldScene.getWidth(), oldScene.getHeight());
+		newScene.getStylesheets().addAll(css);
 		App.primaryStage.setScene(newScene);
+
+
 	}
 }

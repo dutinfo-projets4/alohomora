@@ -10,16 +10,17 @@ import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.fxml.FXML;
+<<<<<<< HEAD
+import javafx.scene.Node;
+=======
+>>>>>>> 26e1e469c732a4ed05de768c84af9e9bb5e61be0
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-import javafx.scene.control.TextField;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.FXCollections;
 import javafx.collections.transformation.SortedList;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.text.Font;
 import org.controlsfx.control.textfield.CustomTextField;
 
@@ -65,10 +66,12 @@ public class InterfaceController {
 	@FXML
 	private TextField research;
 
-	@FXML
-	private TableView<Element> results;
+	private ObservableList<Element> obsElement = FXCollections.observableArrayList();
 
 	@FXML
+<<<<<<< HEAD
+	private Label addButton1,addButton2;
+=======
 	private TableColumn<Element, String> ColumnResult;
 
 	@FXML
@@ -77,9 +80,9 @@ public class InterfaceController {
 
 
 	private ObservableList<Element> obsElement = FXCollections.observableArrayList();
+>>>>>>> 26e1e469c732a4ed05de768c84af9e9bb5e61be0
 
-	@FXML
-	private Label addButton1,addButton2;
+
 
 	@FXML
 	public void initialize() {
@@ -122,8 +125,6 @@ public class InterfaceController {
 			}
 		});
 
-		//FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.CLOSE);
-		//this.research.setRight(icon);
 		this.research.setPromptText("\uf002 Search");
 		this.research.getStyleClass().add("researchBar");
 
@@ -202,7 +203,4 @@ public class InterfaceController {
 	}
 
 
-	@FXML
-	public void onTap(KeyEvent e){
-	}
 }
