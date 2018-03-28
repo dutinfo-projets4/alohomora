@@ -1,6 +1,7 @@
 package fr.alohomora.model.apiservice;
 
 import fr.alohomora.Configuration;
+import fr.alohomora.database.Database;
 import fr.alohomora.model.Challenge;
 import fr.alohomora.model.Element;
 import fr.alohomora.model.User;
@@ -70,7 +71,7 @@ public class Api {
 			newParams[i+1] = param[i];
 		}
 
-		newParams[0] = new Pair("req_id", "");
+		newParams[0] = new Pair("req_id", ""+Database.getInstance().getRequestId());
 
 		return newParams;
 	}

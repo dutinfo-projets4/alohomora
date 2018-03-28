@@ -143,7 +143,7 @@ public class PanePassword extends VBox {
 			if(Database.getInstance().checkElementExist(this.currElement.getID())){
 				// @TODO updata database
 			}else {
-				System.out.print("sendElement");config
+				System.out.print("sendElement");
 				Platform.runLater(new Runnable() {
 					@Override
 					public void run() {

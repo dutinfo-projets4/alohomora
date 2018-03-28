@@ -121,7 +121,6 @@ public class Element {
 	 */
 	public void addElement(final RetrofitListnerElement callback, String parent_grp, String content){
 		Pair<String, String>[] params = new Pair []{
-				new Pair("req_id", ""+Database.getInstance().getRequestId()),
 				new Pair("parent_grp", parent_grp),
 				new Pair("content", content)
 		};

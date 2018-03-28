@@ -43,6 +43,5 @@ public interface AlohomoraService {
 	@POST("/element")
 	Call<Element> addElement(@Field("req_id") String req_id,
 	                         @Field("parent_grp") String parent_grp,
-	                         @Field("content") String content
-	                         );
+	                         @Field("content") String content);
 }
