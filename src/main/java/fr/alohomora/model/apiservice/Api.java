@@ -77,13 +77,13 @@ public class Api {
 
 	public Call<User> connect(Pair<String, String>[] params) {
 		this.setParams(params);
-
 		return this.service.connect(params[0].getValue(), params[1].getValue(), params[2].getValue(), params[3].getValue());
 	}
 
 	public Call<Element> addElement(Pair<String, String>[] params){
-		this.setParams(params);
-		return this.service.addElement(params[0].getValue(), params[1].getValue(), params[2].getValue());
+		Pair<String, String>[] np = this.addRequest(params);
+		this.setParams(np);
+		return this.service.addElement(np[0].getValue(), np[1].getValue(), np[2].getValue());
 	}
 
 
