@@ -30,6 +30,7 @@ public class Configuration {
 	public static String SOFTWARE_NAME = "Alohomora";
 	public static String LOGIN_TOKEN;
 	public static String BASE_PATH;
+	public static String PWD;
 	public static boolean PORTABLE = false;
 	public static File KEYS_FOLDER, DB_FILE;
 
@@ -86,7 +87,6 @@ public class Configuration {
 		if (os.indexOf("win") >= 0) {
 			System.out.println("APPDATA");
 		} else if (os.indexOf("mac") >= 0) {
-			System.out.println("Application local machin");
 			String home = System.getProperty("user.home") + "/Library/Application Support";
 			f = new File(home, "alohomora");
 		} else {

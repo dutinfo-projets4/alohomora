@@ -1,15 +1,16 @@
 package fr.alohomora.model;
 
 import fr.alohomora.App;
-import fr.alohomora.database.Database;
+import fr.alohomora.Configuration;
+import fr.alohomora.crypto.CryptoUtil;
 import fr.alohomora.model.apiservice.Api;
-import fr.alohomora.model.retrofitlistener.RetrofitListenerUser;
 import fr.alohomora.model.retrofitlistener.RetrofitListnerElement;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Pair;
+import org.json.simple.JSONObject;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -113,6 +114,7 @@ public class Element {
 	public Element setLabel(String lab) { this.label = lab; return this; }
 	public Element setParentGroup(Group gpe) { this.parentGroup = gpe; return this; }
 	public Element setIcon(String ico) { this.icon = ico; return this; }
+	public Element setID(int id){this.id = id; return this;}
 
 	/**
 	 * Request api to addElement with parent_grp and content pass througout parameters
@@ -129,7 +131,6 @@ public class Element {
 		call.enqueue(new Callback<Element>() {
 			@Override
 			public void onResponse(Call<Element> call, Response<Element> response) {
-				System.out.print(response.code());
 				if(response.code() == 201)
 					callback.onIdLoad(response.body());
 				else
@@ -141,6 +142,20 @@ public class Element {
 			}
 		});
 
+
+	}
+
+	public String getContent(){
+		JSONObject obj = new JSONObject();
+		obj.put("type", "0");
+		obj.put("id", this.getID());
+		obj.put("name", this.label);
+		obj.put("username", this.username);
+		obj.put("password", this.pwd);
+		obj.put("icon", this.icon);
+		System.out.println(obj.toJSONString());
+		System.out.println(CryptoUtil.encrypt(Configuration.PWD, obj.toJSONString()));
+		return CryptoUtil.encrypt(Configuration.PWD, obj.toJSONString());
 
 	}
 

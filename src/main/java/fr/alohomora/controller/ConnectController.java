@@ -122,7 +122,6 @@ public class ConnectController {
 			@Override
 			public void handle(MouseEvent event) {
 				if (event.getButton() == MouseButton.PRIMARY) {
-					System.out.println("onDatabaseClick");
 					ConnectController.this.openDataBase();
 				}
 			}
@@ -134,7 +133,6 @@ public class ConnectController {
 			@Override
 			public void handle(KeyEvent event) {
 				if (event.getCode() == KeyCode.ENTER) {
-					System.out.println("onKeyPressedDatabase");
 					ConnectController.this.openDataBase();
 				}
 			}
@@ -149,6 +147,8 @@ public class ConnectController {
 			/**
 			 * @TODO getUpdate if 403 delete database
 			 */
+
+			Configuration.PWD = this.password.getText();
 			try {
 				App.setScene(FXMLLoader.load(getClass().getClassLoader().getResource("fxml/interface.fxml")), new String[]{"assets/css/main.css", "assets/css/interface.css"});
 			} catch (IOException e) {
@@ -187,7 +187,6 @@ public class ConnectController {
 			@Override
 			public void handle(KeyEvent event) {
 				if (event.getCode() == KeyCode.ENTER) {
-					System.out.println("onKeyPressedLogin");
 					ConnectController.this.connect();
 				}
 			}
@@ -202,7 +201,6 @@ public class ConnectController {
 			@Override
 			public void handle(MouseEvent event) {
 				if (event.getButton() == MouseButton.PRIMARY) {
-					System.out.println("onLoginClik");
 					ConnectController.this.connect();
 				}
 			}
@@ -216,7 +214,7 @@ public class ConnectController {
 		boolean checkFieldPassword = this.checkEmpty(this.password);
 		boolean checkFieldUsername = this.checkEmpty(this.username);
 		if (checkFieldPassword && checkFieldUsername) {
-
+			Configuration.PWD = this.password.getText();
 			this.loadKeys();
 			User.getChallenge(new RetrofitListenerChallenge() {
 				@Override

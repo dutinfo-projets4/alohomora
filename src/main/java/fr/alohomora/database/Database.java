@@ -148,7 +148,6 @@ public class Database {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		System.out.print(res);
 		return res;
 	}
 
@@ -201,8 +200,20 @@ public class Database {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return res;
+	}
 
-
+	public boolean insertElement(int idElement, int parent_grp, String content){
+		boolean res  = false;
+		try{
+			PreparedStatement prepStat = this.con.prepareStatement("INSERT INTO element (idElement, content, idGroupe) VALUES (?,?,?)");
+			prepStat.setInt(1, idElement);
+			prepStat.setString(2, content);
+			prepStat.setInt(3, parent_grp);
+			res = prepStat.execute();
+		}catch (Exception e){
+			e.printStackTrace();
+		}
 		return res;
 	}
 }

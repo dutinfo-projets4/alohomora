@@ -139,11 +139,9 @@ public class PanePassword extends VBox {
 			this.currElement.setLabel(this.title.getText());
 			this.currElement.setPassword(this.password.getText());
 			this.currElement.setUsername(this.username.getText());
-			// @TODO updata database
 			if(Database.getInstance().checkElementExist(this.currElement.getID())){
 				// @TODO updata database
 			}else {
-				System.out.print("sendElement");
 				Platform.runLater(new Runnable() {
 					@Override
 					public void run() {
@@ -151,24 +149,26 @@ public class PanePassword extends VBox {
 							@Override
 							public void onIdLoad(Element element) {
 								if(element == null){
-									System.out.println("Erreur");
+									System.out.println("Erreur d'obtention de l'id d'un élément");
 								}else {
-									System.out.print(element.getID());
-									//@TODO update id currElement
-									// @TODO insert Database
+									//update label
+									PanePassword.this.currElement.setID(element.getID());
+
+									//insert in DB
+									Database.getInstance().insertElement(
+											PanePassword.this.currElement.getID(),
+											PanePassword.this.currElement.getParentGroup().getID(),
+											PanePassword.this.currElement.getContent()); //@TODO Encrypt and parse
 								}
 							}
-
 							@Override
 							public void error(String msg) {
 
 							}
-						}, ""+PanePassword.this.currElement.getParentGroup().getID(), PanePassword.this.username.getText());
-						//@TODO encrypt and map json content
+						}, ""+PanePassword.this.currElement.getParentGroup().getID(), PanePassword.this.currElement.getContent());
+						//@TODO Encrypt and parse
 					}
 				});
-
-
 			}
 			InterfaceController.getInstance().onGroupClick(null);
 		}
