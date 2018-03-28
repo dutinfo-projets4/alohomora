@@ -76,21 +76,7 @@ public class InterfaceController {
 		 */
 		// -------------------------- TEMPORARY STUFF --------------------------
 
-	/*	Group g = new Group(1, "Key file", "\uf108");
-		Group rs = new Group(1, "Réseaux sociaux", "\uf0ac");
-		g.addGroup(rs);
-		rs.addElement(new Element(0, rs, "Facebook", "\uf082", "toto", "toto"));
-		rs.addElement(new Element(1, rs, "Twitter", "\uf099", "toto", "toto"));
-		rs.addElement(new Element(2, rs, "Instagram", "\uf16d", "toto", "toto"));
-		g.addGroup(new Group(2, "Mails", "\uf0e0"));
-		g.addGroup(new Group(3, "Sites achat", "\uf155"));
-
-		Group groupWithSub = new Group(4, "Group4", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAnCAYAAABuf0pMAAAIh3pUWHRSYXcgcHJvZmlsZSB0eXBlIGV4aWYAAHja1ZhZkhw5DkT/eYo5AglwPQ5Xs7nBHH8eInKpLlW1qq37pzOkZIoRQQJwhwOU2//773H");
-		groupWithSub.addGroup(new Group(5, "SubGroup1", ""));
-		groupWithSub.addGroup(new Group(6, "SubGroup2", ""));
-		groupWithSub.addGroup(new Group(7, "SubGroup3", ""));
-
-		g.addGroup(groupWithSub);
+	/*
 */
 
 	Group g = new Group(1, "", "");

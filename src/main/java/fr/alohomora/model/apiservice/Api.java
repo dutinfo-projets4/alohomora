@@ -71,7 +71,7 @@ public class Api {
 			newParams[i+1] = param[i];
 		}
 
-		newParams[0] = new Pair("req_id", ""+Database.getInstance().getRequestId());
+		newParams[0] = new Pair("req_id", "" + Database.getInstance().getRequestId());
 
 		return newParams;
 	}
