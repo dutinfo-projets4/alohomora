@@ -37,7 +37,7 @@
                                     <TreeView fx:id="groups" onMouseClicked="#onGroupClick" prefHeight="200.0" prefWidth="200.0" styleClass="groups" VBox.vgrow="ALWAYS" />
                                  </children>
                               </VBox>
-                              <Label styleClass="button" text="">
+                              <Label fx:id="addButton1" styleClass="button" onMouseClicked="#addGroup">
                                  <StackPane.margin>
                                     <Insets bottom="10.0" right="10.0" />
                                  </StackPane.margin>
@@ -49,7 +49,7 @@
                               <StackPane alignment="BOTTOM_RIGHT" minWidth="200.0" prefHeight="200.0" prefWidth="200.0" SplitPane.resizableWithParent="false">
                                  <children>
                                     <ListView fx:id="sites" onMouseClicked="#onSitesClick" prefHeight="200.0" prefWidth="200.0" styleClass="centerHbox" />
-                                    <Label styleClass="button" text="">
+                                    <Label fx:id="addButton2" styleClass="button" onMouseClicked="#addSites">
                                        <StackPane.margin>
                                           <Insets bottom="10.0" right="10.0" />
                                        </StackPane.margin>
@@ -82,7 +82,7 @@
                                     <TreeView fx:id="groups1" prefHeight="200.0" prefWidth="200.0" styleClass="groups" VBox.vgrow="ALWAYS" />
                                  </children>
                               </VBox>
-                              <Label styleClass="button" text="">
+                              <Label styleClass="button">
                                  <StackPane.margin>
                                     <Insets bottom="10.0" right="10.0" />
                                  </StackPane.margin>
@@ -94,7 +94,7 @@
                               <StackPane alignment="BOTTOM_RIGHT" minWidth="200.0" prefHeight="200.0" prefWidth="200.0" SplitPane.resizableWithParent="false">
                                  <children>
                                     <ListView prefHeight="200.0" prefWidth="200.0" styleClass="centerHbox" />
-                                    <Label styleClass="button" text="">
+                                    <Label styleClass="button" id="deleteButton">
                                        <StackPane.margin>
                                           <Insets bottom="10.0" right="10.0" />
                                        </StackPane.margin>
@@ -121,7 +121,7 @@
                </padding>
             </Label>
             <Region HBox.hgrow="ALWAYS" />
-            <TextField fx:id="research"  prefHeight="26.0" prefWidth="222.0" />
+            <TextField fx:id="research" prefHeight="26.0" prefWidth="222.0" />
             <Region HBox.hgrow="ALWAYS" />
             <Label styleClass="signOut" text=" Log out">
                <opaqueInsets>

@@ -8,18 +8,14 @@ import fr.alohomora.view.PanePassword;
 import fr.alohomora.view.PasswordCellFactory;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.ListView;
-import javafx.scene.control.SplitPane;
-import javafx.scene.control.TreeView;
+import javafx.scene.Node;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-import javafx.scene.control.TextField;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.FXCollections;
 import javafx.collections.transformation.SortedList;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.text.Font;
 import org.controlsfx.control.textfield.CustomTextField;
 
@@ -65,13 +61,10 @@ public class InterfaceController {
 	@FXML
 	private TextField research;
 
-	@FXML
-	private TableView<Element> results;
-
-	@FXML
-	private TableColumn<Element, String> ColumnResult;
-
 	private ObservableList<Element> obsElement = FXCollections.observableArrayList();
+
+	@FXML
+	private Label addButton1,addButton2;
 
 	@FXML
 	public void initialize() {
@@ -111,11 +104,11 @@ public class InterfaceController {
 			}
 		});
 
-		//FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.CLOSE);
-		//this.research.setRight(icon);
 		this.research.setPromptText("\uf002 Search");
 		this.research.getStyleClass().add("researchBar");
 
+		this.addButton1.setText("\uf067");
+		this.addButton2.setText("\uf067");
 
 		// -------------------------- DEFINITIVE STUFF --------------------------
 		InterfaceController._INSTANCE = this;
@@ -175,7 +168,4 @@ public class InterfaceController {
 	}
 
 
-	@FXML
-	public void onTap(KeyEvent e){
-	}
 }
