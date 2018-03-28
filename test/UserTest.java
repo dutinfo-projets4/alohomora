@@ -5,6 +5,7 @@ import fr.alohomora.Configuration;
 import fr.alohomora.database.Database;
 import fr.alohomora.model.Challenge;
 import fr.alohomora.model.Config;
+import fr.alohomora.model.Element;
 import fr.alohomora.model.User;
 import fr.alohomora.model.apiservice.Api;
 import javafx.util.Pair;
@@ -130,8 +131,8 @@ public class UserTest {
 		};
 		Configuration.LOGIN_TOKEN = Database.getInstance().getToken();
 
-		Call<Integer> call = this.API.addElement(param);
-		Response <Integer> response = null;
+		Call<Element> call = this.API.addElement(param);
+		Response <Element> response = null;
 		try {
 			 response = call.execute();
 		} catch (IOException e) {

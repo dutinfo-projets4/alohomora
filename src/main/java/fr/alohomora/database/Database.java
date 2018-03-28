@@ -111,19 +111,20 @@ public class Database {
 
 	/**
 	 * Insert token in DB
+	 *
 	 * @param username
 	 * @param token
 	 * @return
 	 */
-	public boolean insertConfig(String username, String token, boolean portable){
+	public boolean insertConfig(String username, String token, boolean portable) {
 		boolean res = false;
-		try{
+		try {
 			PreparedStatement prepStmt = this.con.prepareStatement("INSERT INTO config (username, token, portable) VALUES ( ?, ?, ?)");
 			prepStmt.setString(1, username);
 			prepStmt.setString(2, token);
 			prepStmt.setBoolean(3, portable);
 			res = prepStmt.execute();
-		}catch (Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return res;
@@ -131,9 +132,10 @@ public class Database {
 
 	/**
 	 * get Token in DB
+	 *
 	 * @return token
 	 */
-	public String getToken(){
+	public String getToken() {
 		String res = null;
 		try {
 			Statement st = this.con.createStatement();
@@ -152,9 +154,10 @@ public class Database {
 
 	/**
 	 * get username in DB
+	 *
 	 * @return username
 	 */
-	public String getUsername(){
+	public String getUsername() {
 		String res = null;
 		try {
 			Statement st = this.con.createStatement();
@@ -168,6 +171,38 @@ public class Database {
 			e.printStackTrace();
 		}
 		System.out.print(res);
+		return res;
+	}
+
+	public boolean checkElementExist(int id) {
+		boolean res = false;
+		try {
+			PreparedStatement prepStmt = this.con.prepareStatement("SELECT idElement FROM element WHERE idElement = ? ");
+			prepStmt.setInt(1, id);
+			ResultSet rs = prepStmt.executeQuery();
+			res = rs.next();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return res;
+	}
+
+	public int getRequestId(){
+		Integer res = null;
+		try {
+
+			ResultSet rs = this.createQuery().executeQuery("SELECT requestID  FROM config");
+			while (rs.next()) {
+				res = rs.getInt("requestID");
+			}
+			PreparedStatement prepStat = this.con.prepareStatement("UPDATE config SET requestID = ? ");
+			prepStat.setInt(1,res+1);
+			prepStat.execute();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+
 		return res;
 	}
 }

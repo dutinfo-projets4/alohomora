@@ -6,13 +6,15 @@ import fr.alohomora.Configuration;
 import fr.alohomora.crypto.RSAObject;
 import fr.alohomora.database.Database;
 import javafx.util.Pair;
-import okhttp3.HttpUrl;
-import okhttp3.Interceptor;
-import okhttp3.Request;
-import okhttp3.Response;
+import okhttp3.*;
+import okio.BufferedSink;
+import okio.Okio;
+import okio.Sink;
 import org.json.simple.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SignatureException;
@@ -102,6 +104,7 @@ public class InterceptorHeader implements okhttp3.Interceptor {
 		} catch (InvalidKeySpecException e) {
 			e.printStackTrace();
 		}
+
 
 		return chain.proceed(builder.build());
 	}

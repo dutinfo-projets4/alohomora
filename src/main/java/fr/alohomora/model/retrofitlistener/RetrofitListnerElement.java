@@ -1,5 +1,6 @@
 package fr.alohomora.model.retrofitlistener;
 
+import fr.alohomora.model.Element;
 import fr.alohomora.model.User;
 
 /**
@@ -21,7 +22,7 @@ import fr.alohomora.model.User;
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  **/
 public interface RetrofitListnerElement {
-	void onIdLoad(Integer id);
+	void onIdLoad(Element idElement);
 
 	void error(String msg);
 }

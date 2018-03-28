@@ -32,15 +32,17 @@ public interface AlohomoraService {
 	@FormUrlEncoded
 	@POST("/users")
 	Call<User> connect(@Field("passcode") String passcode,
-	                            @Field("challenge") String challenge,
-	                            @Field("public_key") String public_key,
-	                            @Field("machine_name") String machine_name);
+	                   @Field("challenge") String challenge,
+	                   @Field("public_key") String public_key,
+	                   @Field("machine_name") String machine_name);
 
 	@GET("/challenge")
 	Call<Challenge> getChallenge();
 
 	@FormUrlEncoded
 	@POST("/element")
-	Call<Integer> addElement(@Field("parent_grp") String parent_grp,
-	                         @Field("content") String content);
+	Call<Element> addElement(@Field("req_id") String req_id,
+	                         @Field("parent_grp") String parent_grp,
+	                         @Field("content") String content
+	                         );
 }
