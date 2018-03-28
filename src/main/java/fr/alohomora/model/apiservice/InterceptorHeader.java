@@ -89,6 +89,7 @@ public class InterceptorHeader implements okhttp3.Interceptor {
 			obj.put(val.getKey(), val.getValue());
 		}
 
+
 		RSAObject rsa = null;
 		try {
 			rsa = new RSAObject(Database.getInstance().getUsername());

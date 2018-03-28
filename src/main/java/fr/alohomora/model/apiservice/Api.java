@@ -63,8 +63,20 @@ public class Api {
 		return this.service.getChallenge();
 	}
 
+	private Pair<String, String>[] addRequest(Pair<String, String>[] param) {
+		Pair<String, String>[] newParams = new Pair[param.length+1];
+		for (int i = 0; i < param.length; i++){
+			newParams[i+1] = param[i];
+		}
+
+		newParams[0] = new Pair("req_id", "");
+
+		return newParams;
+	}
+
 	public Call<User> connect(Pair<String, String>[] params) {
 		this.setParams(params);
+
 		return this.service.connect(params[0].getValue(), params[1].getValue(), params[2].getValue(), params[3].getValue());
 	}
 
