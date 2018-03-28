@@ -62,16 +62,25 @@ public class Group extends TreeItem {
 	}
 
 	public int getID() {
-		return id;
+
+		return this.id;
 	}
 
 	public int getParentGroup() {
-		return parentGrp;
+
+		return this.parentGrp;
 	}
 
 	public String getContent() {
-		return content;
+
+		return this.content;
 	}
+
+	public void setName(String name){
+
+		this.name = name;
+	}
+
 
 	// Wont work because group is already modified so it wont be in the array
 	public boolean updateGroup(Group group) {
@@ -80,6 +89,7 @@ public class Group extends TreeItem {
 	}
 
 	public boolean addGroup(Group group) {
+
 		return this.getChildren().add(group);
 	}
 
