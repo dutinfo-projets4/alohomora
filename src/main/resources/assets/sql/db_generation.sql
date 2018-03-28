@@ -16,6 +16,6 @@ CREATE TABLE config(
   name VARCHAR(255),
   portable BOOLEAN,
   token VARCHAR (255),
-  RequestID INTEGER
+  requestID INTEGER
 )
 --pas mettre de point virgule à la fin

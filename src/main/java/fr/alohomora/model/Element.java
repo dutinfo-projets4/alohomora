@@ -1,6 +1,7 @@
 package fr.alohomora.model;
 
 import fr.alohomora.App;
+import fr.alohomora.database.Database;
 import fr.alohomora.model.apiservice.Api;
 import fr.alohomora.model.retrofitlistener.RetrofitListenerUser;
 import fr.alohomora.model.retrofitlistener.RetrofitListnerElement;
@@ -118,23 +119,25 @@ public class Element {
 	 * @param  parent_grp
 	 * @param  content
 	 */
-	public void addElement(final RetrofitListnerElement callback, int parent_grp, String content){
+	public void addElement(final RetrofitListnerElement callback, String parent_grp, String content){
 		Pair<String, String>[] params = new Pair []{
+				new Pair("req_id", ""+Database.getInstance().getRequestId()),
 				new Pair("parent_grp", parent_grp),
 				new Pair("content", content)
 		};
 		Api apiService = new Api();
-		Call<Integer> call = App.getAPI().addElement(params);
-		call.enqueue(new Callback<Integer>() {
+		Call<Element> call = App.getAPI().addElement(params);
+		call.enqueue(new Callback<Element>() {
 			@Override
-			public void onResponse(Call<Integer> call, Response<Integer> response) {
+			public void onResponse(Call<Element> call, Response<Element> response) {
+				System.out.print(response.code());
 				if(response.code() == 201)
 					callback.onIdLoad(response.body());
 				else
 					callback.onIdLoad(null);
 			}
 			@Override
-			public void onFailure(Call<Integer> call, Throwable throwable) {
+			public void onFailure(Call<Element> call, Throwable throwable) {
 				callback.error(throwable.toString());
 			}
 		});

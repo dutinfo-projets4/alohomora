@@ -1,10 +1,15 @@
 package fr.alohomora.view;
 
 import com.sun.glass.events.MouseEvent;
+import fr.alohomora.App;
 import fr.alohomora.controller.InterfaceController;
+import fr.alohomora.database.Database;
 import fr.alohomora.model.Element;
+import fr.alohomora.model.retrofitlistener.RetrofitListnerElement;
+import javafx.application.Platform;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import javafx.util.Pair;
 
 import java.util.Optional;
 
@@ -131,11 +136,40 @@ public class PanePassword extends VBox {
 
 	private void handleSave(){
 		if(this.currElement != null){
-
 			this.currElement.setLabel(this.title.getText());
 			this.currElement.setPassword(this.password.getText());
 			this.currElement.setUsername(this.username.getText());
 			// @TODO updata database
+			if(Database.getInstance().checkElementExist(this.currElement.getID())){
+				// @TODO updata database
+			}else {
+				System.out.print("sendElement");config
+				Platform.runLater(new Runnable() {
+					@Override
+					public void run() {
+						PanePassword.this.currElement.addElement(new RetrofitListnerElement() {
+							@Override
+							public void onIdLoad(Element element) {
+								if(element == null){
+									System.out.println("Erreur");
+								}else {
+									System.out.print(element.getID());
+									//@TODO update id currElement
+									// @TODO insert Database
+								}
+							}
+
+							@Override
+							public void error(String msg) {
+
+							}
+						}, ""+PanePassword.this.currElement.getParentGroup().getID(), PanePassword.this.username.getText());
+						//@TODO encrypt and map json content
+					}
+				});
+
+
+			}
 			InterfaceController.getInstance().onGroupClick(null);
 		}
 	}
