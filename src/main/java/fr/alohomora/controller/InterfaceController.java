@@ -1,29 +1,16 @@
 package fr.alohomora.controller;
 
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
-import fr.alohomora.crypto.RSAObject;
 import fr.alohomora.model.Element;
 import fr.alohomora.model.Group;
+import fr.alohomora.model.User;
 import fr.alohomora.view.PanePassword;
 import fr.alohomora.view.PasswordCellFactory;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-import javafx.scene.control.TextField;
-import javafx.collections.transformation.FilteredList;
-import javafx.collections.FXCollections;
-import javafx.collections.transformation.SortedList;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.text.Font;
-import org.controlsfx.control.textfield.CustomTextField;
+
 import java.util.Iterator;
 import java.util.Optional;
 
@@ -50,6 +37,8 @@ public class InterfaceController {
 
 	private static InterfaceController _INSTANCE;
 
+	private User user;
+
 	@FXML
 	private HBox allElements;
 
@@ -73,7 +62,12 @@ public class InterfaceController {
 	@FXML
 	private Label addGroup;
 
-	private ObservableList<Element> obsElement = FXCollections.observableArrayList();
+	public void setUser (User u) {
+		this.user = u;
+		System.out.println(u);
+		System.out.println(u.getRoot());
+		this.groups.setRoot(u.getRoot());
+	}
 
 	@FXML
 	public void initialize() {
@@ -82,7 +76,7 @@ public class InterfaceController {
 		 */
 		// -------------------------- TEMPORARY STUFF --------------------------
 
-		Group g = new Group(1, "Key file", "\uf108");
+	/*	Group g = new Group(1, "Key file", "\uf108");
 		Group rs = new Group(1, "Réseaux sociaux", "\uf0ac");
 		g.addGroup(rs);
 		rs.addElement(new Element(0, rs, "Facebook", "\uf082", "toto", "toto"));
@@ -97,22 +91,23 @@ public class InterfaceController {
 		groupWithSub.addGroup(new Group(7, "SubGroup3", ""));
 
 		g.addGroup(groupWithSub);
+*/
 
-		this.groups.setRoot(g);
+	Group g = new Group(1, "", "");
+	this.groups.setRoot(g);
 
 		// Filtered list here
-		FilteredList<Element> filteredElements = new FilteredList<Element>(this.obsElement);
-		research.textProperty().addListener((observable, oldvalue, newvalue)-> {
+		research.textProperty().addListener((observable, oldvalue, newvalue) -> {
 			onClickAllElement(null);
 			Iterator ite = this.sites.getItems().iterator();
 			// if the user wants to delete a character, results of the research are reinitialized
-			if(oldvalue.length() <= newvalue.length()){
-			while(ite.hasNext()) {
-			Element e = (Element) ite.next();
-				if (!e.getLabel().toLowerCase().contains(newvalue.toLowerCase()) && !(e.getUsername().toLowerCase().contains(newvalue.toLowerCase()))) {
-					ite.remove();
+			if (oldvalue.length() <= newvalue.length()) {
+				while (ite.hasNext()) {
+					Element e = (Element) ite.next();
+					if (!e.getLabel().toLowerCase().contains(newvalue.toLowerCase()) && !(e.getUsername().toLowerCase().contains(newvalue.toLowerCase()))) {
+						ite.remove();
+					}
 				}
-			  }
 			}
 		});
 
@@ -121,6 +116,8 @@ public class InterfaceController {
 
 		this.addElement.setText("\uf067");
 		this.addGroup.setText("\uf067");
+
+
 
 		// -------------------------- DEFINITIVE STUFF --------------------------
 		InterfaceController._INSTANCE = this;
@@ -133,39 +130,32 @@ public class InterfaceController {
 		this.sites.setCellFactory(new PasswordCellFactory());
 		this.onClickAllElement(null);
 		this.groups.getSelectionModel().getSelectedItem();
-	    this.addElementInSelectedGroup();
-	    this.addGroupInSelectedGroup();
+		this.addElementInSelectedGroup();
+		this.addGroupInSelectedGroup();
 	}
 
-	public void addElementInSelectedGroup(){
-		this.addElement.setOnMouseClicked(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				Group groupSelected = (Group)InterfaceController.this.groups.getSelectionModel().getSelectedItem();
-				// @TODO get id of element from bd
-				groupSelected.addElement(new Element(1, groupSelected, "empty", "", "empty", "empty"));
-				//update view
-				InterfaceController.this.onGroupClick(null);
-			}
+	public void addElementInSelectedGroup() {
+		this.addElement.setOnMouseClicked(event -> {
+			Group groupSelected = (Group) InterfaceController.this.groups.getSelectionModel().getSelectedItem();
+			// @TODO get id of element from bd
+
+			groupSelected.addElement(new Element(1, groupSelected, "empty", "", "empty", "empty"));
+			//update view
+			InterfaceController.this.onGroupClick(null);
 		});
 	}
 
-	public void addGroupInSelectedGroup(){
-		this.addGroup.setOnMouseClicked(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent mouseEvent) {
-				Group groupSelected = (Group) InterfaceController.this.groups.getSelectionModel().getSelectedItem();
-				TextInputDialog dialog = new TextInputDialog("name");
-				dialog.setTitle("Enter the group name");
-				dialog.setHeaderText("Enter the group name");
-				dialog.setContentText("Enter a group name");
-				Optional<String> result = dialog.showAndWait();
-					if (result.isPresent()){
-						groupSelected.addGroup(new Group(9, result.get() ,""));
-					}
-				// update view
-				InterfaceController.this.onGroupClick(null);
-			}
+	public void addGroupInSelectedGroup() {
+		this.addGroup.setOnMouseClicked(mouseEvent -> {
+			Group groupSelected = (Group) InterfaceController.this.groups.getSelectionModel().getSelectedItem();
+			TextInputDialog dialog = new TextInputDialog("name");
+			dialog.setTitle("Enter the group name");
+			dialog.setHeaderText("Enter the group name");
+			dialog.setContentText("Enter a group name");
+			Optional<String> result = dialog.showAndWait();
+			result.ifPresent(s -> groupSelected.addGroup(new Group(9, s, "")));
+			// update view
+			InterfaceController.this.onGroupClick(null);
 		});
 	}
 
@@ -177,16 +167,16 @@ public class InterfaceController {
 	}
 
 	@FXML
-	public void onGroupClick(MouseEvent e){
+	public void onGroupClick(MouseEvent e) {
 		// When you click on a group, we clear the element list
 		this.sites.getItems().clear();
 
 		// Then we fill it with group's elements
-		this.sites.setItems(((Group)this.groups.getSelectionModel().getSelectedItem()).getElements());
+		this.sites.setItems(((Group) this.groups.getSelectionModel().getSelectedItem()).getElements());
 
 		// If we are on the root group, we toggle the "All elements" button
-		if (this.groups.getSelectionModel().getSelectedIndex() == 0){
-			if (!this.allElements.getStyleClass().contains("allPressed")){
+		if (this.groups.getSelectionModel().getSelectedIndex() == 0) {
+			if (!this.allElements.getStyleClass().contains("allPressed")) {
 				this.allElements.getStyleClass().add("allPressed");
 			}
 		} else {
@@ -195,41 +185,36 @@ public class InterfaceController {
 
 		// Lastly, we select the first element of the group if it exists, and we update the render
 		ObservableList<Element> elements = ((Group) this.groups.getSelectionModel().getSelectedItem()).getElements();
-		if (elements.size() > 0){
+		if (elements.size() > 0) {
 			this.sites.getSelectionModel().select(elements.get(0));
 		}
 		this.onSitesClick(null);
 
-		groups.setOnMouseClicked(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent click) {
-				if (click.getClickCount() == 2) {
-					TextInputDialog dialog = new TextInputDialog("name");
-					dialog.setTitle("Change the group name");
-					dialog.setHeaderText("Change the group name");
-					dialog.setContentText("Enter a group name");
-					Group selectedItem = (Group) InterfaceController.this.groups.getSelectionModel().getSelectedItem();
-					Optional<String> result = dialog.showAndWait();
-						if (result.isPresent()){
-							String name = "" + result;
-							selectedItem.setName((String) name);
-							// cannot update the name of the group in the interface
-						}
-
+		groups.setOnMouseClicked(click -> {
+			if (click.getClickCount() == 2) {
+				TextInputDialog dialog = new TextInputDialog("name");
+				dialog.setTitle("Change the group name");
+				dialog.setHeaderText("Change the group name");
+				dialog.setContentText("Enter a group name");
+				Group selectedItem = (Group) InterfaceController.this.groups.getSelectionModel().getSelectedItem();
+				Optional<String> result = dialog.showAndWait();
+				if (result.isPresent()) {
+					selectedItem.setName(result.get());
 				}
+
 			}
 		});
 	}
 
 	@FXML
-	public void onSitesClick(MouseEvent e){
+	public void onSitesClick(MouseEvent e) {
 		this.passwordPanel.update(this.sites.getSelectionModel().getSelectedItem());
 	}
 
 	/**
 	 * Ugly singleton
 	 */
-	public static InterfaceController getInstance(){
+	public static InterfaceController getInstance() {
 		return InterfaceController._INSTANCE;
 	}
 }

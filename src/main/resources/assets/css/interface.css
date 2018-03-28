@@ -201,3 +201,11 @@
     -fx-font-size: 15px;
     -fx-background-color: #2C375A;
 }
+
+.dialogBox {
+    -fx-font-family: "Hack NF";
+    -fx-text-fill: #06A75B;
+    -fx-font-size: 15px;
+    -fx-background-color: #2C375A;
+
+}

@@ -10,6 +10,8 @@ import retrofit2.Response;
 
 import java.util.ArrayList;
 
+import static java.sql.Types.NULL;
+
 /**
  * Alohomora Password Manager
  * Copyright (C) 2018 Team Alohomora
@@ -29,6 +31,7 @@ import java.util.ArrayList;
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  **/
 public class User {
+
 	private int id;
 	private String username;
 	private String email;
@@ -36,7 +39,7 @@ public class User {
 	private String token;
 	private Data data;
 	private ArrayList<Token> tokens;
-
+	private Group root;
 
 	public User(int id, String username, String email, boolean isAdmin, String token, Data data) {
 		this.id = id;
@@ -99,6 +102,8 @@ public class User {
 	public ArrayList<Element> getElement() {
 		return this.data.getElements();
 	}
+
+	public Group getRoot() { return this.root; }
 
 	/**
 	 * Permet de passer une instance de User si l'idtendification est valide sinon null aux travers de l'interface RetrofitListerUser
@@ -164,5 +169,33 @@ public class User {
 				callback.error(t.toString());
 			}
 		});
+	}
+
+	/**
+	 *
+	 * @return la liste des groupes de l'utilisateur
+	 */
+	public Group getListGroups(Group src){
+		System.out.println("coucou");
+		Group result = null;
+		for (int i = 0; i < this.getGroups().size() ;  ++i){
+			System.out.print(src);
+			if(this.getGroups().get(i).getParentGroup() == src.getID()){
+				src.addGroup(this.getListGroups(this.getGroups().get(i)));
+			}
+		}
+		System.out.println("fin de méthode");
+		return src;
+	}
+
+	public void setRoot(){
+		for(Group g2: this.getGroups()){
+			System.out.println(g2.getID());
+			if(g2.get == -1){
+				this.root = this.getListGroups(g2);
+				System.out.println(this.root);
+				break;
+			}
+		}
 	}
 }
