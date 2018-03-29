@@ -63,7 +63,7 @@ public class InterfaceController {
 	@FXML
 	private Label addGroup;
 
-	public void setUser (User u) {
+	public void setUser(User u) {
 		this.user = u;
 		System.out.println(u);
 		System.out.println(u.getRoot());
@@ -80,8 +80,8 @@ public class InterfaceController {
 	/*
 */
 
-	Group g = new Group(1, 0,"ro", "");
-	this.groups.setRoot(g);
+		Group g = new Group(1, 0, "ro", "");
+		this.groups.setRoot(g);
 
 		// Filtered list here
 		research.textProperty().addListener((observable, oldvalue, newvalue) -> {
@@ -105,7 +105,6 @@ public class InterfaceController {
 		this.addGroup.setText("\uf067");
 
 
-
 		// -------------------------- DEFINITIVE STUFF --------------------------
 		InterfaceController._INSTANCE = this;
 
@@ -121,11 +120,11 @@ public class InterfaceController {
 		this.addGroupInSelectedGroup();
 	}
 
-	public void addElementInSelectedGroup(){
+	public void addElementInSelectedGroup() {
 		this.addElement.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				Group groupSelected = (Group)InterfaceController.this.groups.getSelectionModel().getSelectedItem();
+				Group groupSelected = (Group) InterfaceController.this.groups.getSelectionModel().getSelectedItem();
 				// @TODO get id of element from bd
 				groupSelected.addElementFirstposition(new Element(-1, groupSelected, "empty", "", "empty", "empty"));
 				//update view
@@ -159,11 +158,12 @@ public class InterfaceController {
 
 	@FXML
 	public void onGroupClick(MouseEvent e) {
+		Group selectedGroup = (Group) this.groups.getSelectionModel().getSelectedItem();
 		// When you click on a group, we clear the element list
 		this.sites.getItems().clear();
 
 		// Then we fill it with group's elements
-		this.sites.setItems(((Group) this.groups.getSelectionModel().getSelectedItem()).getElements());
+		this.sites.setItems(selectedGroup.getElements());
 
 		// If we are on the root group, we toggle the "All elements" button
 		if (this.groups.getSelectionModel().getSelectedIndex() == 0) {
@@ -175,26 +175,23 @@ public class InterfaceController {
 		}
 
 		// Lastly, we select the first element of the group if it exists, and we update the render
-		ObservableList<Element> elements = ((Group) this.groups.getSelectionModel().getSelectedItem()).getElements();
+		ObservableList<Element> elements = (selectedGroup).getElements();
 		if (elements.size() > 0) {
 			this.sites.getSelectionModel().select(elements.get(0));
 		}
 		this.onSitesClick(null);
 
-		groups.setOnMouseClicked(click -> {
-			if (click.getClickCount() == 2) {
-				TextInputDialog dialog = new TextInputDialog("name");
-				dialog.setTitle("Change the group name");
-				dialog.setHeaderText("Change the group name");
-				dialog.setContentText("Enter a group name");
-				Group selectedItem = (Group) InterfaceController.this.groups.getSelectionModel().getSelectedItem();
-				Optional<String> result = dialog.showAndWait();
-				if (result.isPresent()) {
-					selectedItem.setName(result.get());
-				}
-
+		if (e != null && e.getClickCount() == 2) {
+			TextInputDialog dialog = new TextInputDialog("name");
+			dialog.setTitle("Change the group name");
+			dialog.setHeaderText("Change the group name");
+			dialog.setContentText("Enter a group name");
+			Optional<String> result = dialog.showAndWait();
+			if (result.isPresent()) {
+				selectedGroup.setName(result.get());
 			}
-		});
+		}
+
 	}
 
 	@FXML
