@@ -87,5 +87,10 @@ public class Api {
 		return this.service.addElement(np[0].getValue(), np[1].getValue(), np[2].getValue());
 	}
 
+	public Call<Void> updateElement(Pair <String, String>[] params){
+		Pair<String, String>[] np = this.addRequest(params);
+		return this.service.updateElement(np[0].getValue(), np[1].getValue(), np[2].getValue(), np[3].getValue());
+	}
+
 
 }

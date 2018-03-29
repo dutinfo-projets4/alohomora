@@ -54,7 +54,10 @@ public class Database {
 		}
 	}
 
-
+	/**
+	 * check if the instance exist and return the unique instance of connexion
+	 * @return
+	 */
 	public static Database getInstance() {
 		if (Database._INSTANCE == null)
 			Database._INSTANCE = new Database();
@@ -91,7 +94,6 @@ public class Database {
 
 	/**
 	 * check if the table exist true if the table not exist
-	 *
 	 * @return boolean
 	 */
 	public boolean checkTable() {
@@ -111,7 +113,6 @@ public class Database {
 
 	/**
 	 * Insert token in DB
-	 *
 	 * @param username
 	 * @param token
 	 * @return
@@ -132,7 +133,6 @@ public class Database {
 
 	/**
 	 * get Token in DB
-	 *
 	 * @return token
 	 */
 	public String getToken() {
@@ -153,7 +153,6 @@ public class Database {
 
 	/**
 	 * get username in DB
-	 *
 	 * @return username
 	 */
 	public String getUsername() {
@@ -172,6 +171,11 @@ public class Database {
 		return res;
 	}
 
+	/**
+	 * check if the element exist with his id, and return true or false
+	 * @param id
+	 * @return
+	 */
 	public boolean checkElementExist(int id) {
 		boolean res = false;
 		try {
@@ -185,6 +189,10 @@ public class Database {
 		return res;
 	}
 
+	/**
+	 * obtain the last request id and auto increment them
+	 * @return
+	 */
 	public int getRequestId(){
 		Integer res = null;
 		try {
@@ -202,6 +210,13 @@ public class Database {
 		return res;
 	}
 
+	/**
+	 * add element
+	 * @param idElement
+	 * @param parent_grp
+	 * @param content
+	 * @return
+	 */
 	public boolean insertElement(int idElement, int parent_grp, String content){
 		boolean res  = false;
 		try{
@@ -209,6 +224,27 @@ public class Database {
 			prepStat.setInt(1, idElement);
 			prepStat.setString(2, content);
 			prepStat.setInt(3, parent_grp);
+			res = prepStat.execute();
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+		return res;
+	}
+
+	/**
+	 * Update Elment
+	 * @param idElement
+	 * @param parent_grp
+	 * @param content
+	 * @return
+	 */
+	public boolean updateElement(int idElement, int parent_grp, String content){
+		boolean res = false;
+		try{
+			PreparedStatement prepStat = this.con.prepareStatement("UPDATE element SET idGroupe = ?, content = ? WHERE idElement = ? ");
+			prepStat.setInt(3, idElement);
+			prepStat.setInt(1, parent_grp);
+			prepStat.setString(2, content);
 			res = prepStat.execute();
 		}catch (Exception e){
 			e.printStackTrace();

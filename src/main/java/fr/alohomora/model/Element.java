@@ -5,6 +5,7 @@ import fr.alohomora.Configuration;
 import fr.alohomora.crypto.CryptoUtil;
 import fr.alohomora.model.apiservice.Api;
 import fr.alohomora.model.retrofitlistener.RetrofitListnerElement;
+import fr.alohomora.model.retrofitlistener.RetrofitListnerVoidResponse;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -126,7 +127,6 @@ public class Element {
 				new Pair("parent_grp", parent_grp),
 				new Pair("content", content)
 		};
-		Api apiService = new Api();
 		Call<Element> call = App.getAPI().addElement(params);
 		call.enqueue(new Callback<Element>() {
 			@Override
@@ -142,8 +142,33 @@ public class Element {
 				callback.error(throwable.toString());
 			}
 		});
+	}
 
+	/**
+	 * Request Api to update element
+	 * @param callback
+	 * @param id
+	 * @param parent_grp
+	 * @param content
+	 */
+	public void updateElement(final RetrofitListnerVoidResponse callback, String id, String parent_grp, String content){
+		Pair<String, String>[] params = new Pair[]{
+				new Pair("id", id),
+				new Pair("parent_grp", parent_grp),
+				new Pair("content", content)
+		};
+		Call<Void> call = App.getAPI().updateElement(params);
+		call.enqueue(new Callback<Void>() {
+			@Override
+			public void onResponse(Call<Void> call, Response<Void> response) {
+				callback.onResponseLoad(response.code());
+			}
 
+			@Override
+			public void onFailure(Call<Void> call, Throwable throwable) {
+				callback.error(throwable.getMessage());
+			}
+		});
 	}
 
 	/**

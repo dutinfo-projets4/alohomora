@@ -4,8 +4,10 @@ import com.sun.glass.events.MouseEvent;
 import fr.alohomora.App;
 import fr.alohomora.controller.InterfaceController;
 import fr.alohomora.database.Database;
+import fr.alohomora.model.Data;
 import fr.alohomora.model.Element;
 import fr.alohomora.model.retrofitlistener.RetrofitListnerElement;
+import fr.alohomora.model.retrofitlistener.RetrofitListnerVoidResponse;
 import javafx.application.Platform;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -141,48 +143,97 @@ public class PanePassword extends VBox {
 			this.currElement.setUsername(this.username.getText());
 			System.out.println(this.currElement.getID());
 			if (Database.getInstance().checkElementExist(this.currElement.getID())) {
-				// @TODO updata database
+				this.currElement.updateElement(
+						new RetrofitListnerVoidResponse() {
+							@Override
+							public void onResponseLoad(int code) {
+								if (code == 200) {
+									// information to the user
+									Platform.runLater(new Runnable() {
+										@Override
+										public void run() {
+											Alert alert = new Alert(Alert.AlertType.INFORMATION);
+											alert.setContentText("Update successfull");
+											alert.showAndWait();
+										}
+									});
+									//update local data
+									Database.getInstance().updateElement(PanePassword.this.currElement.getID(),
+											PanePassword.this.currElement.getParentGroup().getID(),
+											PanePassword.this.currElement.getContent()); //encrypted content
+								} else {
+									Platform.runLater(new Runnable() {
+										@Override
+										public void run() {
+											Alert alert = new Alert(Alert.AlertType.WARNING);
+											alert.setContentText("Please update your data");
+											alert.showAndWait();
+										}
+									});
+								}
+							}
+
+							@Override
+							public void error(String msg) {
+								Platform.runLater(new Runnable() {
+									@Override
+									public void run() {
+										Alert alert = new Alert(Alert.AlertType.WARNING);
+										alert.setContentText("Error network");
+										alert.showAndWait();
+									}
+								});
+							}
+						},
+						"" + this.currElement.getID(),
+						"" + this.currElement.getParentGroup().getID(),
+						this.currElement.getContent() //encrypted content
+				);
+
+
 			} else {
 
-				PanePassword.this.currElement.addElement(new RetrofitListnerElement() {
-					@Override
-					public void onIdLoad(Element element) {
-						if (element != null) {
-							//update label
-							PanePassword.this.currElement.setID(element.getID());
-							//insert in DB
-							Database.getInstance().insertElement(
-									PanePassword.this.currElement.getID(),
-									PanePassword.this.currElement.getParentGroup().getID(),
-									PanePassword.this.currElement.getContent());
-							//information user
-							Platform.runLater(new Runnable() {
-								@Override
-								public void run() {
-									Alert alert = new Alert(Alert.AlertType.INFORMATION);
-									alert.setContentText("add successfull");
-									alert.showAndWait();
+				PanePassword.this.currElement.addElement(
+						new RetrofitListnerElement() {
+							@Override
+							public void onIdLoad(Element element) {
+								if (element != null) {
+									//update label
+									PanePassword.this.currElement.setID(element.getID());
+									//insert in DB
+									Database.getInstance().insertElement(
+											PanePassword.this.currElement.getID(),
+											PanePassword.this.currElement.getParentGroup().getID(),
+											PanePassword.this.currElement.getContent());
+									//information user
+									Platform.runLater(new Runnable() {
+										@Override
+										public void run() {
+											Alert alert = new Alert(Alert.AlertType.INFORMATION);
+											alert.setContentText("add successfull");
+											alert.showAndWait();
+										}
+									});
+								} else {
+									Platform.runLater(new Runnable() {
+										@Override
+										public void run() {
+											Alert alert = new Alert(Alert.AlertType.WARNING);
+											alert.setContentText("Error network");
+											alert.showAndWait();
+										}
+									});
 								}
-							});
-						} else {
-							Platform.runLater(new Runnable() {
-								@Override
-								public void run() {
-									Alert alert = new Alert(Alert.AlertType.WARNING);
-									alert.setContentText("Error network");
-									alert.showAndWait();
-								}
-							});
+							}
 
-
-						}
-					}
-
-					@Override
-					public void error(String msg) {
-						System.out.print("Erreur de l'ajout de l'élément");
-					}
-				}, "" + PanePassword.this.currElement.getParentGroup().getID(), PanePassword.this.currElement.getContent());
+							@Override
+							public void error(String msg) {
+								System.out.print("Erreur de l'ajout de l'élément");
+							}
+						},
+						"" + PanePassword.this.currElement.getParentGroup().getID(),
+						PanePassword.this.currElement.getContent() // Encrypted content
+				);
 			}
 
 		}

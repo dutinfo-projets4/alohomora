@@ -4,10 +4,7 @@ import fr.alohomora.model.Challenge;
 import fr.alohomora.model.Element;
 import fr.alohomora.model.User;
 import retrofit2.Call;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.GET;
-import retrofit2.http.POST;
+import retrofit2.http.*;
 
 /**
  * Alohomora Password Manager
@@ -44,4 +41,10 @@ public interface AlohomoraService {
 	Call<Element> addElement(@Field("req_id") String req_id,
 	                         @Field("parent_grp") String parent_grp,
 	                         @Field("content") String content);
+	@FormUrlEncoded
+	@PUT("/element")
+	Call<Void> updateElement(@Field("req_id") String req_id,
+	                            @Field("id") String id,
+	                            @Field("parent_grp") String parent_grp,
+	                            @Field("content") String content);
 }
