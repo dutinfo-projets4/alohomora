@@ -6,6 +6,7 @@ import fr.alohomora.model.User;
 import fr.alohomora.view.PanePassword;
 import fr.alohomora.view.PasswordCellFactory;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
@@ -79,7 +80,7 @@ public class InterfaceController {
 	/*
 */
 
-	Group g = new Group(1, "", "");
+	Group g = new Group(1, 0,"ro", "");
 	this.groups.setRoot(g);
 
 		// Filtered list here
@@ -142,7 +143,8 @@ public class InterfaceController {
 			dialog.setHeaderText("Enter the group name");
 			dialog.setContentText("Enter a group name");
 			Optional<String> result = dialog.showAndWait();
-			result.ifPresent(s -> groupSelected.addGroup(new Group(9, s, "")));
+			int incrementationParentGroupd = groupSelected.getParentGroup() + groups.getExpandedItemCount();
+			result.ifPresent(s -> groupSelected.addGroup(new Group(incrementationParentGroupd, groupSelected.getID(), s, "")));
 			// update view
 			InterfaceController.this.onGroupClick(null);
 		});

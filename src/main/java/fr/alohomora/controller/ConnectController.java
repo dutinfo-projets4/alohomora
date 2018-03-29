@@ -154,8 +154,8 @@ public class ConnectController {
 				FXMLLoader loader = new FXMLLoader();
 				loader.setController(new InterfaceController());
 				App.setScene(loader.load(getClass().getClassLoader().getResource("fxml/interface.fxml")), new String[]{"assets/css/main.css", "assets/css/interface.css"});
-				user.setRoot();
-				((InterfaceController)loader.getController()).setUser(user);
+				//user.setRoot();
+				//((InterfaceController)loader.getController()).setUser(user);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

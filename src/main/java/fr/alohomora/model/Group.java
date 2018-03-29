@@ -45,15 +45,26 @@ public class Group extends TreeItem {
 		this.setExpanded(true);
 	}
 
-	public Group(int id, int parent, String content) {
+	public Group(int id, int parent_grp, String content) {
 		this();
 		this.id = id;
-		this.parent_grp = parent;
+		this.parent_grp = parent_grp;
 		this.content = content;
 	}
 
 	public Group(int id, String name, String icon) {
 		this();
+		this.id   = id;
+		this.name = name;
+		this.icon = icon;
+		this.setValue(this.name);
+		this.setGraphic(this.getIcon());
+	}
+
+
+	public Group(int id, int parent_grp, String name, String icon) {
+		this();
+		this.parent_grp = parent_grp;
 		this.id   = id;
 		this.name = name;
 		this.icon = icon;
