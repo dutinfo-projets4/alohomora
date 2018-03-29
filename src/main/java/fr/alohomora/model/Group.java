@@ -99,6 +99,11 @@ public class Group extends TreeItem {
 
 	public boolean addElement(Element elt) {
 		return this.elements.add(elt);
+
+	}
+
+	public void addElementFirstposition(Element elt){
+		 this.elements.add(0, elt);
 	}
 
 	// Same as updateGroup

@@ -64,7 +64,7 @@ public class PanePassword extends VBox {
 
 
 		this.cancelbt.setDisable(true);
-		this.savebt   = new Button("\uf0c7");
+		this.savebt = new Button("\uf0c7");
 		this.savebt.setOnMouseClicked(mouseEvent -> this.handleSave());
 		Region spacer = new Region();
 		HBox.setHgrow(spacer, Priority.ALWAYS);
@@ -78,7 +78,7 @@ public class PanePassword extends VBox {
 
 	}
 
-	public void update(Element e){
+	public void update(Element e) {
 		this.currElement = e;
 
 		// If we update the screen with no elements, we disable all the input
@@ -121,7 +121,7 @@ public class PanePassword extends VBox {
 			alert.setContentText("Are you sure ?");
 
 			ButtonType btYes = new ButtonType("Yes");
-			ButtonType btNo  = new ButtonType("No", ButtonBar.ButtonData.CANCEL_CLOSE);
+			ButtonType btNo = new ButtonType("No", ButtonBar.ButtonData.CANCEL_CLOSE);
 
 			alert.getButtonTypes().setAll(btNo, btYes);
 
@@ -134,44 +134,60 @@ public class PanePassword extends VBox {
 		}
 	}
 
-	private void handleSave(){
-		if(this.currElement != null){
+	private void handleSave() {
+		if (this.currElement != null) {
 			this.currElement.setLabel(this.title.getText());
 			this.currElement.setPassword(this.password.getText());
 			this.currElement.setUsername(this.username.getText());
-			if(Database.getInstance().checkElementExist(this.currElement.getID())){
+			System.out.println(this.currElement.getID());
+			if (Database.getInstance().checkElementExist(this.currElement.getID())) {
 				// @TODO updata database
-			}else {
-				Platform.runLater(new Runnable() {
+			} else {
+
+				PanePassword.this.currElement.addElement(new RetrofitListnerElement() {
 					@Override
-					public void run() {
-						PanePassword.this.currElement.addElement(new RetrofitListnerElement() {
-							@Override
-							public void onIdLoad(Element element) {
-								if(element == null){
-									System.out.println("Erreur d'obtention de l'id d'un élément");
-								}else {
-									//update label
-									PanePassword.this.currElement.setID(element.getID());
-
-									//insert in DB
-									Database.getInstance().insertElement(
-											PanePassword.this.currElement.getID(),
-											PanePassword.this.currElement.getParentGroup().getID(),
-											PanePassword.this.currElement.getContent()); //@TODO Encrypt and parse
+					public void onIdLoad(Element element) {
+						if (element != null) {
+							//update label
+							PanePassword.this.currElement.setID(element.getID());
+							//insert in DB
+							Database.getInstance().insertElement(
+									PanePassword.this.currElement.getID(),
+									PanePassword.this.currElement.getParentGroup().getID(),
+									PanePassword.this.currElement.getContent());
+							//information user
+							Platform.runLater(new Runnable() {
+								@Override
+								public void run() {
+									Alert alert = new Alert(Alert.AlertType.INFORMATION);
+									alert.setContentText("add successfull");
+									alert.showAndWait();
 								}
-							}
-							@Override
-							public void error(String msg) {
+							});
+						} else {
+							Platform.runLater(new Runnable() {
+								@Override
+								public void run() {
+									Alert alert = new Alert(Alert.AlertType.WARNING);
+									alert.setContentText("Error network");
+									alert.showAndWait();
+								}
+							});
 
-							}
-						}, ""+PanePassword.this.currElement.getParentGroup().getID(), PanePassword.this.currElement.getContent());
-						//@TODO Encrypt and parse
+
+						}
 					}
-				});
-			}
-			InterfaceController.getInstance().onGroupClick(null);
-		}
-	}
 
+					@Override
+					public void error(String msg) {
+						System.out.print("Erreur de l'ajout de l'élément");
+					}
+				}, "" + PanePassword.this.currElement.getParentGroup().getID(), PanePassword.this.currElement.getContent());
+			}
+
+		}
+		InterfaceController.getInstance().onGroupClick(null);
+	}
 }
+
+

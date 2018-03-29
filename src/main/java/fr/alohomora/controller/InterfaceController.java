@@ -3,6 +3,7 @@ package fr.alohomora.controller;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import fr.alohomora.crypto.RSAObject;
+import fr.alohomora.database.Database;
 import fr.alohomora.model.Element;
 import fr.alohomora.model.Group;
 import fr.alohomora.view.PanePassword;
@@ -143,9 +144,10 @@ public class InterfaceController {
 			public void handle(MouseEvent event) {
 				Group groupSelected = (Group)InterfaceController.this.groups.getSelectionModel().getSelectedItem();
 				// @TODO get id of element from bd
-				groupSelected.addElement(new Element(1, groupSelected, "empty", "", "empty", "empty"));
+				groupSelected.addElementFirstposition(new Element(-1, groupSelected, "empty", "", "empty", "empty"));
 				//update view
 				InterfaceController.this.onGroupClick(null);
+				InterfaceController.this.onSitesClick(null);
 			}
 		});
 	}

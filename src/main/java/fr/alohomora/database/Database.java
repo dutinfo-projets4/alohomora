@@ -169,7 +169,6 @@ public class Database {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		System.out.print(res);
 		return res;
 	}
 

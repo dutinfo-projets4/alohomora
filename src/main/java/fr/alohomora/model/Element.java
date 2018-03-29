@@ -131,6 +131,7 @@ public class Element {
 		call.enqueue(new Callback<Element>() {
 			@Override
 			public void onResponse(Call<Element> call, Response<Element> response) {
+				System.out.print(response.code());
 				if(response.code() == 201)
 					callback.onIdLoad(response.body());
 				else
@@ -145,6 +146,10 @@ public class Element {
 
 	}
 
+	/**
+	 * Transform the element content to a json format encrypted to the server
+	 * @return String Json encrypted
+	 */
 	public String getContent(){
 		JSONObject obj = new JSONObject();
 		obj.put("type", "0");
@@ -153,8 +158,6 @@ public class Element {
 		obj.put("username", this.username);
 		obj.put("password", this.pwd);
 		obj.put("icon", this.icon);
-		System.out.println(obj.toJSONString());
-		System.out.println(CryptoUtil.encrypt(Configuration.PWD, obj.toJSONString()));
 		return CryptoUtil.encrypt(Configuration.PWD, obj.toJSONString());
 
 	}
