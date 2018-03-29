@@ -10,6 +10,8 @@ import retrofit2.Response;
 
 import java.util.ArrayList;
 
+import static java.sql.Types.NULL;
+
 /**
  * Alohomora Password Manager
  * Copyright (C) 2018 Team Alohomora
@@ -29,6 +31,7 @@ import java.util.ArrayList;
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  **/
 public class User {
+
 	private int id;
 	private String username;
 	private String email;
@@ -36,7 +39,7 @@ public class User {
 	private String token;
 	private Data data;
 	private ArrayList<Token> tokens;
-
+	private Group root;
 
 	public User(int id, String username, String email, boolean isAdmin, String token, Data data) {
 		this.id = id;
@@ -99,6 +102,8 @@ public class User {
 	public ArrayList<Element> getElement() {
 		return this.data.getElements();
 	}
+
+	public Group getRoot() { return this.root; }
 
 	/**
 	 * Permet de passer une instance de User si l'idtendification est valide sinon null aux travers de l'interface RetrofitListerUser
@@ -164,5 +169,52 @@ public class User {
 				callback.error(t.toString());
 			}
 		});
+	}
+
+	/**
+	 *
+	 * @return la liste des groupes de l'utilisateur
+	 */
+	public Group getListGroups(Group src){
+		System.out.println("coucou");
+		Group result = null;
+		for (int i = 0; i < this.getGroups().size() ;  ++i){
+			System.out.print(src);
+			if(this.getGroups().get(i).getParentGroup() == src.getID()){
+				src.addGroup(this.getListGroups(this.getGroups().get(i)));
+			}
+		}
+		System.out.println("fin de méthode");
+		return src;
+	}
+
+	public void setRoot(){
+		for(Group g2: this.getGroups()){
+			if(g2.getID() == -1){
+				this.root = this.getListGroups(g2);
+				System.out.println(this.root);
+				break;
+			}
+		}
+
+		if (this.root == null){
+			System.out.println("Pas de groupe root chargé ! Mode simulation");
+			Group g = new Group(1, "Key file", "\uf108");
+			Group rs = new Group(1, "Réseaux sociaux", "\uf0ac");
+			g.addGroup(rs);
+			rs.addElement(new Element(0, rs, "Facebook", "\uf082", "toto", "toto"));
+			rs.addElement(new Element(1, rs, "Twitter", "\uf099", "toto", "toto"));
+			rs.addElement(new Element(2, rs, "Instagram", "\uf16d", "toto", "toto"));
+			g.addGroup(new Group(2, "Mails", "\uf0e0"));
+			g.addGroup(new Group(3, "Sites achat", "\uf155"));
+
+			Group groupWithSub = new Group(4, "Group4", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAnCAYAAABuf0pMAAAIh3pUWHRSYXcgcHJvZmlsZSB0eXBlIGV4aWYAAHja1ZhZkhw5DkT/eYo5AglwPQ5Xs7nBHH8eInKpLlW1qq37pzOkZIoRQQJwhwOU2//773H");
+			groupWithSub.addGroup(new Group(5, "SubGroup1", ""));
+			groupWithSub.addGroup(new Group(6, "SubGroup2", ""));
+			groupWithSub.addGroup(new Group(7, "SubGroup3", ""));
+
+			g.addGroup(groupWithSub);
+			this.root = g;
+		}
 	}
 }

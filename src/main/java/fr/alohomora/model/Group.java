@@ -32,7 +32,7 @@ import java.util.Base64;
 public class Group extends TreeItem {
 
 	private int id;
-	private int parentGrp;
+	private int parent_grp;
 
 	private String name;
 	private	String icon;
@@ -45,10 +45,10 @@ public class Group extends TreeItem {
 		this.setExpanded(true);
 	}
 
-	public Group(int id, int parents, String content) {
+	public Group(int id, int parent, String content) {
 		this();
 		this.id = id;
-		this.parentGrp = parents;
+		this.parent_grp = parent;
 		this.content = content;
 	}
 
@@ -68,7 +68,7 @@ public class Group extends TreeItem {
 
 	public int getParentGroup() {
 
-		return this.parentGrp;
+		return this.parent_grp;
 	}
 
 	public String getContent() {
@@ -79,6 +79,7 @@ public class Group extends TreeItem {
 	public void setName(String name){
 
 		this.name = name;
+		this.setValue(name);
 	}
 
 
@@ -138,6 +139,5 @@ public class Group extends TreeItem {
 			return lab;
 		}
 	}
-
 
 }

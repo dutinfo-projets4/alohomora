@@ -6,6 +6,7 @@ import fr.alohomora.crypto.RSAObject;
 import fr.alohomora.database.Database;
 import fr.alohomora.model.Challenge;
 import fr.alohomora.model.Config;
+import fr.alohomora.model.Group;
 import fr.alohomora.model.User;
 import fr.alohomora.model.retrofitlistener.RetrofitListenerUser;
 import fr.alohomora.model.retrofitlistener.RetrofitListenerChallenge;
@@ -150,7 +151,11 @@ public class ConnectController {
 
 			Configuration.PWD = this.password.getText();
 			try {
-				App.setScene(FXMLLoader.load(getClass().getClassLoader().getResource("fxml/interface.fxml")), new String[]{"assets/css/main.css", "assets/css/interface.css"});
+				FXMLLoader loader = new FXMLLoader();
+				loader.setController(new InterfaceController());
+				App.setScene(loader.load(getClass().getClassLoader().getResource("fxml/interface.fxml")), new String[]{"assets/css/main.css", "assets/css/interface.css"});
+				user.setRoot();
+				((InterfaceController)loader.getController()).setUser(user);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -227,13 +232,20 @@ public class ConnectController {
 							if (user != null) {
 								//add config in local DB
 								Database.getInstance().insertConfig(user.getUsername(), user.getToken(), Configuration.PORTABLE);
-
+								// test des id des groupes dans la BD locale
+								// for(int i =0; i < user.getGroups().size(); ++i){
+								//	System.out.println(user.getGroups().get(i).getParentGroup());
+								//}
 								//change view
 								Platform.runLater(new Runnable() {
 									@Override
 									public void run() {
 										try {
-											App.setScene(FXMLLoader.load(getClass().getClassLoader().getResource("fxml/interface.fxml")), new String[]{"assets/css/main.css", "assets/css/interface.css"});
+											FXMLLoader loader = new FXMLLoader();
+											loader.setController(new InterfaceController());
+											App.setScene(loader.load(getClass().getClassLoader().getResource("fxml/interface.fxml")), new String[]{"assets/css/main.css", "assets/css/interface.css"});
+											user.setRoot();
+											((InterfaceController)loader.getController()).setUser(user);
 										} catch (IOException e) {
 											e.printStackTrace();
 										}
