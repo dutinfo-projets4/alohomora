@@ -1,12 +1,25 @@
 package fr.alohomora.model;
 
+import fr.alohomora.App;
+import fr.alohomora.Configuration;
+import fr.alohomora.crypto.CryptoUtil;
+import fr.alohomora.database.Database;
+import fr.alohomora.model.retrofitlistener.RetrofitListnerElement;
+import fr.alohomora.model.retrofitlistener.RetrofitListnerGroup;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.util.Pair;
+import org.json.simple.JSONObject;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import java.io.ByteArrayInputStream;
 import java.util.Base64;
@@ -35,7 +48,7 @@ public class Group extends TreeItem {
 	private int parent_grp;
 
 	private String name;
-	private	String icon;
+	private String icon;
 
 	private String content;
 	private ObservableList<Element> elements;
@@ -45,7 +58,7 @@ public class Group extends TreeItem {
 		this.setExpanded(true);
 	}
 
-	public Group(int id, int parent_grp, String content) {
+	public Group(int id, Integer parent_grp, String content) {
 		this();
 		this.id = id;
 		this.parent_grp = parent_grp;
@@ -54,7 +67,7 @@ public class Group extends TreeItem {
 
 	public Group(int id, String name, String icon) {
 		this();
-		this.id   = id;
+		this.id = id;
 		this.name = name;
 		this.icon = icon;
 		this.setValue(this.name);
@@ -65,7 +78,7 @@ public class Group extends TreeItem {
 	public Group(int id, int parent_grp, String name, String icon) {
 		this();
 		this.parent_grp = parent_grp;
-		this.id   = id;
+		this.id = id;
 		this.name = name;
 		this.icon = icon;
 		this.setValue(this.name);
@@ -82,12 +95,7 @@ public class Group extends TreeItem {
 		return this.parent_grp;
 	}
 
-	public String getContent() {
-
-		return this.content;
-	}
-
-	public void setName(String name){
+	public void setName(String name) {
 
 		this.name = name;
 		this.setValue(name);
@@ -100,7 +108,63 @@ public class Group extends TreeItem {
 		return false;
 	}
 
+	/**
+	 * add group in the Tree and in the DB and local database check if the group not exist and add
+	 *
+	 * @param group
+	 * @return
+	 */
 	public boolean addGroup(Group group) {
+		/**
+		 * @TODO add api data
+		 */
+		if (!Database.getInstance().checkGroupExist(group.id)) {
+			this.addGroup(new RetrofitListnerGroup() {
+				@Override
+				public void onIdLoad(Group idGroup) {
+					if (idGroup != null) {
+						//change the current id
+						group.id = idGroup.getID();
+
+						//add to database
+						Database.getInstance().insertGroup(group.id, group.parent_grp, group.getContent());
+
+						//information to the user
+						Platform.runLater(new Runnable() {
+							@Override
+							public void run() {
+								Alert alert = new Alert(Alert.AlertType.INFORMATION);
+								alert.setContentText("Successfull add");
+								alert.showAndWait();
+							}
+						});
+					} else {
+						//information to the user
+						Platform.runLater(new Runnable() {
+							@Override
+							public void run() {
+								Alert alert = new Alert(Alert.AlertType.WARNING);
+								alert.setContentText("Error network");
+								alert.showAndWait();
+							}
+						});
+					}
+				}
+
+				@Override
+				public void error(String msg) {
+					//information to the user
+					Platform.runLater(new Runnable() {
+						@Override
+						public void run() {
+							Alert alert = new Alert(Alert.AlertType.WARNING);
+							alert.setContentText(msg);
+							alert.showAndWait();
+						}
+					});
+				}
+			}, "" + group.parent_grp, group.getContent());
+		}
 
 		return this.getChildren().add(group);
 	}
@@ -114,8 +178,8 @@ public class Group extends TreeItem {
 
 	}
 
-	public void addElementFirstposition(Element elt){
-		 this.elements.add(0, elt);
+	public void addElementFirstposition(Element elt) {
+		this.elements.add(0, elt);
 	}
 
 	// Same as updateGroup
@@ -133,7 +197,7 @@ public class Group extends TreeItem {
 		ObservableList<Element> elts = FXCollections.observableArrayList();
 		elts.addAll(this.elements);
 		for (Object g : this.getChildren()) {
-			Group gpe = (Group)g;
+			Group gpe = (Group) g;
 			elts.addAll(gpe.getElements());
 		}
 		return elts;
@@ -149,6 +213,49 @@ public class Group extends TreeItem {
 			lab.getStyleClass().add("groupLabel");
 			return lab;
 		}
+	}
+
+	/**
+	 * Request api to add Group with parent_grp and content pass througout parameters
+	 *
+	 * @param parent_grp
+	 * @param content
+	 */
+	public void addGroup(final RetrofitListnerGroup callback, String parent_grp, String content) {
+		Pair<String, String>[] params = new Pair[]{
+				new Pair("parent_grp", parent_grp),
+				new Pair("content", content)
+		};
+		Call<Group> call = App.getAPI().addGroup(params);
+		call.enqueue(new Callback<Group>() {
+			@Override
+			public void onResponse(Call<Group> call, Response<Group> response) {
+				System.out.print(response.code());
+				if (response.code() == 201)
+					callback.onIdLoad(response.body());
+				else
+					callback.onIdLoad(null);
+			}
+
+			@Override
+			public void onFailure(Call<Group> call, Throwable throwable) {
+				callback.error(throwable.toString());
+			}
+		});
+	}
+
+	/**
+	 * Transform the group content to a json format encrypted to the server
+	 * @return String Json encrypted
+	 */
+	public String getContent() {
+		if (this.content == null) {
+			JSONObject obj = new JSONObject();
+			obj.put("name", this.name);
+			obj.put("icon", this.icon);
+			return CryptoUtil.encrypt(Configuration.PWD, obj.toJSONString());
+		} else
+			return this.content;
 	}
 
 }

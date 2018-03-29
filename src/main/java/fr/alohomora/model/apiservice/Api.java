@@ -4,6 +4,7 @@ import fr.alohomora.Configuration;
 import fr.alohomora.database.Database;
 import fr.alohomora.model.Challenge;
 import fr.alohomora.model.Element;
+import fr.alohomora.model.Group;
 import fr.alohomora.model.User;
 import javafx.util.Pair;
 import okhttp3.OkHttpClient;
@@ -90,6 +91,12 @@ public class Api {
 	public Call<Void> updateElement(Pair <String, String>[] params){
 		Pair<String, String>[] np = this.addRequest(params);
 		return this.service.updateElement(np[0].getValue(), np[1].getValue(), np[2].getValue(), np[3].getValue());
+	}
+
+	public Call<Group> addGroup(Pair<String, String>[] params){
+		Pair<String, String>[] np = this.addRequest(params);
+		this.setParams(np);
+		return this.service.addGroup(np[0].getValue(), np[1].getValue(), np[2].getValue());
 	}
 
 

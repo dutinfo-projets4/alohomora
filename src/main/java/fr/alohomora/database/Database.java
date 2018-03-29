@@ -251,4 +251,44 @@ public class Database {
 		}
 		return res;
 	}
-}
+
+	/**
+	 * check if the group exist with his id, and return true or false
+	 * @param id
+	 * @return
+	 */
+	public boolean checkGroupExist(int id) {
+		boolean res = false;
+		try {
+			PreparedStatement prepStmt = this.con.prepareStatement("SELECT idGroupe FROM directory WHERE idGroupe = ? ");
+			prepStmt.setInt(1, id);
+			ResultSet rs = prepStmt.executeQuery();
+			res = rs.next();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return res;
+	}
+
+	/**
+	 * add group
+	 * @param idGroupe
+	 * @param parent_grp
+	 * @param content
+	 * @return
+	 */
+	public boolean insertGroup(int idGroupe, int parent_grp, String content){
+		boolean res  = false;
+		try{
+			PreparedStatement prepStat = this.con.prepareStatement("INSERT INTO directory (idGroupe, content, parent_grp) VALUES (?,?,?)");
+			prepStat.setInt(1, idGroupe);
+			prepStat.setString(2, content);
+			prepStat.setInt(3, parent_grp);
+			res = prepStat.execute();
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+		return res;
+	}
+
+ }

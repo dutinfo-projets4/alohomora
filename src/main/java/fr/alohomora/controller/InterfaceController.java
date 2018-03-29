@@ -80,7 +80,7 @@ public class InterfaceController {
 	/*
 */
 
-		Group g = new Group(1, 0, "ro", "");
+		Group g = new Group(-1, -1, "Root", "");
 		this.groups.setRoot(g);
 
 		// Filtered list here
@@ -142,8 +142,8 @@ public class InterfaceController {
 			dialog.setHeaderText("Enter the group name");
 			dialog.setContentText("Enter a group name");
 			Optional<String> result = dialog.showAndWait();
-			int incrementationParentGroupd = groupSelected.getParentGroup() + groups.getExpandedItemCount();
-			result.ifPresent(s -> groupSelected.addGroup(new Group(incrementationParentGroupd, groupSelected.getID(), s, "")));
+			System.out.print(groupSelected.getID());
+			result.ifPresent(s -> groupSelected.addGroup(new Group(-1, groupSelected.getID(), s, "")));
 			// update view
 			InterfaceController.this.onGroupClick(null);
 		});

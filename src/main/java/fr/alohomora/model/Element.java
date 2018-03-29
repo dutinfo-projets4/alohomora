@@ -65,11 +65,11 @@ public class Element {
 
 		// After decryption, thoses fields NEED to be set (Even if empty)
 		{
-			this.label    = "";
-			this.icon     = "";
+			this.label = "";
+			this.icon = "";
 			this.username = "";
-			this.pwd      = "";
-			this.fields   = new ArrayList<>();
+			this.pwd = "";
+			this.fields = new ArrayList<>();
 		}
 	}
 
@@ -86,13 +86,33 @@ public class Element {
 	}
 
 
-	public int getID() { return this.id; }
-	public String getUsername() { return this.username; }
-	public String getPassword() { return this.pwd; }
-	public String getLabel() { return this.label; }
-	public Group getParentGroup() { return this.parentGroup; }
-	public int getParent() { return this.parent; }
-	public String getStringIcon(){return this.icon;}
+	public int getID() {
+		return this.id;
+	}
+
+	public String getUsername() {
+		return this.username;
+	}
+
+	public String getPassword() {
+		return this.pwd;
+	}
+
+	public String getLabel() {
+		return this.label;
+	}
+
+	public Group getParentGroup() {
+		return this.parentGroup;
+	}
+
+	public int getParent() {
+		return this.parent;
+	}
+
+	public String getStringIcon() {
+		return this.icon;
+	}
 
 	public Node getIcon() {
 		if (this.icon.startsWith("data:image") && this.icon.split(";")[1].startsWith("base64")) {
@@ -110,20 +130,44 @@ public class Element {
 		return this.fields.get(index);
 	}
 
-	public Element setUsername(String name) { this.username = name; return this; }
-	public Element setPassword(String pwd) { this.pwd = pwd; return this; }
-	public Element setLabel(String lab) { this.label = lab; return this; }
-	public Element setParentGroup(Group gpe) { this.parentGroup = gpe; return this; }
-	public Element setIcon(String ico) { this.icon = ico; return this; }
-	public Element setID(int id){this.id = id; return this;}
+	public Element setUsername(String name) {
+		this.username = name;
+		return this;
+	}
+
+	public Element setPassword(String pwd) {
+		this.pwd = pwd;
+		return this;
+	}
+
+	public Element setLabel(String lab) {
+		this.label = lab;
+		return this;
+	}
+
+	public Element setParentGroup(Group gpe) {
+		this.parentGroup = gpe;
+		return this;
+	}
+
+	public Element setIcon(String ico) {
+		this.icon = ico;
+		return this;
+	}
+
+	public Element setID(int id) {
+		this.id = id;
+		return this;
+	}
 
 	/**
 	 * Request api to addElement with parent_grp and content pass througout parameters
-	 * @param  parent_grp
-	 * @param  content
+	 *
+	 * @param parent_grp
+	 * @param content
 	 */
-	public void addElement(final RetrofitListnerElement callback, String parent_grp, String content){
-		Pair<String, String>[] params = new Pair []{
+	public void addElement(final RetrofitListnerElement callback, String parent_grp, String content) {
+		Pair<String, String>[] params = new Pair[]{
 				new Pair("parent_grp", parent_grp),
 				new Pair("content", content)
 		};
@@ -132,11 +176,12 @@ public class Element {
 			@Override
 			public void onResponse(Call<Element> call, Response<Element> response) {
 				System.out.print(response.code());
-				if(response.code() == 201)
+				if (response.code() == 201)
 					callback.onIdLoad(response.body());
 				else
 					callback.onIdLoad(null);
 			}
+
 			@Override
 			public void onFailure(Call<Element> call, Throwable throwable) {
 				callback.error(throwable.toString());
@@ -146,12 +191,13 @@ public class Element {
 
 	/**
 	 * Request Api to update element
+	 *
 	 * @param callback
 	 * @param id
 	 * @param parent_grp
 	 * @param content
 	 */
-	public void updateElement(final RetrofitListnerVoidResponse callback, String id, String parent_grp, String content){
+	public void updateElement(final RetrofitListnerVoidResponse callback, String id, String parent_grp, String content) {
 		Pair<String, String>[] params = new Pair[]{
 				new Pair("id", id),
 				new Pair("parent_grp", parent_grp),
@@ -173,18 +219,21 @@ public class Element {
 
 	/**
 	 * Transform the element content to a json format encrypted to the server
+	 *
 	 * @return String Json encrypted
 	 */
-	public String getContent(){
-		JSONObject obj = new JSONObject();
-		obj.put("type", "0");
-		obj.put("id", this.getID());
-		obj.put("name", this.label);
-		obj.put("username", this.username);
-		obj.put("password", this.pwd);
-		obj.put("icon", this.icon);
-		return CryptoUtil.encrypt(Configuration.PWD, obj.toJSONString());
-
+	public String getContent() {
+		if (this.content == null) {
+			JSONObject obj = new JSONObject();
+			obj.put("type", "0");
+			obj.put("id", this.getID());
+			obj.put("name", this.label);
+			obj.put("username", this.username);
+			obj.put("password", this.pwd);
+			obj.put("icon", this.icon);
+			return CryptoUtil.encrypt(Configuration.PWD, obj.toJSONString());
+		} else
+			return this.content;
 	}
 
 }

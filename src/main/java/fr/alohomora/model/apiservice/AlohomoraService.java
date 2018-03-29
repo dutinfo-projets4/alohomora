@@ -2,6 +2,7 @@ package fr.alohomora.model.apiservice;
 
 import fr.alohomora.model.Challenge;
 import fr.alohomora.model.Element;
+import fr.alohomora.model.Group;
 import fr.alohomora.model.User;
 import retrofit2.Call;
 import retrofit2.http.*;
@@ -47,4 +48,9 @@ public interface AlohomoraService {
 	                            @Field("id") String id,
 	                            @Field("parent_grp") String parent_grp,
 	                            @Field("content") String content);
+	@FormUrlEncoded
+	@POST("/group")
+	Call<Group> addGroup(@Field("req_id") String req_id,
+	                     @Field("parent_grp") String parent_grp,
+	                     @Field("content") String content);
 }
