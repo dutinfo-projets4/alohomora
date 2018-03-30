@@ -3,6 +3,7 @@ package fr.alohomora;
 import fr.alohomora.database.Database;
 import fr.alohomora.model.Config;
 import fr.alohomora.model.User;
+import org.json.simple.parser.JSONParser;
 
 import javax.print.DocFlavor;
 import java.io.File;
@@ -35,6 +36,8 @@ public class Configuration {
 	public static String PWD;
 	public static boolean PORTABLE = false;
 	public static File KEYS_FOLDER, DB_FILE;
+
+	public static JSONParser parser = new JSONParser();
 
 	/**
 	 * Fired up when the software starts up

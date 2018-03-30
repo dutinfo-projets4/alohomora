@@ -17,6 +17,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Pair;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -243,8 +245,10 @@ public class Group extends TreeItem {
 		return CryptoUtil.encrypt(Configuration.PWD, obj.toJSONString());
 	}
 
-	public void decrypt(){
-		this.icon = "\ue5ff";
+	public void decrypt() throws ParseException {
+		JSONObject obj = (JSONObject) Configuration.parser.parse(this.content);
+		this.setName((String)obj.get("name"));
+		this.icon = (String) obj.get("icon");
 		this.setName(this.content);
 		this.setGraphic(this.getIcon());
 	}
