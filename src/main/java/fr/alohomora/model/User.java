@@ -192,10 +192,15 @@ public class User {
 
 		for(Group g2: this.data.getGroups()){
 			// We decrypt the group data
-			try {
-				g2.decrypt();
-			} catch (ParseException e) {
-				e.printStackTrace();
+			if (g2.getParentGroup() != -1) {
+				try {
+					g2.decrypt();
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+			} else {
+				g2.setName("Root group");
+				g2.setIcon("\uF07C");
 			}
 
 			// Then we add his elements

@@ -120,12 +120,7 @@ public class Group extends TreeItem {
 						//add to database
 						Database.getInstance().insertGroup(group.id, group.parent_grp, group.getContent());
 						Group.this.addGroup(group);
-						//information to the user
-						Platform.runLater(() -> {
-							Alert alert = new Alert(Alert.AlertType.INFORMATION);
-							alert.setContentText("Successfull add");
-							alert.showAndWait();
-						});
+
 					} else {
 						//information to the user
 						Platform.runLater(() -> {
@@ -235,6 +230,10 @@ public class Group extends TreeItem {
 		});
 	}
 
+	public void setIcon(String s){
+		this.icon = s;
+	}
+
 	/**
 	 * Transform the group content to a json format encrypted to the server
 	 * @return String Json encrypted
@@ -242,7 +241,7 @@ public class Group extends TreeItem {
 	public String getContent() {
 		JSONObject obj = new JSONObject();
 		obj.put("name", this.name);
-		obj.put("icon", this.icon);
+		obj.put("icon", this.icon.isEmpty() ? "\uF07C" : this.icon);
 		return CryptoUtil.encrypt(Configuration.PWD, obj.toJSONString());
 	}
 
@@ -251,7 +250,6 @@ public class Group extends TreeItem {
 		JSONObject obj = (JSONObject) Configuration.parser.parse(this.content);
 		this.setName((String)obj.get("name"));
 		this.icon = (String) obj.get("icon");
-		this.setName(this.content);
 		this.setGraphic(this.getIcon());
 	}
 

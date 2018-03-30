@@ -18,6 +18,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import java.io.ByteArrayInputStream;
+import java.security.InvalidKeyException;
 import java.util.ArrayList;
 import java.util.Base64;
 
@@ -63,9 +64,6 @@ public class Element {
 		this.id = id;
 		this.parent = parent;
 		this.content = content;
-
-		// After decryption, thoses fields NEED to be set (Even if empty)
-
 	}
 
 	/**
@@ -252,8 +250,10 @@ public class Element {
 		return CryptoUtil.encrypt(Configuration.PWD, obj.toJSONString());
 	}
 
-	public void decrypt() throws ParseException {
+	public void decrypt() throws ParseException, InvalidKeyException {
+		this.content = CryptoUtil.decrypt(Configuration.PWD, this.content);
 		JSONObject obj = (JSONObject) Configuration.parser.parse(this.content);
+		System.out.println(obj.toJSONString());
 		this.label     = (String)obj.get("name");
 		this.icon      = (String)obj.get("icon");
 		this.username  = (String)obj.get("username");
