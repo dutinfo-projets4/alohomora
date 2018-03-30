@@ -24,6 +24,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import java.io.ByteArrayInputStream;
+import java.security.InvalidKeyException;
 import java.util.Base64;
 
 /**
@@ -221,7 +222,7 @@ public class Group extends TreeItem {
 		call.enqueue(new Callback<Group>() {
 			@Override
 			public void onResponse(Call<Group> call, Response<Group> response) {
-				System.out.print(response.code());
+				System.out.println(response.code());
 				if (response.code() == 201)
 					callback.onIdLoad(response.body());
 				else
@@ -246,7 +247,8 @@ public class Group extends TreeItem {
 		return CryptoUtil.encrypt(Configuration.PWD, obj.toJSONString());
 	}
 
-	public void decrypt() throws ParseException {
+	public void decrypt() throws ParseException, InvalidKeyException {
+		this.content = CryptoUtil.decrypt(Configuration.PWD, this.content);
 		JSONObject obj = (JSONObject) Configuration.parser.parse(this.content);
 		this.setName((String)obj.get("name"));
 		this.icon = (String) obj.get("icon");

@@ -9,6 +9,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import java.security.InvalidKeyException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -180,7 +181,7 @@ public class User {
 		return src;
 	}
 
-	public void setRoot(){
+	public void setRoot() throws InvalidKeyException {
 		for (Element e : this.data.getElements()){
 			try {
 				e.decrypt();
