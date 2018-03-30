@@ -12,6 +12,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Pair;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.ParseException;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -251,12 +252,13 @@ public class Element {
 		return CryptoUtil.encrypt(Configuration.PWD, obj.toJSONString());
 	}
 
-	public void decrypt(){
-		this.label = this.content;
-		this.icon = "\uF084";
-		this.username = "";
-		this.pwd = "";
-		this.fields = new ArrayList<>();
+	public void decrypt() throws ParseException {
+		JSONObject obj = (JSONObject) Configuration.parser.parse(this.content);
+		this.label     = (String)obj.get("name");
+		this.icon      = (String)obj.get("icon");
+		this.username  = (String)obj.get("username");
+		this.pwd       = (String)obj.get("password");
+		this.fields    = new ArrayList<>();
 	}
 
 }
