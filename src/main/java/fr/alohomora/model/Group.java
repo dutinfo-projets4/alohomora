@@ -106,11 +106,7 @@ public class Group extends TreeItem {
 
 
 	// Wont work because group is already modified so it wont be in the array
-	public boolean updateGroup(Group group) {
-		// @TODO
-		/**
-		 * @TODO add api data
-		 */
+	public void updateGroup(Group group) {
 		if (!Database.getInstance().checkGroupExist(group.id)) {
 			this.addGroup(new RetrofitListnerGroup() {
 				@Override
@@ -120,7 +116,7 @@ public class Group extends TreeItem {
 						group.id = idGroup.getID();
 						//add to database
 						Database.getInstance().insertGroup(group.id, group.parent_grp, group.getContent());
-
+						Group.this.addGroup(group);
 						//information to the user
 						Platform.runLater(() -> {
 							Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -149,7 +145,6 @@ public class Group extends TreeItem {
 			}, "" + group.parent_grp, group.getContent());
 		}
 
-		return false;
 	}
 
 	/**
@@ -223,6 +218,7 @@ public class Group extends TreeItem {
 		call.enqueue(new Callback<Group>() {
 			@Override
 			public void onResponse(Call<Group> call, Response<Group> response) {
+				System.out.print(response.code());
 				if (response.code() == 201)
 					callback.onIdLoad(response.body());
 				else

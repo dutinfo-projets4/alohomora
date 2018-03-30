@@ -129,7 +129,9 @@ public class InterfaceController {
 			dialog.setContentText("Enter a group name");
 			Optional<String> result = dialog.showAndWait();
 			System.out.print(groupSelected.getID());
-			result.ifPresent(s -> groupSelected.addGroup(new Group(-1, groupSelected.getID(), s, "")));
+			result.ifPresent(s -> {
+				groupSelected.updateGroup(new Group(-1, groupSelected.getID(), s, ""));
+			});
 			// update view
 			InterfaceController.this.onGroupClick(null);
 		});
