@@ -1,3 +1,7 @@
+* {
+    -fx-font-family: "Hack NF";
+}
+
 .boxes {
     /*-fx-font-family: "Hack Bold Nerd Font Complete Mono Windows Compatible";*/
     -fx-font-family: "Hack NF";

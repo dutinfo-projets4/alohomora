@@ -62,8 +62,8 @@ public class PanePassword extends VBox {
 		Region empty = new Region();
 		VBox.setVgrow(empty, Priority.ALWAYS);
 
-		this.cancelbt = new Button("\uf2ea");
-		this.removebt = new Button("\uf2ed");
+		this.cancelbt = new Button("");
+		this.removebt = new Button("");
 		this.removebt.setOnMouseClicked(mouseEvent -> this.handleRemove());
 
 

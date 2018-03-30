@@ -82,11 +82,11 @@ public class InterfaceController {
 			}
 		});
 
-		this.research.setPromptText("\uf002 Search");
+		this.research.setPromptText(" Search");
 		this.research.getStyleClass().add("researchBar");
 
-		this.addElement.setText("\uf067");
-		this.addGroup.setText("\uf067");
+		this.addElement.setText("");
+		this.addGroup.setText("");
 
 
 		// -------------------------- DEFINITIVE STUFF --------------------------
