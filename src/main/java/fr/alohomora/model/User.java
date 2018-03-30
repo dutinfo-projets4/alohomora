@@ -9,6 +9,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import static java.sql.Types.NULL;
 
@@ -95,13 +96,7 @@ public class User {
 		return tokens;
 	}
 
-	public ArrayList<Group> getGroups() {
-		return this.data.getGroups();
-	}
-
-	public ArrayList<Element> getElement() {
-		return this.data.getElements();
-	}
+	public Data getData() { return this.data; }
 
 	public Group getRoot() { return this.root; }
 
@@ -172,49 +167,41 @@ public class User {
 	}
 
 	/**
-	 *
-	 * @return la liste des groupes de l'utilisateur
+	 * @return Le groupe racine de l'utilisateur
 	 */
-	public Group getListGroups(Group src){
-		System.out.println("coucou");
+	public Group getSubgroups(Group src){
 		Group result = null;
-		for (int i = 0; i < this.getGroups().size() ;  ++i){
-			System.out.print(src);
-			if(this.getGroups().get(i).getParentGroup() == src.getID()){
-				src.addGroup(this.getListGroups(this.getGroups().get(i)));
+		for (int i = 0; i < this.data.getGroups().size() ;  ++i){
+			if(this.data.getGroups().get(i).getParentGroup() == src.getID()){
+				src.addGroup(this.getSubgroups(this.data.getGroups().get(i)));
 			}
 		}
-		System.out.println("fin de méthode");
 		return src;
 	}
 
 	public void setRoot(){
-		for(Group g2: this.getGroups()){
-			if(g2.getID() == -1){
-				this.root = this.getListGroups(g2);
-				System.out.println(this.root);
-				break;
-			}
+		for (Element e : this.data.getElements()){
+			e.decrypt();
 		}
 
-		if (this.root == null){
-			System.out.println("Pas de groupe root chargé ! Mode simulation");
-			Group g = new Group(1, "Key file", "\uf108");
-			Group rs = new Group(1, "Réseaux sociaux", "\uf0ac");
-			g.addGroup(rs);
-			rs.addElement(new Element(0, rs, "Facebook", "\uf082", "toto", "toto"));
-			rs.addElement(new Element(1, rs, "Twitter", "\uf099", "toto", "toto"));
-			rs.addElement(new Element(2, rs, "Instagram", "\uf16d", "toto", "toto"));
-			g.addGroup(new Group(2, "Mails", "\uf0e0"));
-			g.addGroup(new Group(3, "Sites achat", "\uf155"));
+		for(Group g2: this.data.getGroups()){
+			// We decrypt the group data
+			g2.decrypt();
 
-			Group groupWithSub = new Group(4, "Group4", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAnCAYAAABuf0pMAAAIh3pUWHRSYXcgcHJvZmlsZSB0eXBlIGV4aWYAAHja1ZhZkhw5DkT/eYo5AglwPQ5Xs7nBHH8eInKpLlW1qq37pzOkZIoRQQJwhwOU2//773H");
-			groupWithSub.addGroup(new Group(5, "SubGroup1", ""));
-			groupWithSub.addGroup(new Group(6, "SubGroup2", ""));
-			groupWithSub.addGroup(new Group(7, "SubGroup3", ""));
+			// Then we add his elements
+			Iterator i = this.data.getElements().iterator();
+			while (i.hasNext()){
+				Element e = (Element) i.next();
+				if (e.getParent() == g2.getID()){
+					g2.addElement(e);
+					i.remove();
+				}
+			}
 
-			g.addGroup(groupWithSub);
-			this.root = g;
+			// Then we build the tree
+			if(g2.getParentGroup() == -1){
+				this.root = this.getSubgroups(g2);
+			}
 		}
 	}
 }

@@ -57,4 +57,10 @@ public interface AlohomoraService {
 	Call<Group> addGroup(@Field("req_id") String req_id,
 	                     @Field("parent_grp") String parent_grp,
 	                     @Field("content") String content);
+	@FormUrlEncoded
+	@PUT("/directory")
+	Call<Void> updateGroup(@Field("req_id") String req_id,
+	                         @Field("id") String id,
+	                         @Field("parent_grp") String parent_grp,
+	                         @Field("content") String content);
 }

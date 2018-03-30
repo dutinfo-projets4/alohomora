@@ -1,5 +1,7 @@
 package fr.alohomora.controller;
 
+import fr.alohomora.Configuration;
+import fr.alohomora.model.Config;
 import fr.alohomora.model.Element;
 import fr.alohomora.model.Group;
 import fr.alohomora.model.User;
@@ -38,8 +40,6 @@ public class InterfaceController {
 
 	private static InterfaceController _INSTANCE;
 
-	private User user;
-
 	@FXML
 	private HBox allElements;
 
@@ -63,25 +63,11 @@ public class InterfaceController {
 	@FXML
 	private Label addGroup;
 
-	public void setUser(User u) {
-		this.user = u;
-		System.out.println(u);
-		System.out.println(u.getRoot());
-		this.groups.setRoot(u.getRoot());
-	}
-
 	@FXML
 	public void initialize() {
-		/**
-		 * @TODO decrypt with password database and load group and element from database
-		 */
-		// -------------------------- TEMPORARY STUFF --------------------------
-
-	/*
-*/
-
-		Group g = new Group(1, -1, "Root", "");
-		this.groups.setRoot(g);
+		System.out.println(Configuration.USER_INSTANCE);
+		Configuration.USER_INSTANCE.setRoot();
+		this.groups.setRoot(Configuration.USER_INSTANCE.getRoot());
 
 		// Filtered list here
 		research.textProperty().addListener((observable, oldvalue, newvalue) -> {

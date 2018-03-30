@@ -64,13 +64,7 @@ public class Element {
 		this.content = content;
 
 		// After decryption, thoses fields NEED to be set (Even if empty)
-		{
-			this.label = "";
-			this.icon = "";
-			this.username = "";
-			this.pwd = "";
-			this.fields = new ArrayList<>();
-		}
+
 	}
 
 	/**
@@ -247,17 +241,22 @@ public class Element {
 	 * @return String Json encrypted
 	 */
 	public String getContent() {
-		if (this.content == null) {
-			JSONObject obj = new JSONObject();
-			obj.put("type", "0");
-			obj.put("id", this.getID());
-			obj.put("name", this.label);
-			obj.put("username", this.username);
-			obj.put("password", this.pwd);
-			obj.put("icon", this.icon);
-			return CryptoUtil.encrypt(Configuration.PWD, obj.toJSONString());
-		} else
-			return this.content;
+		JSONObject obj = new JSONObject();
+		obj.put("type", "0");
+		obj.put("id", this.getID());
+		obj.put("name", this.label);
+		obj.put("username", this.username);
+		obj.put("password", this.pwd);
+		obj.put("icon", this.icon);
+		return CryptoUtil.encrypt(Configuration.PWD, obj.toJSONString());
+	}
+
+	public void decrypt(){
+		this.label = this.content;
+		this.icon = "\uF084";
+		this.username = "";
+		this.pwd = "";
+		this.fields = new ArrayList<>();
 	}
 
 }
