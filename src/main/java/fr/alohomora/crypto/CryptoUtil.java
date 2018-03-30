@@ -267,16 +267,14 @@ public class CryptoUtil {
 	 * @param value élement chiffré
 	 * @return String la value déchiffrer
 	 */
-	public static String decrypt(String password, String value){
+	public static String decrypt(String password, String value) throws InvalidKeyException {
 		String res = null;
 		try {
 			Cipher cipher = Cipher.getInstance("AES");
 			SecretKeySpec key = generateAESKey(password);
 			cipher.init(Cipher.DECRYPT_MODE, key);
 			res = new String(cipher.doFinal(Base64.getDecoder().decode(value)));
-		} catch (InvalidKeyException e) {
-			e.printStackTrace();
-		} catch (NoSuchPaddingException e) {
+		}  catch (NoSuchPaddingException e) {
 			e.printStackTrace();
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();

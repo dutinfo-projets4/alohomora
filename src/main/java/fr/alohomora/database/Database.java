@@ -1,6 +1,9 @@
 package fr.alohomora.database;
 
 import fr.alohomora.Configuration;
+import fr.alohomora.model.Data;
+import fr.alohomora.model.Element;
+import fr.alohomora.model.Group;
 
 import java.io.*;
 import java.sql.*;
@@ -306,6 +309,37 @@ public class Database {
 			e.printStackTrace();
 		}
 		return res;
+	}
+
+	/**
+	 * getGroup from database
+	 */
+	public Data getData(){
+		int id;
+		String content;
+		int parent_grp;
+		Data data = new Data();
+		try{
+			ResultSet rs = this.createQuery().executeQuery("SELECT idGroupe, content, parent_grp FROM directory");
+			while (rs.next()) {
+
+				content =  rs.getString("content");
+				id = rs.getInt("idGroupe");
+				parent_grp = rs.getInt("parent_grp");
+				data.addGroups(new Group(id,parent_grp,content));
+			}
+
+			rs = this.createQuery().executeQuery("SELECT idElement, content, idGroupe FROM element");
+			while (rs.next()){
+				content = rs.getString("content");
+				id = rs.getInt("idElement");
+				parent_grp = rs.getInt("idGroupe");
+				data.addElement(new Element(id, parent_grp, content));
+			}
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+		return data;
 	}
 
 

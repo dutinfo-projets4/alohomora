@@ -1,6 +1,9 @@
 import fr.alohomora.Configuration;
 import fr.alohomora.database.Database;
 import fr.alohomora.model.Config;
+import fr.alohomora.model.Data;
+import fr.alohomora.model.Element;
+import fr.alohomora.model.Group;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -32,5 +35,17 @@ public class DatabaseTest {
 	@Test
 	public void insertConfig(){
 		Database.getInstance().insertConfig("test","test", true);
+	}
+
+	@Test
+	public void getDataFromBd(){
+		Data data = Database.getInstance().getData();
+
+		for(Group group : data.getGroups()){
+			System.out.println(group.getContent());
+		}
+		for(Element element : data.getElements()){
+			System.out.println(element.getContent());
+		}
 	}
 }

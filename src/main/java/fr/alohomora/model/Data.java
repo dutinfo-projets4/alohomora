@@ -25,6 +25,24 @@ public class Data {
 	private ArrayList<Element> elements;
 	private ArrayList<Group> groups;
 
+	public Data(){
+		this.elements = new ArrayList<>();
+		this.config = new ArrayList<>();
+		this.groups = new ArrayList<>();
+	}
+
+	public boolean addGroups(Group group) {
+		return this.groups.add(group);
+	}
+
+	public boolean addElement(Element element){
+		return this.elements.add(element);
+	}
+
+	public boolean addConfig(Config config){
+		return this.config.add(config);
+	}
+
 	public ArrayList<Config> getConfig() {
 		return config;
 	}
