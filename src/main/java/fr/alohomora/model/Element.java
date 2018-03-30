@@ -218,6 +218,31 @@ public class Element {
 	}
 
 	/**
+	 * Request Api to remove element
+	 * @param callback
+	 * @param id
+	 */
+	public void removeElement(final RetrofitListnerVoidResponse callback, String id){
+		Pair<String, String>[] params = new Pair[]{
+				new Pair("id", id)
+		};
+
+		Call<Void> call = App.getAPI().removeElement(params);
+		call.enqueue(new Callback<Void>() {
+			@Override
+			public void onResponse(Call<Void> call, Response<Void> response) {
+				callback.onResponseLoad(response.code());
+			}
+
+			@Override
+			public void onFailure(Call<Void> call, Throwable throwable) {
+				callback.error(throwable.getMessage());
+			}
+		});
+
+	}
+
+	/**
 	 * Transform the element content to a json format encrypted to the server
 	 *
 	 * @return String Json encrypted

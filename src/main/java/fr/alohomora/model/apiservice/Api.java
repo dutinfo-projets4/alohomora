@@ -99,5 +99,11 @@ public class Api {
 		return this.service.addGroup(np[0].getValue(), np[1].getValue(), np[2].getValue());
 	}
 
+	public Call<Void> removeElement(Pair<String, String>[] params){
+		Pair<String, String>[] np = this.addRequest(params);
+		this.setParams(np);
+		return this.service.removeElement(np[0].getValue(), np[1].getValue());
+	}
+
 
 }

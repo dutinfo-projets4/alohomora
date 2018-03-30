@@ -129,8 +129,41 @@ public class PanePassword extends VBox {
 
 			Optional<ButtonType> result = alert.showAndWait();
 			if (result.get() == btYes) {
-				this.currElement.getParentGroup().removeElement(this.currElement);
 				// @TODO remove from database
+				this.currElement.removeElement(new RetrofitListnerVoidResponse() {
+					@Override
+					public void onResponseLoad(int code) {
+						if(code == 410){
+							int idElement = PanePassword.this.currElement.getID();
+							//remove element from the views
+							PanePassword.this.currElement.getParentGroup().removeElement(PanePassword.this.currElement);
+
+							//remove from database
+							Database.getInstance().removeElement(idElement);
+						}else{
+							Platform.runLater(new Runnable() {
+								@Override
+								public void run() {
+									Alert alert = new Alert(Alert.AlertType.WARNING);
+									alert.setContentText("Can't find the element");
+									alert.showAndWait();
+								}
+							});
+						}
+					}
+
+					@Override
+					public void error(String msg) {
+						Platform.runLater(new Runnable() {
+							@Override
+							public void run() {
+								Alert alert = new Alert(Alert.AlertType.WARNING);
+								alert.setContentText("Error network");
+								alert.showAndWait();
+							}
+						});
+					}
+				}, ""+this.currElement.getID());
 				InterfaceController.getInstance().onGroupClick(null);
 			}
 		}

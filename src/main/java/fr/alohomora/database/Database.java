@@ -253,6 +253,23 @@ public class Database {
 	}
 
 	/**
+	 * remove Element
+	 * @param idElement
+	 * @return
+	 */
+	public boolean removeElement(int idElement){
+		boolean res = false;
+		try{
+			PreparedStatement prepStat = this.con.prepareStatement("DELETE FROM element WHERE idElement = ?");
+			prepStat.setInt(1, idElement);
+			res = prepStat.execute();
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+		return res;
+	}
+
+	/**
 	 * check if the group exist with his id, and return true or false
 	 * @param id
 	 * @return
@@ -290,5 +307,7 @@ public class Database {
 		}
 		return res;
 	}
+
+
 
  }
