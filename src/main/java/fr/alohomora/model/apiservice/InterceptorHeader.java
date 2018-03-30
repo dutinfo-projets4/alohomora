@@ -94,7 +94,7 @@ public class InterceptorHeader implements okhttp3.Interceptor {
 
 		RSAObject rsa = null;
 		try {
-			rsa = new RSAObject(Database.getInstance().getUsername());
+			rsa = new RSAObject(Database.getInstance().getUserName(Configuration.USER_INSTANCE.getToken()));
 			builder.addHeader("X-ALOHOMORA-SIGNATURE", rsa.sign(obj.toJSONString()));
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();

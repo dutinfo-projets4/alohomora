@@ -6,6 +6,7 @@ import fr.alohomora.crypto.RSAObject;
 import fr.alohomora.database.Database;
 import fr.alohomora.model.Challenge;
 import fr.alohomora.model.Config;
+import fr.alohomora.model.Data;
 import fr.alohomora.model.User;
 import fr.alohomora.model.retrofitlistener.RetrofitListenerUser;
 import fr.alohomora.model.retrofitlistener.RetrofitListenerChallenge;
@@ -110,8 +111,13 @@ public class ConnectController {
 			 */
 
 			Configuration.PWD = this.password.getText();
+			Data data = Database.getInstance().getData();
+			String username = Database.getInstance().getUserName(Configuration.LOGIN_TOKEN);
+			User user = new User(0, username,"@",false,Configuration.LOGIN_TOKEN,data);
+			System.out.print(username);
+
 			// @TODO create user
-			this.setGroupsAndPanel(null);
+			this.setGroupsAndPanel(user);
 		}
 
 	}
@@ -266,7 +272,7 @@ public class ConnectController {
 					try {
 						FXMLLoader loader = new FXMLLoader();
 						loader.setController(new InterfaceController());
-						App.setScene(loader.load(getClass().getClassLoader().getResource("fxml/interface.fxml")), new String[]{"assets/css/main.css", "assets/css/interface.css"});
+ 						App.setScene(loader.load(getClass().getClassLoader().getResource("fxml/interface.fxml")), new String[]{"assets/css/main.css", "assets/css/interface.css"});
 					} catch (IOException e) {
 						e.printStackTrace();
 					}

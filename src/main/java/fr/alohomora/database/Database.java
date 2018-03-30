@@ -155,26 +155,6 @@ public class Database {
 	}
 
 	/**
-	 * get username in DB
-	 * @return username
-	 */
-	public String getUsername() {
-		String res = null;
-		try {
-			Statement st = this.con.createStatement();
-			ResultSet rs = st.executeQuery("SELECT username FROM config WHERE idConfig = 1");
-			while (rs.next()) {
-				res = rs.getString("username");
-			}
-			st.close();
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return res;
-	}
-
-	/**
 	 * check if the element exist with his id, and return true or false
 	 * @param id
 	 * @return
@@ -311,7 +291,26 @@ public class Database {
 		return res;
 	}
 
-	/**
+	public String getUserName(String token){
+		String res = null;
+
+		try{
+			PreparedStatement preparedStatement = this.con.prepareStatement("SELECT username FROM config WHERE token = ?");
+			preparedStatement.setString(1,token);
+			ResultSet rs  = preparedStatement.executeQuery();
+			while (rs.next()) {
+
+				res =  rs.getString("username");
+
+			}
+
+	} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return res;
+	}
+
+		/**
 	 * getGroup from database
 	 */
 	public Data getData(){
@@ -339,6 +338,10 @@ public class Database {
 		}catch (Exception e){
 			e.printStackTrace();
 		}
+
+		Group g = new Group(1, -1,"","");
+		data.getGroups().add(g);
+
 		return data;
 	}
 
