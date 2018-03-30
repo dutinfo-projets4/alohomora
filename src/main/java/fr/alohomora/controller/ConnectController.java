@@ -24,6 +24,7 @@ import javafx.scene.layout.VBox;
 
 import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
+import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
@@ -109,13 +110,8 @@ public class ConnectController {
 			 */
 
 			Configuration.PWD = this.password.getText();
-			try {
-				FXMLLoader loader = new FXMLLoader();
-				loader.setController(new InterfaceController());
-				App.setScene(loader.load(getClass().getClassLoader().getResource("fxml/interface.fxml")), new String[]{"assets/css/main.css", "assets/css/interface.css"});
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			// @TODO create user
+			this.setGroupsAndPanel(null);
 		}
 
 	}
@@ -145,12 +141,9 @@ public class ConnectController {
 	 * @param node
 	 */
 	private void onKeyPressedLogin(Node node) {
-		node.setOnKeyPressed(new EventHandler<KeyEvent>() {
-			@Override
-			public void handle(KeyEvent event) {
-				if (event.getCode() == KeyCode.ENTER) {
-					ConnectController.this.connect();
-				}
+		node.setOnKeyPressed(event -> {
+			if (event.getCode() == KeyCode.ENTER) {
+				ConnectController.this.connect();
 			}
 		});
 	}
@@ -159,12 +152,9 @@ public class ConnectController {
 	 * event throw when user click on loginButton
 	 */
 	private void onLoginClick() {
-		this.login.setOnMouseClicked(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				if (event.getButton() == MouseButton.PRIMARY) {
-					ConnectController.this.connect();
-				}
+		this.login.setOnMouseClicked(event -> {
+			if (event.getButton() == MouseButton.PRIMARY) {
+				ConnectController.this.connect();
 			}
 		});
 	}
@@ -188,19 +178,7 @@ public class ConnectController {
 						public void callback(User user) {
 							if (user != null) {
 								Database.getInstance().insertConfig(user.getUsername(), user.getToken(), Configuration.PORTABLE);
-								Platform.runLater(new Runnable() {
-									@Override
-									public void run() {
-										try {
-											FXMLLoader loader = new FXMLLoader();
-											loader.setController(new InterfaceController());
-											Configuration.USER_INSTANCE = user;
-											App.setScene(loader.load(getClass().getClassLoader().getResource("fxml/interface.fxml")), new String[]{"assets/css/main.css", "assets/css/interface.css"});
-										} catch (IOException e) {
-											e.printStackTrace();
-										}
-									}
-								});
+								ConnectController.this.setGroupsAndPanel(user);
 							} else {
 								Platform.runLater(() -> {
 									Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -276,5 +254,31 @@ public class ConnectController {
 		//hash(passcode)
 		return DatatypeConverter.printHexBinary(messageDigest.digest(passcode.getBytes()));
 	}
+
+
+	public void setGroupsAndPanel(User u) {
+		try {
+			Configuration.USER_INSTANCE = u;
+			Configuration.USER_INSTANCE.setRoot();
+			Platform.runLater(new Runnable() {
+				@Override
+				public void run() {
+					try {
+						FXMLLoader loader = new FXMLLoader();
+						loader.setController(new InterfaceController());
+						App.setScene(loader.load(getClass().getClassLoader().getResource("fxml/interface.fxml")), new String[]{"assets/css/main.css", "assets/css/interface.css"});
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			});
+		} catch (InvalidKeyException e) {
+			e.printStackTrace();
+			Alert al = new Alert(Alert.AlertType.WARNING);
+			al.setContentText("Bad password!");
+			al.showAndWait();
+		}
+	}
+
 }
 

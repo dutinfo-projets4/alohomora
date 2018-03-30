@@ -65,8 +65,6 @@ public class InterfaceController {
 
 	@FXML
 	public void initialize() {
-		System.out.println(Configuration.USER_INSTANCE);
-		Configuration.USER_INSTANCE.setRoot();
 		this.groups.setRoot(Configuration.USER_INSTANCE.getRoot());
 
 		// Filtered list here
