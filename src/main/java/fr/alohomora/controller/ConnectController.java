@@ -6,7 +6,6 @@ import fr.alohomora.crypto.RSAObject;
 import fr.alohomora.database.Database;
 import fr.alohomora.model.Challenge;
 import fr.alohomora.model.Config;
-import fr.alohomora.model.Group;
 import fr.alohomora.model.User;
 import fr.alohomora.model.retrofitlistener.RetrofitListenerUser;
 import fr.alohomora.model.retrofitlistener.RetrofitListenerChallenge;
@@ -50,8 +49,9 @@ import java.security.spec.InvalidKeySpecException;
 public class ConnectController {
 
 	private RSAObject obj;
-	private User user;
+
 	private boolean connected;
+
 	@FXML
 	private TextField username;
 	@FXML
@@ -73,69 +73,28 @@ public class ConnectController {
 		this.connected = Configuration.LOGIN_TOKEN != null;
 		if (this.connected) {
 			this.parentField.getChildren().remove(this.usernameFieldLabel);
-			this.login.setText("Open database");
-			this.onOpenDataBaseClick();
-			this.onKeyPressedDataBase();
+			this.login.setText("Login");
+			this.onOpenDatabaseClick();
+			this.onKeyPressedDatabase();
 		} else {
 			this.onLoginClick();
 			this.onKeyPressedLogin(username);
 			this.onKeyPressedLogin(this.password);
 		}
-
-
-		/**
-		 this.user = new User(0, "Toto", "toto@toto.fr", false, "", new Data());
-		 this.loadKeys();
-
-		 try {
-		 String msg = "Toto va a la plage";
-		 String signature = this.obj.sign(msg);
-
-		 FileOutputStream fos = new FileOutputStream("msg.sha256");
-		 fos.write(signature.getBytes());
-		 fos.close();
-
-		 fos = new FileOutputStream("msg.txt");
-		 fos.write(msg.getBytes());
-		 fos.close();
-
-		 fos = new FileOutputStream("key.pub");
-		 fos.write(this.obj.formatSSL().getBytes());
-		 fos.close();
-		 } catch (NoSuchAlgorithmException e) {
-		 e.printStackTrace();
-		 } catch (InvalidKeyException e) {
-		 e.printStackTrace();
-		 } catch (SignatureException e) {
-		 e.printStackTrace();
-		 } catch (FileNotFoundException e) {
-		 e.printStackTrace();
-		 } catch (IOException e) {
-		 e.printStackTrace();
-		 }
-
-		 this.obj.kill();
-		 **/
 	}
 
-	public void onOpenDataBaseClick() {
-		this.login.setOnMouseClicked(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				if (event.getButton() == MouseButton.PRIMARY) {
-					ConnectController.this.openDataBase();
-				}
+	public void onOpenDatabaseClick() {
+		this.login.setOnMouseClicked(event -> {
+			if (event.getButton() == MouseButton.PRIMARY) {
+				ConnectController.this.openDatabase();
 			}
 		});
 	}
 
-	public void onKeyPressedDataBase() {
-		this.password.setOnKeyPressed(new EventHandler<KeyEvent>() {
-			@Override
-			public void handle(KeyEvent event) {
-				if (event.getCode() == KeyCode.ENTER) {
-					ConnectController.this.openDataBase();
-				}
+	public void onKeyPressedDatabase() {
+		this.password.setOnKeyPressed(event -> {
+			if (event.getCode() == KeyCode.ENTER) {
+				ConnectController.this.openDatabase();
 			}
 		});
 	}
@@ -143,7 +102,7 @@ public class ConnectController {
 	/**
 	 * decrypt dataBase and load interface
 	 */
-	public void openDataBase() {
+	public void openDatabase() {
 		if (checkEmpty(this.password)) {
 			/**
 			 * @TODO getUpdate if 403 delete database
@@ -154,8 +113,6 @@ public class ConnectController {
 				FXMLLoader loader = new FXMLLoader();
 				loader.setController(new InterfaceController());
 				App.setScene(loader.load(getClass().getClassLoader().getResource("fxml/interface.fxml")), new String[]{"assets/css/main.css", "assets/css/interface.css"});
-				//user.setRoot();
-				//((InterfaceController)loader.getController()).setUser(user);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -230,22 +187,15 @@ public class ConnectController {
 						@Override
 						public void callback(User user) {
 							if (user != null) {
-								//add config in local DB
 								Database.getInstance().insertConfig(user.getUsername(), user.getToken(), Configuration.PORTABLE);
-								// test des id des groupes dans la BD locale
-								// for(int i =0; i < user.getGroups().size(); ++i){
-								//	System.out.println(user.getGroups().get(i).getParentGroup());
-								//}
-								//change view
 								Platform.runLater(new Runnable() {
 									@Override
 									public void run() {
 										try {
 											FXMLLoader loader = new FXMLLoader();
 											loader.setController(new InterfaceController());
+											Configuration.USER_INSTANCE = user;
 											App.setScene(loader.load(getClass().getClassLoader().getResource("fxml/interface.fxml")), new String[]{"assets/css/main.css", "assets/css/interface.css"});
-											user.setRoot();
-											((InterfaceController)loader.getController()).setUser(user);
 										} catch (IOException e) {
 											e.printStackTrace();
 										}

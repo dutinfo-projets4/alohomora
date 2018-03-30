@@ -96,25 +96,18 @@ public class Group extends TreeItem {
 	}
 
 	public void setName(String name) {
-
 		this.name = name;
 		this.setValue(name);
+	}
+
+	public String getName(){
+		return this.name;
 	}
 
 
 	// Wont work because group is already modified so it wont be in the array
 	public boolean updateGroup(Group group) {
 		// @TODO
-		return false;
-	}
-
-	/**
-	 * add group in the Tree and in the DB and local database check if the group not exist and add
-	 *
-	 * @param group
-	 * @return
-	 */
-	public boolean addGroup(Group group) {
 		/**
 		 * @TODO add api data
 		 */
@@ -130,23 +123,17 @@ public class Group extends TreeItem {
 						Database.getInstance().insertGroup(group.id, group.parent_grp, group.getContent());
 
 						//information to the user
-						Platform.runLater(new Runnable() {
-							@Override
-							public void run() {
-								Alert alert = new Alert(Alert.AlertType.INFORMATION);
-								alert.setContentText("Successfull add");
-								alert.showAndWait();
-							}
+						Platform.runLater(() -> {
+							Alert alert = new Alert(Alert.AlertType.INFORMATION);
+							alert.setContentText("Successfull add");
+							alert.showAndWait();
 						});
 					} else {
 						//information to the user
-						Platform.runLater(new Runnable() {
-							@Override
-							public void run() {
-								Alert alert = new Alert(Alert.AlertType.WARNING);
-								alert.setContentText("Error network");
-								alert.showAndWait();
-							}
+						Platform.runLater(() -> {
+							Alert alert = new Alert(Alert.AlertType.WARNING);
+							alert.setContentText("Error network");
+							alert.showAndWait();
 						});
 					}
 				}
@@ -154,18 +141,25 @@ public class Group extends TreeItem {
 				@Override
 				public void error(String msg) {
 					//information to the user
-					Platform.runLater(new Runnable() {
-						@Override
-						public void run() {
-							Alert alert = new Alert(Alert.AlertType.WARNING);
-							alert.setContentText(msg);
-							alert.showAndWait();
-						}
+					Platform.runLater(() -> {
+						Alert alert = new Alert(Alert.AlertType.WARNING);
+						alert.setContentText(msg);
+						alert.showAndWait();
 					});
 				}
 			}, "" + group.parent_grp, group.getContent());
 		}
 
+		return false;
+	}
+
+	/**
+	 * Add group in the tree
+	 *
+	 * @param group
+	 * @return
+	 */
+	public boolean addGroup(Group group) {
 		return this.getChildren().add(group);
 	}
 
@@ -249,13 +243,16 @@ public class Group extends TreeItem {
 	 * @return String Json encrypted
 	 */
 	public String getContent() {
-		if (this.content == null) {
-			JSONObject obj = new JSONObject();
-			obj.put("name", this.name);
-			obj.put("icon", this.icon);
-			return CryptoUtil.encrypt(Configuration.PWD, obj.toJSONString());
-		} else
-			return this.content;
+		JSONObject obj = new JSONObject();
+		obj.put("name", this.name);
+		obj.put("icon", this.icon);
+		return CryptoUtil.encrypt(Configuration.PWD, obj.toJSONString());
+	}
+
+	public void decrypt(){
+		this.icon = "\ue5ff";
+		this.setName(this.content);
+		this.setGraphic(this.getIcon());
 	}
 
 }

@@ -2,6 +2,7 @@ package fr.alohomora;
 
 import fr.alohomora.database.Database;
 import fr.alohomora.model.Config;
+import fr.alohomora.model.User;
 
 import javax.print.DocFlavor;
 import java.io.File;
@@ -27,6 +28,7 @@ import java.io.IOException;
  **/
 public class Configuration {
 
+	public static User USER_INSTANCE;
 	public static String SOFTWARE_NAME = "Alohomora";
 	public static String LOGIN_TOKEN;
 	public static String BASE_PATH;
