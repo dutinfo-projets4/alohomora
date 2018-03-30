@@ -129,17 +129,26 @@ public class PanePassword extends VBox {
 
 			Optional<ButtonType> result = alert.showAndWait();
 			if (result.get() == btYes) {
-				// @TODO remove from database
+				int idElement = PanePassword.this.currElement.getID();
 				this.currElement.removeElement(new RetrofitListnerVoidResponse() {
 					@Override
 					public void onResponseLoad(int code) {
 						if(code == 410){
-							int idElement = PanePassword.this.currElement.getID();
 							//remove element from the views
 							PanePassword.this.currElement.getParentGroup().removeElement(PanePassword.this.currElement);
 
 							//remove from database
 							Database.getInstance().removeElement(idElement);
+
+							//information user
+							Platform.runLater(new Runnable() {
+								@Override
+								public void run() {
+									Alert alert = new Alert(Alert.AlertType.INFORMATION);
+									alert.setContentText("Successfull remove");
+									alert.showAndWait();
+								}
+							});
 						}else{
 							Platform.runLater(new Runnable() {
 								@Override
@@ -163,7 +172,7 @@ public class PanePassword extends VBox {
 							}
 						});
 					}
-				}, ""+this.currElement.getID());
+				}, ""+idElement);
 				InterfaceController.getInstance().onGroupClick(null);
 			}
 		}
@@ -268,7 +277,6 @@ public class PanePassword extends VBox {
 						PanePassword.this.currElement.getContent() // Encrypted content
 				);
 			}
-
 		}
 		InterfaceController.getInstance().onGroupClick(null);
 	}

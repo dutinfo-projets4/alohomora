@@ -226,7 +226,6 @@ public class Element {
 		Pair<String, String>[] params = new Pair[]{
 				new Pair("id", id)
 		};
-
 		Call<Void> call = App.getAPI().removeElement(params);
 		call.enqueue(new Callback<Void>() {
 			@Override

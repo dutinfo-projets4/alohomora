@@ -80,7 +80,7 @@ public class InterfaceController {
 	/*
 */
 
-		Group g = new Group(-1, -1, "Root", "");
+		Group g = new Group(1, -1, "Root", "");
 		this.groups.setRoot(g);
 
 		// Filtered list here

@@ -48,13 +48,12 @@ public interface AlohomoraService {
 	                            @Field("id") String id,
 	                            @Field("parent_grp") String parent_grp,
 	                            @Field("content") String content);
-	@FormUrlEncoded
 	@DELETE("/element")
-	Call<Void> removeElement(@Field("req_id") String req_id,
-	                            @Field("id") String IDelement);
+	Call<Void> removeElement(@Query("req_id") String req_id,
+	                            @Query("id") String IDelement);
 
 	@FormUrlEncoded
-	@POST("/group")
+	@POST("/directory")
 	Call<Group> addGroup(@Field("req_id") String req_id,
 	                     @Field("parent_grp") String parent_grp,
 	                     @Field("content") String content);

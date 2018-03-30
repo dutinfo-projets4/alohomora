@@ -125,7 +125,6 @@ public class Group extends TreeItem {
 					if (idGroup != null) {
 						//change the current id
 						group.id = idGroup.getID();
-
 						//add to database
 						Database.getInstance().insertGroup(group.id, group.parent_grp, group.getContent());
 
@@ -230,7 +229,6 @@ public class Group extends TreeItem {
 		call.enqueue(new Callback<Group>() {
 			@Override
 			public void onResponse(Call<Group> call, Response<Group> response) {
-				System.out.print(response.code());
 				if (response.code() == 201)
 					callback.onIdLoad(response.body());
 				else
