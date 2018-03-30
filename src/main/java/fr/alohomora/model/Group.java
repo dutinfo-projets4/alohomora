@@ -118,6 +118,7 @@ public class Group extends TreeItem {
 						group.id = idGroup.getID();
 						//add to database
 						Database.getInstance().insertGroup(group.id, group.parent_grp, group.getContent());
+						System.out.print("save");
 						Group.this.addGroup(group);
 						//information to the user
 						Platform.runLater(() -> {

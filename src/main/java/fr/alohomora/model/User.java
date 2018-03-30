@@ -4,6 +4,7 @@ import fr.alohomora.App;
 import fr.alohomora.model.retrofitlistener.RetrofitListenerUser;
 import fr.alohomora.model.retrofitlistener.RetrofitListenerChallenge;
 import javafx.util.Pair;
+import org.json.simple.parser.ParseException;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -181,12 +182,20 @@ public class User {
 
 	public void setRoot(){
 		for (Element e : this.data.getElements()){
-			e.decrypt();
+			try {
+				e.decrypt();
+			} catch (ParseException e1) {
+				e1.printStackTrace();
+			}
 		}
 
 		for(Group g2: this.data.getGroups()){
 			// We decrypt the group data
-			g2.decrypt();
+			try {
+				g2.decrypt();
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
 
 			// Then we add his elements
 			Iterator i = this.data.getElements().iterator();
