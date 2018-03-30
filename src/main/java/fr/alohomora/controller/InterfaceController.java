@@ -93,7 +93,7 @@ public class InterfaceController {
 		InterfaceController._INSTANCE = this;
 
 
-		this.passwordPanel = new PanePassword();
+		this.passwordPanel = new PanePassword(this);
 		this.centerPanel.getItems().add(this.passwordPanel);
 		this.centerPanel.getDividers().get(0).setPosition(.2);
 
@@ -105,16 +105,13 @@ public class InterfaceController {
 	}
 
 	public void addElementInSelectedGroup() {
-		this.addElement.setOnMouseClicked(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				Group groupSelected = (Group) InterfaceController.this.groups.getSelectionModel().getSelectedItem();
-				// @TODO get id of element from bd
-				groupSelected.addElementFirstposition(new Element(-1, groupSelected, "empty", "", "empty", "empty"));
-				//update view
-				InterfaceController.this.onGroupClick(null);
-				InterfaceController.this.onSitesClick(null);
-			}
+		this.addElement.setOnMouseClicked(event -> {
+			Group groupSelected = (Group) InterfaceController.this.groups.getSelectionModel().getSelectedItem();
+			// @TODO get id of element from bd
+			groupSelected.addElementFirstposition(new Element(-1, groupSelected, "empty", "\uF084", "empty", "empty"));
+			//update view
+			InterfaceController.this.onGroupClick(null);
+			InterfaceController.this.onSitesClick(null);
 		});
 	}
 

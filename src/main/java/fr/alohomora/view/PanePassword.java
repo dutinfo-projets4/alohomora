@@ -1,17 +1,16 @@
 package fr.alohomora.view;
 
-import com.sun.glass.events.MouseEvent;
-import fr.alohomora.App;
 import fr.alohomora.controller.InterfaceController;
 import fr.alohomora.database.Database;
-import fr.alohomora.model.Data;
 import fr.alohomora.model.Element;
 import fr.alohomora.model.retrofitlistener.RetrofitListnerElement;
 import fr.alohomora.model.retrofitlistener.RetrofitListnerVoidResponse;
 import javafx.application.Platform;
 import javafx.scene.control.*;
-import javafx.scene.layout.*;
-import javafx.util.Pair;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 
 import java.util.Optional;
 
@@ -35,6 +34,7 @@ import java.util.Optional;
  **/
 public class PanePassword extends VBox {
 
+	private InterfaceController controlleur;
 	private Element currElement;
 	private HBox titleBox;
 	private TextField title;
@@ -43,7 +43,9 @@ public class PanePassword extends VBox {
 
 	private Button cancelbt, removebt, savebt;
 
-	public PanePassword() {
+	public PanePassword(InterfaceController ctr) {
+		this.controlleur = ctr;
+
 		this.titleBox = new HBox();
 		this.titleBox.getStyleClass().add("titlebox");
 
@@ -140,36 +142,23 @@ public class PanePassword extends VBox {
 							//remove from database
 							Database.getInstance().removeElement(idElement);
 
-							//information user
-							Platform.runLater(new Runnable() {
-								@Override
-								public void run() {
-									Alert alert = new Alert(Alert.AlertType.INFORMATION);
-									alert.setContentText("Successfull remove");
-									alert.showAndWait();
-								}
-							});
-						}else{
-							Platform.runLater(new Runnable() {
-								@Override
-								public void run() {
-									Alert alert = new Alert(Alert.AlertType.WARNING);
-									alert.setContentText("Can't find the element");
-									alert.showAndWait();
-								}
+							PanePassword.this.controlleur.onGroupClick(null);
+
+						} else{
+							Platform.runLater(() -> {
+								Alert alert12 = new Alert(Alert.AlertType.WARNING);
+								alert12.setContentText("Can't find the element");
+								alert12.showAndWait();
 							});
 						}
 					}
 
 					@Override
 					public void error(String msg) {
-						Platform.runLater(new Runnable() {
-							@Override
-							public void run() {
-								Alert alert = new Alert(Alert.AlertType.WARNING);
-								alert.setContentText("Error network");
-								alert.showAndWait();
-							}
+						Platform.runLater(() -> {
+							Alert alert13 = new Alert(Alert.AlertType.WARNING);
+							alert13.setContentText("Error network");
+							alert13.showAndWait();
 						});
 					}
 				}, ""+idElement);
@@ -190,40 +179,25 @@ public class PanePassword extends VBox {
 							@Override
 							public void onResponseLoad(int code) {
 								if (code == 200) {
-									// information to the user
-									Platform.runLater(new Runnable() {
-										@Override
-										public void run() {
-											Alert alert = new Alert(Alert.AlertType.INFORMATION);
-											alert.setContentText("Update successfull");
-											alert.showAndWait();
-										}
-									});
 									//update local data
 									Database.getInstance().updateElement(PanePassword.this.currElement.getID(),
 											PanePassword.this.currElement.getParentGroup().getID(),
 											PanePassword.this.currElement.getContent()); //encrypted content
 								} else {
-									Platform.runLater(new Runnable() {
-										@Override
-										public void run() {
-											Alert alert = new Alert(Alert.AlertType.WARNING);
-											alert.setContentText("Please update your data");
-											alert.showAndWait();
-										}
+									Platform.runLater(() -> {
+										Alert alert = new Alert(Alert.AlertType.WARNING);
+										alert.setContentText("Please update your data");
+										alert.showAndWait();
 									});
 								}
 							}
 
 							@Override
 							public void error(String msg) {
-								Platform.runLater(new Runnable() {
-									@Override
-									public void run() {
-										Alert alert = new Alert(Alert.AlertType.WARNING);
-										alert.setContentText("Error network");
-										alert.showAndWait();
-									}
+								Platform.runLater(() -> {
+									Alert alert = new Alert(Alert.AlertType.WARNING);
+									alert.setContentText("Error network");
+									alert.showAndWait();
 								});
 							}
 						},
@@ -247,23 +221,11 @@ public class PanePassword extends VBox {
 											PanePassword.this.currElement.getID(),
 											PanePassword.this.currElement.getParentGroup().getID(),
 											PanePassword.this.currElement.getContent());
-									//information user
-									Platform.runLater(new Runnable() {
-										@Override
-										public void run() {
-											Alert alert = new Alert(Alert.AlertType.INFORMATION);
-											alert.setContentText("add successfull");
-											alert.showAndWait();
-										}
-									});
 								} else {
-									Platform.runLater(new Runnable() {
-										@Override
-										public void run() {
-											Alert alert = new Alert(Alert.AlertType.WARNING);
-											alert.setContentText("Error network");
-											alert.showAndWait();
-										}
+									Platform.runLater(() -> {
+										Alert alert = new Alert(Alert.AlertType.WARNING);
+										alert.setContentText("Error network");
+										alert.showAndWait();
 									});
 								}
 							}

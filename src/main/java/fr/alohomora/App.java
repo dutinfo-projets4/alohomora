@@ -41,8 +41,8 @@ public class App extends Application {
 
 		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/connection.fxml"));
 		//Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/interface.fxml"));
-		primaryStage.setMinWidth(768);
-		primaryStage.setMinHeight(453);
+		primaryStage.setMinWidth(1080);
+		primaryStage.setMinHeight(720);
 		primaryStage.setTitle("Alohomora");
 
 		Font.loadFont(getClass().getClassLoader().getResource("assets/hf.ttf").toExternalForm(), 15);
